@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Linq;
 
 
 [System.Serializable]
@@ -29,7 +30,19 @@ public class InventorySystem
 
     public bool AddToInventory(InventoryItemData itemToAdd)
     {
-        inventorySlots[0] = new InventorySlot(itemToAdd, 1);
-        return true;
+        if (HasFreeSlot(out InventorySlot freeSlot))
+        {
+            freeSlot.UpdateInventorySlot(itemToAdd, 1);
+            OnInventorySlotChanged?.Invoke(freeSlot);
+            return true;
+        }
+        else return false;
+
+    }
+
+    public bool HasFreeSlot(out InventorySlot freeSlot)
+    {
+        freeSlot = InventorySlots.FirstOrDefault(i =>i.ItemData==null);
+        return freeSlot==null ? false : true;
     }
 }

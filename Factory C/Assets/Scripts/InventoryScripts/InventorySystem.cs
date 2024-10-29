@@ -27,6 +27,11 @@ public class InventorySystem
         }
     }
 
+    public InventoryItemData GetInfo()
+    {
+        return InventorySlots[0].ItemData;
+    }
+
 
     public bool AddToInventory(InventoryItemData itemToAdd)
     {
@@ -38,6 +43,22 @@ public class InventorySystem
         }
         else return false;
 
+    }
+
+    public bool RemoveFromInventory()
+    {
+        InventorySlot occupiedSlot = InventorySlots.FirstOrDefault(i => i.ItemData != null);
+
+        if (occupiedSlot != null)
+        {
+            occupiedSlot.ClearSlot();
+            OnInventorySlotChanged?.Invoke(occupiedSlot);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public bool HasFreeSlot(out InventorySlot freeSlot)

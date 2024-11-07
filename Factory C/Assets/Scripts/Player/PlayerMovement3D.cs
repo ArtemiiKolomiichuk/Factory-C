@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerMovement3D : MonoBehaviour
 {
     private InputPlayer _input;
+    private Animator _animator;
 
     [SerializeField]
     private bool RotateTowardMouse;
@@ -22,6 +23,7 @@ public class PlayerMovement3D : MonoBehaviour
     private void Awake()
     {
         _input = GetComponent<InputPlayer>();
+        _animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -29,7 +31,10 @@ public class PlayerMovement3D : MonoBehaviour
     {
 
         var targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
+        print(_input.InputVector.y);
         var movementVector = MoveTowardTarget(targetVector);
+        bool isWalking = (_input.InputVector.x != 0 || _input.InputVector.y != 0);
+        _animator.SetBool("walk", isWalking);
 
         if (!RotateTowardMouse)
         {

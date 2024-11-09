@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class Order : ScriptableObject
 {
-    public Item item;
+    public Resource resource;
     public uint duration;
 }

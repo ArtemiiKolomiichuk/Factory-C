@@ -20,7 +20,7 @@ public class Customer : MonoBehaviour
         
     }
 
-    public void TakeItem(Item item) {
+    public void TakeResource(Resource resource) {
         throw new NotImplementedException();
     }
 

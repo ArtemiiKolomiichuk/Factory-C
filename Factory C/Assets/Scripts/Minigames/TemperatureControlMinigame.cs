@@ -29,9 +29,14 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
     private float temperatureTargetLowerLimit = 30f;
     private float temperatureTargetUpperLimit = 90f;
 
+    protected override void Awake()
+    {
+        corespondingWorkstationType = WorkstationType.Furnace;
+        base.Awake();
+    }
+
     protected override void Start()
     {
-        minigameName = "Two Player Temperature Control";
         base.Start();
 
 

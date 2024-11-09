@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SlugKneadingMinigame : MinigameInterface
+public class SlimeKneadingMinigame : MinigameInterface
 {
     [Header("Slug Kneading Minigame Settings")]
-    public GameObject slug;
+    public GameObject slime;
     public RectTransform progressBar;
 
     private static readonly float HOLD_DURATION = 2f;
@@ -13,9 +13,14 @@ public class SlugKneadingMinigame : MinigameInterface
     private bool isHolding = false;
     private bool canProgress = true;
 
+    protected override void Awake()
+    {
+        corespondingWorkstationType = WorkstationType.Slime;
+        base.Awake();
+    }
+
     protected override void Start()
     {
-        minigameName = "Slug Kneading";
         base.Start();
     }
 

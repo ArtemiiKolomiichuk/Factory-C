@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Tutorials.Core.Editor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,18 +7,31 @@ public abstract class MinigameInterface : MonoBehaviour
 {
     public GameObject minigameOverlay;
     public Button closeButton;
-    public string minigameName;
+    public WorkstationType corespondingWorkstationType;
 
     protected float progressCount = 0;
     protected float targetProgressCout;
 
     public Workstation connectedWorkstation = null;
 
-    private static Dictionary<string, MinigameInterface> minigames = new Dictionary<string, MinigameInterface>();
+    private static Dictionary<WorkstationType, MinigameInterface> MINI_GAMES = new Dictionary<WorkstationType, MinigameInterface>();
+
+    protected virtual void Awake() {
+        if (!MINI_GAMES.ContainsKey(corespondingWorkstationType))
+        {
+            MINI_GAMES[corespondingWorkstationType] = this;
+        }
+        else
+        {
+            Debug.LogWarning($"Minigame with name '{corespondingWorkstationType.ToString()}' already exists.");
+        }
+    }
 
     public void Activate(bool state) {
         enabled = state;
     }
+
+    
 
     protected virtual void Start()
     {
@@ -27,34 +41,19 @@ public abstract class MinigameInterface : MonoBehaviour
         {
             closeButton.onClick.AddListener(CloseMinigame);
         }
-
-        if (!string.IsNullOrEmpty(minigameName))
-        {
-            if (!minigames.ContainsKey(minigameName))
-            {
-                minigames[minigameName] = this;
-            }
-            else
-            {
-                Debug.LogWarning($"Minigame with name '{minigameName}' already exists.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Minigame name is not set!");
-        }
+ 
     }
 
-    public static MinigameInterface GetMinigameByName(string name)
+    public static MinigameInterface GetMinigameByType(WorkstationType type)
     {
-        minigames.TryGetValue(name, out MinigameInterface minigame);
+        MINI_GAMES.TryGetValue(type, out MinigameInterface minigame);
         return minigame;
     }
 
-    public void OpenMinigame(Workstation workstation, float targetProgress)
+    public void OpenMinigame(Workstation workstation, Recipe recipe)
     {
         connectedWorkstation = workstation;
-        targetProgressCout = targetProgress;
+        targetProgressCout = recipe.difficultyMod;
         Activate(true);
         minigameOverlay.SetActive(true);
         OnMinigameOpened();
@@ -62,7 +61,7 @@ public abstract class MinigameInterface : MonoBehaviour
 
     public virtual void Success()
     {
-        Debug.Log("Success! "+minigameName);
+        Debug.Log("Success! "+ corespondingWorkstationType.ToString());
         CloseMinigame();
         if (connectedWorkstation != null) { 
             connectedWorkstation.SucceedProcessing();

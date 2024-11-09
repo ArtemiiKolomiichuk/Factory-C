@@ -26,9 +26,15 @@ public class SmithingMinigame : MinigameInterface
 
     private static readonly float SUCCESS_RANGE = 1f;
 
+    protected override void Awake()
+    {
+        corespondingWorkstationType = WorkstationType.Forge;
+        base.Awake();
+    }
+
     protected override void Start()
     {
-        minigameName = "Smithing";
+
         base.Start();
 
         

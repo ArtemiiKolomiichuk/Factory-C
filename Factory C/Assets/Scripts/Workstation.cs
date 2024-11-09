@@ -22,6 +22,10 @@ public class Workstation : MonoBehaviour
     public int numberOfMaxUsers = 0;
     public bool canUse = true;
 
+    public void Start()
+    {
+        corespondingMinigame = MinigameInterface.GetMinigameByType(workstationType);
+    }
 
     public bool SubscribeUser()
     {
@@ -64,7 +68,7 @@ public class Workstation : MonoBehaviour
                 return false;
             }
             else { 
-                corespondingMinigame.OpenMinigame(this, toProcess.difficultyMod);
+                corespondingMinigame.OpenMinigame(this, toProcess);
                 return true;
             }
 

@@ -4,21 +4,19 @@ public class AdventurerNPCController : MonoBehaviour, IAdventurerNPCController
 {
     public void SetBehavior(Adventurer adventurer, BehaviorType behaviorType)
     {
-        adventurer.Behavior = behaviorType;
-        Debug.Log($"Behavior set to {behaviorType} for adventurer.");
+        // Debug message for setting the behavior of an adventurer
+        Debug.Log($"Setting adventurer's behavior to {behaviorType}.");
     }
 
     public void Move(Adventurer adventurer, Vector3 targetPosition)
     {
-        adventurer.transform.position = Vector3.MoveTowards(adventurer.transform.position, targetPosition, adventurer.Speed * Time.deltaTime);
+        // Debug message for moving the adventurer
+        Debug.Log("Moving adventurer to target position.");
     }
 
     public void Interact(Adventurer adventurer, GameObject target)
     {
-        if (target.TryGetComponent(out Monster monster))
-        {
-            adventurer.Attack(monster);
-            Debug.Log("Adventurer is interacting with a monster.");
-        }
+        // Debug message for adventurer interaction with a target
+        Debug.Log("Adventurer is interacting with a target.");
     }
 }

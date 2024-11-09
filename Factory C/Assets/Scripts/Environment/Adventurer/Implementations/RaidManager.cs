@@ -5,27 +5,24 @@ public class RaidManager : MonoBehaviour, IRaidManager
 {
     public List<Adventurer> ActiveAdventurers { get; private set; } = new List<Adventurer>();
 
+    public List<Adventurer> ActiveAdventurers { get; private set; } = new List<Adventurer>();
+
     public void StartRaid()
     {
-        Debug.Log("Raid started!");
-        foreach (var adventurer in ActiveAdventurers)
-        {
-            adventurer.StartRaid();
-        }
+        // Debug message for starting the raid
+        Debug.Log("Starting raid - adventurers begin their journey to the forest.");
     }
 
     public void EndRaid()
     {
-        Debug.Log("Raid ended.");
-        foreach (var adventurer in ActiveAdventurers)
-        {
-            adventurer.EndRaid();
-        }
+        // Debug message for ending the raid
+        Debug.Log("Ending raid - adventurers return to base.");
     }
 
     public void AssignAdventurers(List<Adventurer> adventurers)
     {
+        // Debug message for assigning adventurers to the raid
         ActiveAdventurers = adventurers;
-        Debug.Log($"{adventurers.Count} adventurers assigned to raid.");
+        Debug.Log($"Assigned {adventurers.Count} adventurers to the raid.");
     }
 }

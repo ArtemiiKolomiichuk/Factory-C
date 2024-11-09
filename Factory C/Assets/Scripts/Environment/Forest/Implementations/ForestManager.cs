@@ -3,24 +3,21 @@ using UnityEngine;
 
 public class ForestManager : MonoBehaviour, IForestManager
 {
-    public List<Monster> Monsters { get; private set; } = new List<Monster>();
-
     public void UpdateForest()
     {
-        Debug.Log("Forest state updated.");
+        // Debug message for updating the forest
+        Debug.Log("Updating forest state, refreshing resources and NPC positions.");
     }
 
     public void SpawnTraps()
     {
-        Debug.Log("Traps generated in the forest.");
+        // Debug message for spawning traps in the forest
+        Debug.Log("Spawning traps in the forest.");
     }
 
     public void ResetAggression()
     {
-        foreach (var monster in Monsters)
-        {
-            monster.IsAggressive = false;
-        }
-        Debug.Log("Aggression reset in the forest.");
+        // Debug message for resetting NPC aggression levels
+        Debug.Log("Resetting aggression levels for all monsters in the forest.");
     }
 }

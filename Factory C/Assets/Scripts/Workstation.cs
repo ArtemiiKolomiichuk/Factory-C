@@ -3,6 +3,7 @@ using UnityEngine;
 
 public enum WorkstationType
 {
+    None,
     Forge,
     Slime,
     Furnace
@@ -12,7 +13,7 @@ public class Workstation : MonoBehaviour
 {
     [Header("Workstation Configuration")]
     public WorkstationType workstationType;
-    public List<Receipt> receipts;
+    public List<Recipe> receipts;
     public List<ResourceType> inputResources;
 
     public MinigameInterface corespondingMinigame;
@@ -50,14 +51,14 @@ public class Workstation : MonoBehaviour
         return ResourceType.None;
     }
 
-    public Receipt CheckNeededResources() {
+    public Recipe CheckNeededResources() {
         //TODO check all receipts
         return null;
     }
 
     public bool UseWorkstation() {
         if (SubscribeUser()) {
-            Receipt toProcess = CheckNeededResources();
+            Recipe toProcess = CheckNeededResources();
             if (toProcess == null) {
                 //TODO error mesage
                 return false;

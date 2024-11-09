@@ -1,18 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Receipt : MonoBehaviour
+public class Recipe : ScriptableObject
 {
     [Header("Receipt Configuration")]
     public List<ResourceType> inputResources;
     public List<ResourceType> resultResources;
+    public WorkstationType workstationType = WorkstationType.None;
     public float difficultyMod;
     public float[] additionalVariables;
 
-    public Receipt(List<ResourceType> inputResources, List<ResourceType> resultResources, float difficultyMod, float[] additionalVariables)
+    public Recipe(List<ResourceType> inputResources, List<ResourceType> resultResources, WorkstationType workstation, float difficultyMod, float[] additionalVariables)
     {
         this.inputResources = inputResources;
         this.resultResources = resultResources;
+        this.workstationType = workstation;
         this.difficultyMod = difficultyMod;
         this.additionalVariables = additionalVariables;
     }

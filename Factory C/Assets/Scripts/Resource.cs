@@ -10,13 +10,11 @@ public enum ResourceType
     Water
 }
 
-public class Resource : MonoBehaviour
+public class Resource : ScriptableObject
 {
     public ResourceType Type;
 
     public float weight;
-
-    public GameObject ResourceObject => gameObject;
 
     public static GameObject ResourcePrefab;
 

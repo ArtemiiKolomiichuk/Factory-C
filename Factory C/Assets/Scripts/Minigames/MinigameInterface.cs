@@ -11,6 +11,7 @@ public abstract class MinigameInterface : MonoBehaviour
 
     protected float progressCount = 0;
     protected float targetProgressCout;
+    protected Recipe recipeData;
 
     public Workstation connectedWorkstation = null;
 
@@ -53,7 +54,8 @@ public abstract class MinigameInterface : MonoBehaviour
     public void OpenMinigame(Workstation workstation, Recipe recipe)
     {
         connectedWorkstation = workstation;
-        targetProgressCout = recipe.difficultyMod;
+        recipeData = recipe;
+        targetProgressCout = recipeData.difficultyMod;
         Activate(true);
         minigameOverlay.SetActive(true);
         OnMinigameOpened();
@@ -64,7 +66,7 @@ public abstract class MinigameInterface : MonoBehaviour
         Debug.Log("Success! "+ corespondingWorkstationType.ToString());
         CloseMinigame();
         if (connectedWorkstation != null) { 
-            connectedWorkstation.SucceedProcessing();
+            connectedWorkstation.SucceedProcessing(recipeData);
         }
     }
 

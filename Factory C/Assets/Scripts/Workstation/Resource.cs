@@ -10,9 +10,10 @@ public enum ResourceType
     Water
 }
 
+[CreateAssetMenu(fileName = "New Resource", menuName = "Resource Data", order = 51)]
 public class Resource : ScriptableObject
 {
-    public ResourceType Type;
+    public ResourceType rType;
 
     public float weight;
 
@@ -22,7 +23,7 @@ public class Resource : ScriptableObject
 
     public void Initialize(ResourceType type, float weight = 1f)
     {
-        Type = type;
+        this.rType = type;
         this.weight = weight;
         UpdateResourceVisual();
     }

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ForestManager : MonoBehaviour, IForestManager
 {
+    public List<Monster> Monsters => throw new System.NotImplementedException();
+
     public void UpdateForest()
     {
         // Debug message for updating the forest

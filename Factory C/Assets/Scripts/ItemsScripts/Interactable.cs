@@ -40,6 +40,7 @@ namespace Assets.Scripts.ItemsScripts
                         GameObject item = PrefabSystem.FindItem(currentItem);
                         showObject = Instantiate(item, transform.position + offset, transform.rotation);
                         showObject.GetComponent<Rigidbody>().isKinematic = true;
+                        showObject.GetComponent<SphereCollider>().isTrigger = false;
                         showObject.GetComponent<Rigidbody>().useGravity = false;
                     }
                 }

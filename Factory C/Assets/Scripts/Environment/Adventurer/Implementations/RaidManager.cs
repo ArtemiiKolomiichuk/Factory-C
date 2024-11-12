@@ -5,7 +5,7 @@ public class RaidManager : MonoBehaviour, IRaidManager
 {
     public List<Adventurer> ActiveAdventurers { get; private set; } = new List<Adventurer>();
 
-    public List<Adventurer> ActiveAdventurers { get; private set; } = new List<Adventurer>();
+   // public List<Adventurer> ActiveAdventurers { get; private set; } = new List<Adventurer>();
 
     public void StartRaid()
     {

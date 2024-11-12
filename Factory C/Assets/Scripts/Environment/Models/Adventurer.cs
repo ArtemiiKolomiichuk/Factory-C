@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Assets.Scripts.ItemsScripts;
 using UnityEngine;
 
 public class Adventurer : MonoBehaviour

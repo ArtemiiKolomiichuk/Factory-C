@@ -13,7 +13,7 @@ namespace Assets.Scripts.ItemsScripts
         private BoxCollider boxCollider;
         private Collider other;
         public InventoryHolder inventoryHolder;
-        private InventoryItemData currentItem;
+        private Resource currentItem;
         private GameObject showObject;
         public Vector3 offset = new Vector3(0, 1, 1);
 

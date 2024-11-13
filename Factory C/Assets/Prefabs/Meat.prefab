@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PickUpRadius: 1
-  ItemData: {fileID: 11400000, guid: 7b3bd5f2d9e15a2478fa84f62956fa49, type: 2}
+  ItemData: {fileID: 11400000, guid: 14e15983c58a52443bdada691c0ad6e7, type: 2}
 --- !u!64 &2622220477050162218
 MeshCollider:
   m_ObjectHideFlags: 0

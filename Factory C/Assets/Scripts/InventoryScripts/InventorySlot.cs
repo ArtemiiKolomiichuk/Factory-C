@@ -6,14 +6,14 @@ using UnityEngine;
 public class InventorySlot 
 {
     [SerializeField]
-    private InventoryItemData itemData;   
+    private Resource itemData;   
 
     [SerializeField]
     private int stackSize;
 
-    public InventoryItemData ItemData => itemData;
+    public Resource ItemData => itemData;
     public int StackSize => stackSize;
-    public InventorySlot(InventoryItemData itemData, int stackSize)
+    public InventorySlot(Resource itemData, int stackSize)
     {
         this.itemData = itemData;
         this.stackSize = stackSize;
@@ -31,7 +31,7 @@ public class InventorySlot
         stackSize = -1;
     }
 
-    public void UpdateInventorySlot(InventoryItemData data, int amount)
+    public void UpdateInventorySlot(Resource data, int amount)
     {
         itemData = data;
         stackSize = amount;

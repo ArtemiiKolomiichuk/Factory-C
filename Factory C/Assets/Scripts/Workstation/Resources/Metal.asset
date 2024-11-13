@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 353e51ea25a4565428b6e60ef14a5251, type: 3}
   m_Name: Metal
   m_EditorClassIdentifier: 
-  Type: 3
+  rType: 3
   weight: 0
   isHolding: 0

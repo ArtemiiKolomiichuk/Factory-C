@@ -11,7 +11,7 @@ public class InventoryHolder : MonoBehaviour
     private int inventorySize;
     [SerializeField]
     protected InventorySystem inventorySystem;
-    public Vector3 offset = new Vector3(0, 0, 0);
+    public Vector3 offset = new Vector3(0,1, 0);
 
     private GameObject current_show_item;
 

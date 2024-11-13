@@ -7,7 +7,7 @@ using UnityEngine;
 public class ItemPickUp : MonoBehaviour
 {
     public float PickUpRadius = 1f;
-    public InventoryItemData ItemData;
+    public Resource ItemData;
 
     private SphereCollider sphereCollider;
 

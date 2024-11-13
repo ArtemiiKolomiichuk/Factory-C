@@ -21,7 +21,7 @@ public class ThrowAnObject : MonoBehaviour
                 {
                     foreach (var a in objectPrefab)
                     {
-                        if (a.GetComponent<ItemPickUp>().ItemData.Name == item.Name)
+                        if (a.GetComponent<ItemPickUp>().ItemData.rType == item.rType)
                         {
                             GameObject thrownObject = Instantiate(a, player.transform.position + player.transform.TransformDirection(throwOffset), player.transform.rotation);
                             Rigidbody rb = thrownObject.GetComponent<Rigidbody>();

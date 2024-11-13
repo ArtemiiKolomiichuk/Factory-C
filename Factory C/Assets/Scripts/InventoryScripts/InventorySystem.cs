@@ -27,13 +27,13 @@ public class InventorySystem
         }
     }
 
-    public InventoryItemData GetInfo()
+    public Resource GetInfo()
     {
         return InventorySlots[0].ItemData;
     }
 
 
-    public bool AddToInventory(InventoryItemData itemToAdd)
+    public bool AddToInventory(Resource itemToAdd)
     {
         if (HasFreeSlot(out InventorySlot freeSlot))
         {

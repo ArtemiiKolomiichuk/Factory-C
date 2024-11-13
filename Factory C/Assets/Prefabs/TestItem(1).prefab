@@ -169,4 +169,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PickUpRadius: 1
-  ItemData: {fileID: 11400000, guid: 960d0943cb0a2294c995774051bcac17, type: 2}
+  ItemData: {fileID: 11400000, guid: f8c2ff6e5de909643b8d8e6b3e3050ea, type: 2}

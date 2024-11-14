@@ -97,15 +97,43 @@ public class LobbyController : MonoBehaviour
                 var lobbyIds = await LobbyService.Instance.GetJoinedLobbiesAsync();
                 foreach(var id in lobbyIds)
                 {
+                    await Task.Delay(500);
                     lobby = await LobbyService.Instance.GetLobbyAsync(id);
                     if(lobby.LobbyCode != code)
                     {
+                        await Task.Delay(500);
                         await LobbyService.Instance.RemovePlayerAsync(id, AuthenticationService.Instance.PlayerId);
                     }
                 }
+                await Task.Delay(500);
                 lobbyIds = await LobbyService.Instance.GetJoinedLobbiesAsync();
-                lobby = lobbyIds.Count != 1 ? await LobbyService.Instance.GetLobbyAsync(lobbyIds[0]) : null;
-                StartCoroutine(UpdateLobby());
+                await Task.Delay(500);
+                lobby = lobbyIds.Count != 1 ? null : await LobbyService.Instance.GetLobbyAsync(lobbyIds[0]);
+                if(lobby == null)
+                {
+                    try
+                    {
+                        JoinLobbyByCodeOptions options = new()
+                        {
+                            Player = new Player(
+                                AuthenticationService.Instance.PlayerId,
+                                data: new Dictionary<string, PlayerDataObject>
+                                {
+                                    { "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, AuthenticationService.Instance.PlayerName ?? "Player") }
+                                }
+                            )
+                        };
+                        lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(code, options);
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
+                if (lobby != null)
+                {
+                    StartCoroutine(UpdateLobby());
+                }
                 return lobby != null;
             }
             return false;
@@ -134,7 +162,7 @@ public class LobbyController : MonoBehaviour
             {
                 UpdateLobbyAsync();
             }
-            if(lobby.HostId == AuthenticationService.Instance.PlayerId)
+            if(lobby?.HostId == AuthenticationService.Instance.PlayerId)
             {
                 LobbyService.Instance.SendHeartbeatPingAsync(lobby.Id);
             }

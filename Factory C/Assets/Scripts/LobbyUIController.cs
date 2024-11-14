@@ -23,7 +23,7 @@ public class LobbyUIController : MonoBehaviour
     {
         joinButton.onClick.AddListener(JoinButtonClicked);
         hostButton.onClick.AddListener(HostButtonClicked);
-        if(AuthenticationService.Instance.PlayerName is string name)
+        if(AuthenticationService.Instance.PlayerName is string name && name.Length > 6)
         {
             GameObject.Find("PlayerName").GetComponent<TMP_InputField>().text = name[..^5];
         }

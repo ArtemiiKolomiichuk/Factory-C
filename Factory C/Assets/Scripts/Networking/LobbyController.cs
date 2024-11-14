@@ -69,7 +69,7 @@ public class LobbyController : MonoBehaviour
         };
         await LobbyService.Instance.UpdateLobbyAsync(lobby.Id, options);
         onLobbyUpdated = null;
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("movement1");
     }
 
     public async Task<bool> Join(string code)
@@ -180,7 +180,7 @@ public class LobbyController : MonoBehaviour
                 bool starting = await RelayController.Instance.StartClientWithRelay(relayId);
                 if(starting)
                 {
-                    SceneManager.LoadScene("SampleScene");
+                    SceneManager.LoadScene("movement1");
                     StopAllCoroutines();
                     return;
                 }

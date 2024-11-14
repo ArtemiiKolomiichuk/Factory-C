@@ -5,13 +5,18 @@ using Unity.Services.Lobbies;
 using UnityEngine;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
+using Unity.Services.Core;
+using System;
+using UnityEngine.SceneManagement;
 
 public class LobbyController : MonoBehaviour
 {
     public static LobbyController Instance;
     public Lobby lobby;
 
-    private void Awake()
+    private const float updateInterval = 3.0f;
+
+    private async void Awake()
     {
         if (Instance == null)
         {
@@ -22,34 +27,87 @@ public class LobbyController : MonoBehaviour
             Destroy(this);
         }
         DontDestroyOnLoad(this);
-    }
 
-    private async void Start()
-    {
+        await UnityServices.InitializeAsync();
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        //AuthenticationService.Instance.UpdatePlayerNameAsync(playerName);
     }
 
-    public async void CreateLobby()
+    public async Task CreateLobby()
     {
         string lobbyName = "new lobby";
         int maxPlayers = 5;
         CreateLobbyOptions options = new()
         {
-            IsPrivate = true
+            IsPrivate = true,
+            Player = new Player(
+                AuthenticationService.Instance.PlayerId, 
+                data: new Dictionary<string, PlayerDataObject> 
+                { 
+                    { "PlayerName", new PlayerDataObject( PlayerDataObject.VisibilityOptions.Member, AuthenticationService.Instance.PlayerName ?? "Player") }
+                }
+            ),
+            Data = new Dictionary<string, DataObject>
+            {
+                { "RelayCode", new DataObject(DataObject.VisibilityOptions.Member, "") }
+            }
         };
         lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
+        StartCoroutine(UpdateLobby());
+    }
+
+    public async void StartGame()
+    {
+        var code = await RelayController.Instance.StartHostWithRelay();
+        if(string.IsNullOrEmpty(code)) return;
+
+        var options = new UpdateLobbyOptions
+        {
+            Data = new Dictionary<string, DataObject>
+            {
+                { "RelayCode", new DataObject(DataObject.VisibilityOptions.Member, code) }
+            }
+        };
+        await LobbyService.Instance.UpdateLobbyAsync(lobby.Id, options);
+        onLobbyUpdated = null;
+        SceneManager.LoadScene("SampleScene");
     }
 
     public async Task<bool> Join(string code)
     {
         try
         {
-            lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(code);
+            JoinLobbyByCodeOptions options = new()
+            {
+                Player = new Player(
+                    AuthenticationService.Instance.PlayerId,
+                    data: new Dictionary<string, PlayerDataObject>
+                    {
+                        { "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, AuthenticationService.Instance.PlayerName ?? "Player") }
+                    }
+                )
+            };
+            lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(code, options);
+            StartCoroutine(UpdateLobby());
             return lobby != null;
         }
-        catch 
+        catch (Exception e)
         {
+            if(e.Message == "player is already a member of the lobby")
+            {
+                var lobbyIds = await LobbyService.Instance.GetJoinedLobbiesAsync();
+                foreach(var id in lobbyIds)
+                {
+                    lobby = await LobbyService.Instance.GetLobbyAsync(id);
+                    if(lobby.LobbyCode != code)
+                    {
+                        await LobbyService.Instance.RemovePlayerAsync(id, AuthenticationService.Instance.PlayerId);
+                    }
+                }
+                lobbyIds = await LobbyService.Instance.GetJoinedLobbiesAsync();
+                lobby = lobbyIds.Count != 1 ? await LobbyService.Instance.GetLobbyAsync(lobbyIds[0]) : null;
+                StartCoroutine(UpdateLobby());
+                return lobby != null;
+            }
             return false;
         }
     }
@@ -61,6 +119,46 @@ public class LobbyController : MonoBehaviour
 
     public async void LeaveLobby()
     {
+        StopAllCoroutines();
+        onLobbyUpdated = null;
         await LobbyService.Instance.RemovePlayerAsync(lobby.Id, AuthenticationService.Instance.PlayerId);
+    }
+
+    public Action onLobbyUpdated;
+    private IEnumerator UpdateLobby()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(updateInterval);
+            if (lobby != null)
+            {
+                UpdateLobbyAsync();
+            }
+            if(lobby.HostId == AuthenticationService.Instance.PlayerId)
+            {
+                LobbyService.Instance.SendHeartbeatPingAsync(lobby.Id);
+            }
+        }
+    }
+
+    private async void UpdateLobbyAsync()
+    {
+        Lobby _lobby = await LobbyService.Instance.GetLobbyAsync(lobby.Id);
+        if (lobby.HostId != AuthenticationService.Instance.PlayerId)
+        {
+            string relayId = _lobby.Data["RelayCode"].Value;
+            if(!string.IsNullOrEmpty(relayId))
+            {
+                bool starting = await RelayController.Instance.StartClientWithRelay(relayId);
+                if(starting)
+                {
+                    SceneManager.LoadScene("SampleScene");
+                    StopAllCoroutines();
+                    return;
+                }
+            }
+        }
+        lobby = _lobby;
+        onLobbyUpdated?.Invoke();
     }
 }

@@ -1522,7 +1522,7 @@ PrefabInstance:
     - target: {fileID: 2804995202470709167, guid: 0c1a28a6779a94342b18ca595cbbc9e0,
         type: 3}
       propertyPath: m_Name
-      value: uploads_files_5192783_sword
+      value: metal
       objectReference: {fileID: 0}
     - target: {fileID: 3289467120559152405, guid: 0c1a28a6779a94342b18ca595cbbc9e0,
         type: 3}

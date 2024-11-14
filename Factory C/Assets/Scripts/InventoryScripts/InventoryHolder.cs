@@ -13,7 +13,10 @@ public class InventoryHolder : MonoBehaviour
     protected InventorySystem inventorySystem;
     public Vector3 offset = new Vector3(0,1, 0);
 
-    private GameObject current_show_item;
+    public List<GameObject> skins;
+    public int currentSkinIndex = 0;
+
+    private GameObject currentShowItem;
 
     public InventorySystem InventorySystem => inventorySystem;
 
@@ -21,26 +24,70 @@ public class InventoryHolder : MonoBehaviour
 
     private void Awake()
     {
+
         inventorySystem = new InventorySystem(inventorySize);
+        inventorySystem.OnInventoryUpdated += HandleInventoryUpdate;
+        
     }
 
-    private void Update()
+    //private void Start()
+    //{
+    //    StartCoroutine(ExampleCoroutine());
+    //}
+    //IEnumerator ExampleCoroutine()
+    //{
+
+    //   yield return new WaitForSeconds(10);
+    //   ChangeSkin(1);
+
+
+    //}
+    private void OnDestroy()
     {
-        if (current_show_item == null&&inventorySystem.GetInfo() != null)
+        inventorySystem.OnInventoryUpdated -= HandleInventoryUpdate;
+        
+    }
+
+
+    private void HandleInventoryUpdate(Resource itemInfo)
+    {
+        if (currentShowItem == null && itemInfo != null)
         {
-            GameObject item = PrefabSystem.FindItem(inventorySystem.GetInfo());
-            //item.transform.SetParent(gameObject.transform);
-            current_show_item = Instantiate(item, transform.position + offset, transform.rotation);
-            current_show_item.transform.SetParent(transform);
-            current_show_item.GetComponent<Rigidbody>().isKinematic = true;
-            current_show_item.GetComponent<SphereCollider>().isTrigger = false;
-            current_show_item.GetComponent<Rigidbody>().useGravity = false;
+            GameObject item = PrefabSystem.FindItem(itemInfo);
+            currentShowItem = Instantiate(item, transform.position + offset, transform.rotation);
+            currentShowItem.transform.SetParent(transform);
+            currentShowItem.GetComponent<Rigidbody>().isKinematic = true;
+            currentShowItem.GetComponent<SphereCollider>().radius = 0.0001f;
+            currentShowItem.GetComponent<SphereCollider>().isTrigger = false;
+            currentShowItem.GetComponent<Rigidbody>().useGravity = false;
         }
-        else if(current_show_item != null && inventorySystem.GetInfo() == null)
+        else if (currentShowItem != null && itemInfo == null)
         {
-            Destroy(current_show_item);
-            current_show_item = null;
+            Destroy(currentShowItem);
+            currentShowItem = null;
         }
     }
+    //public void ChangeSkin(int skinIndex)
+    //{
+    //    if (skinIndex >= 0 && skinIndex < skins.Count)
+    //    {
+    //        ApplySkin(skinIndex);
+    //    }
+    //}
+
+    //private void ApplySkin(int index)
+    //{
+    //    if (skins[index] != null)
+    //    {
+    //        skins[currentSkinIndex].SetActive(false);
+    //        skins[index].SetActive(true);
+    //        currentSkinIndex = index;
+    //    }
+        
+    //}
+
+
+
+
 
 }

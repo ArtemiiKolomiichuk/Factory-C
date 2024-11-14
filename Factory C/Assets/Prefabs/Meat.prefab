@@ -138,8 +138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8aa7524e8c65ed4cbc1e4bed9af9b3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PickUpRadius: 1
-  ItemData: {fileID: 11400000, guid: 14e15983c58a52443bdada691c0ad6e7, type: 2}
+  PickUpRadius: 0.5
+  ItemData: {fileID: 11400000, guid: 31f345057079f3c4ab06f06047444cbb, type: 2}
 --- !u!64 &2622220477050162218
 MeshCollider:
   m_ObjectHideFlags: 0

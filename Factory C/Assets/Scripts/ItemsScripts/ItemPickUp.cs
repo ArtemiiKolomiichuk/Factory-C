@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(SphereCollider))]
 public class ItemPickUp : MonoBehaviour
 {
-    public float PickUpRadius = 1f;
+    public float PickUpRadius = 0.6f;
     public Resource ItemData;
 
     private SphereCollider sphereCollider;

@@ -21,7 +21,7 @@ public class PrefabSystem : MonoBehaviour
         }
     }
 
-    public static GameObject FindItem(InventoryItemData itemData)
+    public static GameObject FindItem(Resource itemData)
     {
         if (Instance == null)
         {
@@ -31,7 +31,7 @@ public class PrefabSystem : MonoBehaviour
 
         foreach (var a in Instance.itemPrefabs)
         {
-            if (a.GetComponent<ItemPickUp>().ItemData.Name == itemData.Name)
+            if (a.GetComponent<ItemPickUp>().ItemData.rType == itemData.rType)
             {
                 return a;
             }

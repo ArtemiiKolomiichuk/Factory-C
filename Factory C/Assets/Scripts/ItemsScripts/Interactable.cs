@@ -13,8 +13,9 @@ namespace Assets.Scripts.ItemsScripts
         private BoxCollider boxCollider;
         private Collider other;
         public InventoryHolder inventoryHolder;
-        private InventoryItemData currentItem;
+        private Resource currentItem;
         private GameObject showObject;
+        private bool itemPlaced= false;
         public Vector3 offset = new Vector3(0, 1, 1);
 
 
@@ -27,7 +28,7 @@ namespace Assets.Scripts.ItemsScripts
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.F) && inventoryHolder != null)
+            if (Input.GetKeyDown(KeyCode.F) && inventoryHolder != null&& !itemPlaced)
             {
                 print("Pressed F");
                 var itemData = inventoryHolder.InventorySystem.GetInfo();
@@ -40,7 +41,9 @@ namespace Assets.Scripts.ItemsScripts
                         GameObject item = PrefabSystem.FindItem(currentItem);
                         showObject = Instantiate(item, transform.position + offset, transform.rotation);
                         showObject.GetComponent<Rigidbody>().isKinematic = true;
+                        showObject.GetComponent<SphereCollider>().isTrigger = false;
                         showObject.GetComponent<Rigidbody>().useGravity = false;
+                        itemPlaced=true;
                     }
                 }
 
@@ -56,6 +59,7 @@ namespace Assets.Scripts.ItemsScripts
                     currentItem = null;
                     Destroy(showObject);
                     showObject = null;
+                    itemPlaced = false;
                 }
             }
         }

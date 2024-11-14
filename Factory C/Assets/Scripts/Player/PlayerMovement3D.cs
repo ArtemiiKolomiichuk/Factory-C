@@ -8,6 +8,7 @@ public class PlayerMovement3D : MonoBehaviour
 {
     private InputPlayer _input;
     private Animator _animator;
+    //private CharacterController characterController;
 
     [SerializeField]
     private bool RotateTowardMouse;
@@ -24,6 +25,7 @@ public class PlayerMovement3D : MonoBehaviour
     {
         _input = GetComponent<InputPlayer>();
         _animator = GetComponent<Animator>();
+       // characterController = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
@@ -31,7 +33,8 @@ public class PlayerMovement3D : MonoBehaviour
     {
 
         var targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
-        print(_input.InputVector.y);
+        //characterController.Move(targetVector);
+        // print(_input.InputVector.y);
         var movementVector = MoveTowardTarget(targetVector);
         bool isWalking = (_input.InputVector.x != 0 || _input.InputVector.y != 0);
         _animator.SetBool("walk", isWalking);
@@ -65,6 +68,9 @@ public class PlayerMovement3D : MonoBehaviour
 
         targetVector = Quaternion.Euler(0, Camera.gameObject.transform.rotation.eulerAngles.y, 0) * targetVector;
         var targetPosition = transform.position + targetVector * speed;
+        print(targetPosition);
+        //characterController.velocity = speed;
+        //characterController.Move(targetPosition);
         transform.position = targetPosition;
         return targetVector;
     }

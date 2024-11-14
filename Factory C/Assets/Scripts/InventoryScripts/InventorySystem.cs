@@ -17,6 +17,7 @@ public class InventorySystem
     public int InventorySize => InventorySlots.Count;
 
     public UnityAction<InventorySlot> OnInventorySlotChanged;
+    public UnityAction<Resource> OnInventoryUpdated;
 
     public InventorySystem(int size)
     {
@@ -27,18 +28,19 @@ public class InventorySystem
         }
     }
 
-    public InventoryItemData GetInfo()
+    public Resource GetInfo()
     {
         return InventorySlots[0].ItemData;
     }
 
 
-    public bool AddToInventory(InventoryItemData itemToAdd)
+    public bool AddToInventory(Resource itemToAdd)
     {
         if (HasFreeSlot(out InventorySlot freeSlot))
         {
             freeSlot.UpdateInventorySlot(itemToAdd, 1);
             OnInventorySlotChanged?.Invoke(freeSlot);
+            OnInventoryUpdated?.Invoke(GetInfo());
             return true;
         }
         else return false;
@@ -53,6 +55,7 @@ public class InventorySystem
         {
             occupiedSlot.ClearSlot();
             OnInventorySlotChanged?.Invoke(occupiedSlot);
+            OnInventoryUpdated?.Invoke(GetInfo());
             return true;
         }
         else

@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(InputPlayer))]
-public class PlayerMovement3D : MonoBehaviour
+public class PlayerMovement3D : NetworkBehaviour
 {
     private InputPlayer _input;
     private Animator _animator;
@@ -25,12 +27,38 @@ public class PlayerMovement3D : MonoBehaviour
     {
         _input = GetComponent<InputPlayer>();
         _animator = GetComponent<Animator>();
-       // characterController = GetComponent<CharacterController>();
+        DontDestroyOnLoad(this);
+        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        Debug.Log($"OnNetworkSpawn {SceneManager.GetActiveScene().name}");
+        if (IsOwner && !IsHost)
+        {
+            SceneManager_sceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+        }
+    }
+
+    private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode _)
+    {
+        if (!IsOwner) 
+        {
+            Destroy(_input);
+        }
+        if(scene.name != LobbyController.TargetScene) return;
+        transform.position = new Vector3(-3.16695094f, 4.55999994f, -35.5f);
+        Camera = Camera.main;
+        if (Camera.GetComponent<SmoothCameraFollow>() is SmoothCameraFollow smoothCameraFollow)
+        {
+            smoothCameraFollow.target = transform;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!IsOwner) return;
 
         var targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
         //characterController.Move(targetVector);
@@ -68,7 +96,7 @@ public class PlayerMovement3D : MonoBehaviour
 
         targetVector = Quaternion.Euler(0, Camera.gameObject.transform.rotation.eulerAngles.y, 0) * targetVector;
         var targetPosition = transform.position + targetVector * speed;
-        print(targetPosition);
+        //print(targetPosition);
         //characterController.velocity = speed;
         //characterController.Move(targetPosition);
         transform.position = targetPosition;

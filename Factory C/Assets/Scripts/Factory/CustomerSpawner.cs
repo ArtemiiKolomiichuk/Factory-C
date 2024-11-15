@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class CustomerSpawner : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class CustomerSpawner : MonoBehaviour
     public void SpawnCustomer() {
         GameObject instantiatedCustomer = Instantiate(customerGameObject, gameObject.transform);
         instantiatedCustomer.transform.SetLocalPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
+        instantiatedCustomer.GetComponent<NetworkObject>().Spawn();
         customers.Enqueue(instantiatedCustomer);
     }
 

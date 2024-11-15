@@ -16,6 +16,7 @@ public class LobbyController : MonoBehaviour
 
     private const float updateInterval = 3.0f;
 
+    public const string TargetScene = "FactoryTest Network";
     private async void Awake()
     {
         if (Instance == null)
@@ -69,7 +70,7 @@ public class LobbyController : MonoBehaviour
         };
         await LobbyService.Instance.UpdateLobbyAsync(lobby.Id, options);
         onLobbyUpdated = null;
-        SceneManager.LoadScene("movement1");
+        SceneManager.LoadScene(TargetScene);
     }
 
     public async Task<bool> Join(string code)
@@ -180,7 +181,7 @@ public class LobbyController : MonoBehaviour
                 bool starting = await RelayController.Instance.StartClientWithRelay(relayId);
                 if(starting)
                 {
-                    SceneManager.LoadScene("movement1");
+                    SceneManager.LoadScene(TargetScene);
                     StopAllCoroutines();
                     return;
                 }

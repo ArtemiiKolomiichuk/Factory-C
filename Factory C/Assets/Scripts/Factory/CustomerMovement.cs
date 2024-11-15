@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CustomerMovement : MonoBehaviour
+public class CustomerMovement : NetworkBehaviour
 {
     [SerializeField]
     private float walkRange;
@@ -27,7 +28,8 @@ public class CustomerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!IsHost)
+            return;
         if(isWaitingForOrderCompletion) {
             WaitForOrderCompletion();
         }

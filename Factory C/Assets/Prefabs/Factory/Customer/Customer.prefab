@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5062816791044679523}
   - component: {fileID: 3049048485897345738}
+  - component: {fileID: 2309895406514403269}
   - component: {fileID: 6026938905837120232}
+  - component: {fileID: 389041918512629643}
   m_Layer: 0
   m_Name: Customer
   m_TagString: Untagged
@@ -56,6 +58,27 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &2309895406514403269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3036884084727054891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1923373901
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &6026938905837120232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,6 +93,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkRange: 50
   waitTime: 10
+--- !u!114 &389041918512629643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3036884084727054891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae77f4c548f90be4bb16dbb62a0bcf60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnableProximity: 0
+  ProximityRange: 50
+  CorrectionDelay: 3
+  DriftCorrectionPercentage: 0.1
+  WarpOnDestinationChange: 0
 --- !u!1001 &5898829078777361467
 PrefabInstance:
   m_ObjectHideFlags: 0

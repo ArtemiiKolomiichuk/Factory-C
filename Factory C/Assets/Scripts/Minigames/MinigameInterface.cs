@@ -10,9 +10,12 @@ public abstract class MinigameInterface : MonoBehaviour
 
     protected float progressCount = 0;
     protected float targetProgressCout;
+
     protected Recipe recipeData;
 
-    public Workstation connectedWorkstation = null;
+    private Workstation connectedWorkstation = null;
+    private ProgressBarScaler connectedWorkstationProgressBar = null;
+    private MinigameAnimationController animController; // will be implemented when animation
 
     private static Dictionary<WorkstationType, MinigameInterface> MINI_GAMES = new Dictionary<WorkstationType, MinigameInterface>();
 
@@ -29,13 +32,37 @@ public abstract class MinigameInterface : MonoBehaviour
 
     public void Activate(bool state) {
         enabled = state;
+        if (minigameOverlay != null) { 
+            minigameOverlay.SetActive(state);
+        }
     }
 
-    
+    protected void ChangeProgressCount(float delta) {
+        progressCount += delta;
+        if (connectedWorkstationProgressBar != null) {
+            connectedWorkstationProgressBar.ChangeProgressBar(progressCount, targetProgressCout);
+        }
+    }
+
+    private void SetConnectedWorkstation(Workstation newWorkstation) 
+    {
+        connectedWorkstation = newWorkstation;
+        connectedWorkstationProgressBar = connectedWorkstation.progressBar;
+        animController = connectedWorkstation.animController;
+        if (connectedWorkstationProgressBar != null && connectedWorkstationProgressBar.getLastProgress() != 0) {
+            connectedWorkstationProgressBar.getLastProgress();
+        }
+    }
+
+    private void SetRecipe(Recipe newRecipe)
+    {
+        recipeData = newRecipe;
+        targetProgressCout = recipeData.difficultyMod;
+    }
 
     protected virtual void Start()
     {
-        minigameOverlay.SetActive(false);
+        Activate(false);
 
         if (closeButton != null)
         {
@@ -52,17 +79,19 @@ public abstract class MinigameInterface : MonoBehaviour
 
     public void OpenMinigame(Workstation workstation, Recipe recipe)
     {
-        connectedWorkstation = workstation;
-        recipeData = recipe;
-        targetProgressCout = recipeData.difficultyMod;
+        SetConnectedWorkstation(workstation);
+        SetRecipe(recipe);
+        
+        ChangeProgressCount(0);
         Activate(true);
-        minigameOverlay.SetActive(true);
+        
         OnMinigameOpened();
     }
 
     public virtual void Success()
     {
         Debug.Log("Success! "+ corespondingWorkstationType.ToString());
+        ChangeProgressCount(-progressCount);
         CloseMinigame();
         if (connectedWorkstation != null) { 
             connectedWorkstation.SucceedProcessing(recipeData);
@@ -72,7 +101,6 @@ public abstract class MinigameInterface : MonoBehaviour
     public void CloseMinigame()
     {
         Activate(false);
-        minigameOverlay.SetActive(false);
         OnMinigameClosed();
     }
 

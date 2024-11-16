@@ -31,7 +31,7 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
 
     protected override void Awake()
     {
-        corespondingWorkstationType = WorkstationType.Furnace;
+        corespondingWorkstationType = WorkstationType.Forge;
         base.Awake();
     }
 

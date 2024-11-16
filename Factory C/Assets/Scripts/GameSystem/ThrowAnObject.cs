@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ThrowAnObject : MonoBehaviour
 {
-    public GameObject[] objectPrefab;
+    
     public GameObject player;
     public float throwForce = 3f;
     public Vector3 throwOffset = new Vector3(0, 1, 1);
@@ -19,8 +19,7 @@ public class ThrowAnObject : MonoBehaviour
                 var item = inventoryHolder.InventorySystem.InventorySlots[0].ItemData;
                 if (item != null)
                 {
-                    foreach (var a in objectPrefab)
-                    {
+                    var a = PrefabSystem.FindItem(item);
                         if (a.GetComponent<ItemPickUp>().ItemData.rType == item.rType)
                         {
                             GameObject thrownObject = Instantiate(a, player.transform.position + player.transform.TransformDirection(throwOffset), player.transform.rotation);
@@ -30,9 +29,9 @@ public class ThrowAnObject : MonoBehaviour
                             {
                                 rb.AddForce(player.transform.forward * throwForce, ForceMode.Impulse);
                             }
-                           // inventoryHolder.InventorySystem.InventorySlots[0].ClearSlot();
+                            inventoryHolder.InventorySystem.RemoveFromInventory();
                         }
-                    }
+                    
                 }
             }
         }

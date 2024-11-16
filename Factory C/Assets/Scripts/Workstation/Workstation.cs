@@ -1,40 +1,52 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.WSA;
 
 public enum WorkstationType
 {
     None,
-    Forge,
+    Anvil,
     Slime,
-    Furnace
+    Forge
 }
 
-public class Workstation : MonoBehaviour
+public class Workstation : MonoBehaviour, UniverslaResourceHolderInterface, UsableInterface
 {
     [Header("Workstation Configuration")]
     public WorkstationType workstationType;
-    public List<Recipe> recipes;
+    private List<Recipe> recipes;
 
     public List<ResourceType> inputResources;
     public List<ResourceType> storage; //for sorted input array
 
-    public MinigameInterface corespondingMinigame;
+    private MinigameInterface corespondingMinigame;
 
-    public List<int> subscribedUsersIDs = new List<int>();
-    public int numberOfCurrentUsers = 0;
+    private List<int> subscribedUsersIDs = new List<int>();
+    private int numberOfCurrentUsers = 0;
     public int numberOfMaxUsers = 0;
-    //public bool canUse = true; not needed
+
 
     public Transform resourceSpawnPoint;
+    public ProgressBarScaler progressBar;
+    public MinigameAnimationController animController;
 
     private bool resourcesListChanged = false;
     private bool lockedResources = false;
+
+    private void setResourceListChanged(bool state) {
+        resourcesListChanged = state;
+        if (progressBar != null && state) {
+            progressBar.ChangeProgressBar(0, 1);
+        }
+    }
 
     public void Start()
     {
         corespondingMinigame = MinigameInterface.GetMinigameByType(workstationType);
         recipes = ResourceController.Instance.recipeDictionary[workstationType];
+        //Will remove later
+        DEBUG_TOOL();
     }
 
     public bool SubscribeUser()
@@ -83,65 +95,6 @@ public class Workstation : MonoBehaviour
         return numberOfCurrentUsers == numberOfMaxUsers;
     }
 
-    public void ClearResources()
-    {
-        inputResources.Clear();
-        storage.Clear();
-    }
-
-    public void AddResource(ResourceType resource) {
-        if (lockedResources) {
-            return;
-        }
-
-        inputResources.Add(resource);
-        AUtils.InsertSortedEnum(storage, resource);
-        resourcesListChanged = true;
-    }
-
-    //Can be used for physical objects
-    public void AddResourceObject(Resource resource)
-    {
-        AddResource(resource.rType);
-        //TODO Call from resource it physicall deletion
-    }
-
-    public ResourceType PullResource()
-    {
-        if (lockedResources)
-        {
-            return ResourceType.None;
-        }
-
-        if (inputResources.Count > 0)
-        {
-            ResourceType pulledResource = inputResources[0];
-            storage.Remove(pulledResource);
-            inputResources.RemoveAt(0);
-            resourcesListChanged = true;
-
-            if (CheckNeededResources() == null) {
-                UnsubscribeAllUser();
-            }
-
-            return pulledResource;
-        }
-
-        return ResourceType.None;
-    }
-
-    public ResourceType PullResourceObject()
-    {
-        ResourceType type = PullResource();
-        if (resourceSpawnPoint != null && type != ResourceType.None) {
-            if (!SpawnResource(type)) { 
-                return ResourceType.None;
-            }
-        }
-
-        return type;
-    }
-
     public Recipe CheckNeededResources() {
         foreach (Recipe recipe in recipes) {
             if (recipe.ThereOnlyNeededResources(storage)) {
@@ -158,7 +111,7 @@ public class Workstation : MonoBehaviour
         if (!subscribedUsersIDs.Contains(AUtils._playerID))
         {
             toProcess = CheckNeededResources();
-            resourcesListChanged = false;
+            setResourceListChanged(false);
 
             if (toProcess == null)
             {
@@ -184,7 +137,7 @@ public class Workstation : MonoBehaviour
             //TODO send call to another user if needed
             if (resourcesListChanged) {
                 toProcess = CheckNeededResources();
-                resourcesListChanged = false;
+                setResourceListChanged(false);
             }
             if (toProcess == null) {
                 return false;
@@ -211,7 +164,7 @@ public class Workstation : MonoBehaviour
             lockedResources = false;
             foreach (ResourceType resType in recipe.resultResources)
             {
-                AddResource(resType);
+                PutResourceType(resType);
             }
         }
     }
@@ -224,4 +177,133 @@ public class Workstation : MonoBehaviour
 
 
 
+    public void DEBUG_TOOL()
+    {
+        PutResourceType(ResourceType.Metal);
+        PutResourceType(ResourceType.Stone);
+        Debug.Log("DBG | INSP | " + storage.ToString());
+        Use();
+    }
+
+
+    public void ClearResources()
+    {
+        inputResources.Clear();
+        storage.Clear();
+    }
+
+    //Remove later when iterface is accepted
+    //public void AddResource(ResourceType resource)
+    //{
+    //    if (lockedResources)
+    //    {
+    //        return;
+    //    }
+
+    //    inputResources.Add(resource);
+    //    AUtils.InsertSortedEnum(storage, resource);
+    //    setResourceListChanged(true);
+    //}
+
+    //Can be used for physical objects
+    //public void AddResourceObject(Resource resource)
+    //{
+    //    AddResource(resource.rType);
+    //    //TODO Call from resource it physicall deletion
+    //}
+
+    //Remove later when iterface is accepted
+    //public ResourceType PullResource()
+    //{
+    //    if (lockedResources)
+    //    {
+    //        return ResourceType.None;
+    //    }
+
+    //    if (inputResources.Count > 0)
+    //    {
+    //        ResourceType pulledResource = inputResources[0];
+    //        storage.Remove(pulledResource);
+    //        inputResources.RemoveAt(0);
+    //        setResourceListChanged(true);
+
+    //        if (CheckNeededResources() == null)
+    //        {
+    //            UnsubscribeAllUser();
+    //        }
+
+    //        return pulledResource;
+    //    }
+
+    //    return ResourceType.None;
+    //}
+
+    //public ResourceType PullResourceObject()
+    //{
+    //    ResourceType type = PullResource();
+    //    if (resourceSpawnPoint != null && type != ResourceType.None)
+    //    {
+    //        if (!SpawnResource(type))
+    //        {
+    //            return ResourceType.None;
+    //        }
+    //    }
+
+    //    return type;
+    //}
+
+
+
+    public void PutResourceType(ResourceType resource)
+    {
+        if (lockedResources)
+        {
+            return;
+        }
+
+        inputResources.Add(resource);
+        AUtils.InsertSortedEnum(storage, resource);
+        setResourceListChanged(true);
+    }
+
+    public ResourceType PullResourceType()
+    {
+        if (lockedResources)
+        {
+            return ResourceType.None;
+        }
+
+        if (HaveResource())
+        {
+            ResourceType pulledResource = inputResources[0];
+            storage.Remove(pulledResource);
+            inputResources.RemoveAt(0);
+            setResourceListChanged(true);
+
+            if (CheckNeededResources() == null)
+            {
+                UnsubscribeAllUser();
+            }
+
+            return pulledResource;
+        }
+
+        return ResourceType.None;
+    }
+
+
+    public virtual bool HaveResource()
+    {
+        return storage.Count > 0;
+    }
+
+    public virtual int GetCountOfResources()
+    {
+        return storage.Count;
+    }
+
+    public bool Use()
+    {
+        return UseWorkstation();
+    }
 }

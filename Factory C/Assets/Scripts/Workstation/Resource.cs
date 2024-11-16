@@ -3,11 +3,33 @@ using UnityEngine;
 public enum ResourceType
 {
     None,
-    Wood,
+
+    Wood, //Legacy VVV
     Stone,
-    Metal,
     Food,
-    Water
+    Water, //Legacy AAA
+
+    SpiderCorpse,
+    VenomousFangs,
+    PoisonousArrows,
+    TreantCorpse,
+    Branch,
+    Sword,
+    Metal,
+    AdventurerCorpseSword,
+    BrokenSword,
+    AdventurerCorpseHelmet,
+    DamagedHelmet,
+    AdventurerCorpseBreastplate,
+    DamagedBreastplate,
+    AdventurerCorpseBottle,
+    EmptyBottle,
+    BonesAndSkull,
+    BoneHelmet, //Horned helmet or Skull helmet
+    TrollHeart,
+    HealingPotion,
+    WolfPelt,
+    WolfArmour
 }
 
 [CreateAssetMenu(fileName = "New Resource", menuName = "Resource Data", order = 51)]

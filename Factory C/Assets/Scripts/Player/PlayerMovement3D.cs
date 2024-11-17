@@ -30,13 +30,13 @@ public class PlayerMovement3D : NetworkBehaviour
     {
         _input = GetComponent<InputPlayer>();
         _animator = GetComponent<Animator>();
+        if (!NetworkCompanion.networkEnabled) return;
         DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
     }
 
     public override void OnNetworkSpawn()
     {
-        Debug.Log($"OnNetworkSpawn {SceneManager.GetActiveScene().name}");
         if (IsOwner && !IsHost)
         {
             SceneManager_sceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
@@ -61,7 +61,7 @@ public class PlayerMovement3D : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!IsOwner) return;
+        if (NetworkCompanion.networkEnabled && !IsOwner || Camera == null) return;
         if (Input.GetKeyDown(KeyCode.Q))
         {
             print("qqqqq");

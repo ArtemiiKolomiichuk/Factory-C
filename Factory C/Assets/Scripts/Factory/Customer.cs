@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Customer : NetworkBehaviour
@@ -22,7 +18,8 @@ public class Customer : NetworkBehaviour
     void Start()
     {
         outline = GetComponent<Outline>();
-        outline.enabled = false;
+        if(outline)
+            outline.enabled = false;
         customerMovement = GetComponent<CustomerMovement>();
     }
 

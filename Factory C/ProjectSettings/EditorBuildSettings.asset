@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: c957931b5da0b4b48ac9492c77632afa
   - enabled: 1
-    path: Assets/Scenes/movement2.unity
+    path: Assets/Scenes/movement1.unity
     guid: 77ae2b67ef4a03d4ca8e86e8654073e2
   - enabled: 1
     path: Assets/Scenes/FactoryTest1.unity

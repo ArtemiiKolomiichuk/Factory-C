@@ -3,15 +3,16 @@ using UnityEngine.UI;
 
 public class SlimeKneadingMinigame : MinigameInterface
 {
-    [Header("Slug Kneading Minigame Settings")]
-    public GameObject slime;
-    public RectTransform progressBar;
+    [Header("Slime Kneading Minigame Settings")]
 
     private static readonly float HOLD_DURATION = 2f;
     private float currentHoldTime = 0f;
 
     private bool isHolding = false;
     private bool canProgress = true;
+
+    private const float PROGRESS_DELTA = 1;
+    private const KeyCode BUTTON_TO_PRESS = KeyCode.J;
 
     protected override void Awake()
     {
@@ -37,7 +38,7 @@ public class SlimeKneadingMinigame : MinigameInterface
     protected override void Update()
     {
         base.Update();
-        CheckHolding();
+        
     }
 
     private void CheckHolding() {
@@ -49,6 +50,7 @@ public class SlimeKneadingMinigame : MinigameInterface
 
     public void OnButtonRelease()
     {
+        Debug.Log("Was holding button for:"+currentHoldTime);
         if (!isHolding)
         {
             return;
@@ -60,20 +62,12 @@ public class SlimeKneadingMinigame : MinigameInterface
 
         isHolding = false;
         currentHoldTime = 0f;
-
-        SetProgressBar(0);
-    }
-
-    private void SetProgressBar(float progress) { 
-        //TODO reset progress bar
     }
 
     private void AddProgress()
     {
-        progressCount++;
-        Debug.Log($"Progress step {progressCount} added!");
-
-        SetProgressBar(progressCount);
+        ChangeProgressCount(PROGRESS_DELTA);
+        Debug.Log($"Progress step: {progressCount} ");
 
         if (progressCount >= targetProgressCout)
         {
@@ -83,24 +77,24 @@ public class SlimeKneadingMinigame : MinigameInterface
 
     public override void Success()
     {
-
         base.Success();
     }
 
     protected override void OnMinigameOpened()
     {
         base.OnMinigameOpened();
-        progressCount = 0;
-        SetProgressBar(0);
+        //progressCount = 0; //TODO think about it
+        //SetProgressBar(0);
     }
 
     protected override void HandleInput()
     {
-        if (Input.GetMouseButtonDown(0))
+        CheckHolding();
+        if (Input.GetKeyDown(BUTTON_TO_PRESS)) //maybe change later
         {
             StartKneading();
         }
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetKeyUp(BUTTON_TO_PRESS))
         {
             OnButtonRelease();
         }

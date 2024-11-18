@@ -10,6 +10,9 @@ public class PlayerMovement3D : NetworkBehaviour
 {
     private InputPlayer _input;
     private Animator _animator;
+    public bool isDisguised;
+    private GameObject currentShowItem;
+    public Vector3 offset;
     //private CharacterController characterController;
 
     [SerializeField]
@@ -27,13 +30,13 @@ public class PlayerMovement3D : NetworkBehaviour
     {
         _input = GetComponent<InputPlayer>();
         _animator = GetComponent<Animator>();
-        //DontDestroyOnLoad(this);
-        //SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+        if (!NetworkCompanion.networkEnabled) return;
+        DontDestroyOnLoad(this);
+        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
     }
 
     public override void OnNetworkSpawn()
     {
-        Debug.Log($"OnNetworkSpawn {SceneManager.GetActiveScene().name}");
         if (IsOwner && !IsHost)
         {
             SceneManager_sceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
@@ -58,7 +61,12 @@ public class PlayerMovement3D : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (!IsOwner) return;
+        if (NetworkCompanion.networkEnabled && !IsOwner || Camera == null) return;
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            print("qqqqq");
+            HandleDisguiseUpdate();
+        }
 
         var targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
         //characterController.Move(targetVector);
@@ -76,6 +84,25 @@ public class PlayerMovement3D : NetworkBehaviour
             RotateFromMouseVector();
         }
 
+    }
+
+    private void HandleDisguiseUpdate()
+    {
+        if (!isDisguised)
+        {
+            isDisguised = true;
+            GameObject item = PrefabSystem.GetMask();
+            Quaternion rotation = Quaternion.Euler(-90f, 180f, 0f);
+            currentShowItem = Instantiate(item, transform.position + offset, transform.rotation*rotation);
+            currentShowItem.transform.SetParent(transform);
+
+        }
+        else if (currentShowItem != null)
+        {
+            isDisguised = false;
+            Destroy(currentShowItem);
+            currentShowItem = null;
+        }
     }
 
     private void RotateFromMouseVector()

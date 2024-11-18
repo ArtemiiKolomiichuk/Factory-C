@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,29 +6,47 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
 {
     [Header("Temperature Control Minigame Settings")]
     public GameObject temperatureBar;
-    public GameObject progressBar;
 
-    public Button player1HotButton;
-    public Button player1ColdButton;
-    public Button player2HotButton;
-    public Button player2ColdButton;
+    public Button playerProceedButton;
+    public Button playerHeatButton;
+    public Button playerCoolButton;
+
+    public Image playerProceedIndicator;
+    private Color playerProceedIndicatorBaseColor;
+
+    public Image playerHeatIndicator;
+    private Color playerHeatIndicatorBaseColor;
+
+    public Image playerCoolIndicator;
+    private Color playerCoolIndicatorBaseColor;
+
+    public float allowedZoneSize = 100;
+    public Image allowedZoneImage;
 
     private static readonly float TEMPERATURE_DECAY_RATE = 0.1f;
-    private float currentTemperature = 50f;
-    private float minTemperature = 20f;
-    private float maxTemperature = 100f;
-    private float temperatureChangeSpeed = 5f;
 
-    private bool isSyncing = false;
+    public float fullBaseSize = 1000;
+    public RectTransform fullTemperatureBar = null;
+    private float fullTemperatureBarSize;
+    private float pointScaler = 1;
 
-    private bool player1PressedHot = false;
-    private bool player1PressedCold = false;
-    private bool player2PressedHot = false;
-    private bool player2PressedCold = false;
+    private float currentTemperature = 0f;
+
+    private float minTemperature = -500f;
+    private float maxTemperature = 500f;
+    
+    public float temperatureChangeSpeed = 5f;
+
+    private bool isSynchronize = false;
+
+    private bool player1PressedHeat = false;
+    private bool player1PressedCool = false;
+    private bool player2PressedHeat = false;
+    private bool player2PressedCool = false;
 
 
-    private float temperatureTargetLowerLimit = 30f;
-    private float temperatureTargetUpperLimit = 90f;
+    private float temperatureTargetLowerLimit; //SET LATER
+    private float temperatureTargetUpperLimit; //SET LATER
 
     protected override void Awake()
     {
@@ -37,13 +56,24 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
 
     protected override void Start()
     {
+        playerProceedIndicatorBaseColor = playerProceedIndicator.color;
+        playerHeatIndicatorBaseColor = playerHeatIndicator.color;
+        playerCoolIndicatorBaseColor = playerCoolIndicator.color;
+
+        fullTemperatureBarSize = fullTemperatureBar.rect.width;
+        pointScaler = fullBaseSize / fullTemperatureBarSize;
+
+        minTemperature = -fullBaseSize / 2;
+        maxTemperature = fullBaseSize / 2;
+
+        temperatureTargetLowerLimit = minTemperature + (allowedZoneSize / 2);
+        temperatureTargetUpperLimit = maxTemperature - (allowedZoneSize / 2);
+
+        playerHeatButton.onClick.AddListener(() => OnPlayer1HotButtonPress());
+        playerCoolButton.onClick.AddListener(() => OnPlayer1ColdButtonPress());
+
+
         base.Start();
-
-
-        player1HotButton.onClick.AddListener(() => OnPlayer1HotButtonPress());
-        player1ColdButton.onClick.AddListener(() => OnPlayer1ColdButtonPress());
-        player2HotButton.onClick.AddListener(() => OnPlayer2HotButtonPress());
-        player2ColdButton.onClick.AddListener(() => OnPlayer2ColdButtonPress());
     }
 
     protected override void Update()
@@ -55,17 +85,18 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
 
     private void UpdateTemperature()
     {
-        if (isSyncing)
+        if (isSynchronize)
         {
-            if (player1PressedHot && player2PressedHot)
+            if (player1PressedHeat && player2PressedHeat)
             {
                 currentTemperature += temperatureChangeSpeed * Time.deltaTime;
             }
-            else if (player1PressedCold && player2PressedCold)
+            else if (player1PressedCool && player2PressedCool)
             {
                 currentTemperature -= temperatureChangeSpeed * Time.deltaTime;
             }
 
+            ////////
             currentTemperature = Mathf.Clamp(currentTemperature, minTemperature, maxTemperature);
 
 
@@ -85,13 +116,13 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
     {
         if (currentTemperature >= temperatureTargetLowerLimit && currentTemperature <= temperatureTargetUpperLimit)
         {
-            if (player1PressedHot && player2PressedHot || player1PressedCold && player2PressedCold)
+            if (player1PressedHeat && player2PressedHeat || player1PressedCool && player2PressedCool)
             {
                 progressCount += 1;
                 ChangeProgressBar(progressCount);
                 Debug.Log($"Progress Step {progressCount}");
 
-                if (progressCount >= targetProgressCout) 
+                if (progressCount >= targetProgressCount) 
                 {
                     Success();
                 }
@@ -121,41 +152,41 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
 
     private void OnPlayer1HotButtonPress()
     {
-        player1PressedHot = true;
+        player1PressedHeat = true;
         CheckSyncStatus();
     }
 
     private void OnPlayer1ColdButtonPress()
     {
-        player1PressedCold = true;
+        player1PressedCool = true;
         CheckSyncStatus();
     }
 
     private void OnPlayer2HotButtonPress()
     {
-        player2PressedHot = true;
+        player2PressedHeat = true;
         CheckSyncStatus();
     }
 
     private void OnPlayer2ColdButtonPress()
     {
-        player2PressedCold = true;
+        player2PressedCool = true;
         CheckSyncStatus();
     }
 
     private void CheckSyncStatus()
     {
-        if ((player1PressedHot && player2PressedHot) || (player1PressedCold && player2PressedCold))
+        if ((player1PressedHeat && player2PressedHeat) || (player1PressedCool && player2PressedCool))
         {
-            if (!isSyncing)
+            if (!isSynchronize)
             {
-                isSyncing = true;
+                isSynchronize = true;
                 Debug.Log("Players are in sync!");
             }
         }
         else
         {
-            isSyncing = false;
+            isSynchronize = false;
             Debug.Log("Players are out of sync.");
         }
     }
@@ -177,10 +208,10 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
 
     private void ResetButtonStates()
     {
-        player1PressedHot = false;
-        player1PressedCold = false;
-        player2PressedHot = false;
-        player2PressedCold = false;
-        isSyncing = false;
+        player1PressedHeat = false;
+        player1PressedCool = false;
+        player2PressedHeat = false;
+        player2PressedCool = false;
+        isSynchronize = false;
     }
 }

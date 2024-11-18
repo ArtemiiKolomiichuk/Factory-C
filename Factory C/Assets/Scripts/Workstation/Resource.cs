@@ -8,7 +8,7 @@ public enum ResourceType
     Stone,
     Food,
     Water, //Legacy AAA
-
+    
     SpiderCorpse,
     VenomousFangs,
     PoisonousArrows,
@@ -29,7 +29,9 @@ public enum ResourceType
     TrollHeart,
     HealingPotion,
     WolfPelt,
-    WolfArmour
+    WolfArmour,
+
+    AdventurerCorpse,
 }
 
 [CreateAssetMenu(fileName = "New Resource", menuName = "Resource Data", order = 51)]

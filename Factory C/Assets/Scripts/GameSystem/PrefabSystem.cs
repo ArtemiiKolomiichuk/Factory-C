@@ -31,8 +31,11 @@ public class PrefabSystem : MonoBehaviour
 
         foreach (var a in Instance.itemPrefabs)
         {
+            
             if (a.GetComponent<ItemPickUp>()!= null &&a.GetComponent<ItemPickUp>().ItemData.rType == itemData.rType)
             {
+                print(a.GetComponent<ItemPickUp>().ItemData.rType);
+                print(itemData.rType);
                 return a;
             }
             

@@ -12,6 +12,10 @@ public class SlimeKneadingMinigame : MinigameInterface
     private bool canProgress = true;
 
     private const float PROGRESS_DELTA = 1;
+    
+    public Button buttonToHold = null;
+    public TimeCounterBarController timerBar = null;
+
     private const KeyCode BUTTON_TO_PRESS = KeyCode.J;
 
     protected override void Awake()
@@ -25,12 +29,15 @@ public class SlimeKneadingMinigame : MinigameInterface
         base.Start();
     }
 
-    private void StartKneading()
+    public void StartKneading()
     {
         if (!isHolding && canProgress)
         {
             isHolding = true;
             currentHoldTime = 0f;
+            if (timerBar != null) {
+                timerBar.StartTimer();
+            }
             Debug.Log("Started kneading the slug! Hold for 2 seconds");
         }
     }
@@ -59,7 +66,9 @@ public class SlimeKneadingMinigame : MinigameInterface
         {
             AddProgress();
         }
-
+        if (timerBar != null) {
+            timerBar.ResetBar();
+        }
         isHolding = false;
         currentHoldTime = 0f;
     }
@@ -69,7 +78,7 @@ public class SlimeKneadingMinigame : MinigameInterface
         ChangeProgressCount(PROGRESS_DELTA);
         Debug.Log($"Progress step: {progressCount} ");
 
-        if (progressCount >= targetProgressCout)
+        if (progressCount >= targetProgressCount)
         {
             Success();
         }

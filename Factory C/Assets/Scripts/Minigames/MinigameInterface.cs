@@ -6,16 +6,18 @@ public abstract class MinigameInterface : MonoBehaviour
 {
     public GameObject minigameOverlay;
     public Button closeButton;
-    public WorkstationType corespondingWorkstationType;
+    protected WorkstationType corespondingWorkstationType;
 
     protected float progressCount = 0;
-    protected float targetProgressCout;
+    protected float targetProgressCount;
 
     protected Recipe recipeData;
 
-    private Workstation connectedWorkstation = null;
-    private ProgressBarScaler connectedWorkstationProgressBar = null;
-    private MinigameAnimationController animController; // will be implemented when animation
+    protected Workstation connectedWorkstation = null;
+    protected ProgressBarScaler connectedWorkstationProgressBar = null;
+    protected MinigameAnimationController animController; // will be implemented when animation
+
+    public ProgressBarScaler uiProgressBar = null;
 
     private static Dictionary<WorkstationType, MinigameInterface> MINI_GAMES = new Dictionary<WorkstationType, MinigameInterface>();
 
@@ -31,6 +33,14 @@ public abstract class MinigameInterface : MonoBehaviour
     }
 
     public void Activate(bool state) {
+        if (!state)
+        {
+            Debug.Log("Deactivated Minigame Interface");
+        }
+        else { 
+            Debug.Log("Activated Minigame Interface");
+        }
+
         enabled = state;
         if (minigameOverlay != null) { 
             minigameOverlay.SetActive(state);
@@ -40,7 +50,22 @@ public abstract class MinigameInterface : MonoBehaviour
     protected void ChangeProgressCount(float delta) {
         progressCount += delta;
         if (connectedWorkstationProgressBar != null) {
-            connectedWorkstationProgressBar.ChangeProgressBar(progressCount, targetProgressCout);
+            connectedWorkstationProgressBar.ChangeProgressBar(progressCount, targetProgressCount);
+        }
+        if (uiProgressBar != null) {
+            uiProgressBar.ChangeProgressBar(progressCount, targetProgressCount);
+        }
+    }
+
+    protected void SetProgressCount(float count, float target)
+    {
+        if (connectedWorkstationProgressBar != null)
+        {
+            connectedWorkstationProgressBar.ChangeProgressBar(count, target);
+        }
+        if (uiProgressBar != null)
+        {
+            uiProgressBar.ChangeProgressBar(count, target);
         }
     }
 
@@ -49,20 +74,23 @@ public abstract class MinigameInterface : MonoBehaviour
         connectedWorkstation = newWorkstation;
         connectedWorkstationProgressBar = connectedWorkstation.progressBar;
         animController = connectedWorkstation.animController;
-        if (connectedWorkstationProgressBar != null && connectedWorkstationProgressBar.getLastProgress() != 0) {
-            connectedWorkstationProgressBar.getLastProgress();
+        progressCount = 0;
+        if (connectedWorkstationProgressBar != null && connectedWorkstationProgressBar.getLastProgress() > 0) {
+            progressCount = connectedWorkstationProgressBar.getLastProgress();
         }
     }
 
     private void SetRecipe(Recipe newRecipe)
     {
         recipeData = newRecipe;
-        targetProgressCout = recipeData.difficultyMod;
+        targetProgressCount = recipeData.difficultyMod;
     }
 
     protected virtual void Start()
     {
+        Debug.Log("Start Deactivation VVV");
         Activate(false);
+        Debug.Log("Start Deactivation AAA");
 
         if (closeButton != null)
         {
@@ -82,8 +110,8 @@ public abstract class MinigameInterface : MonoBehaviour
         SetConnectedWorkstation(workstation);
         SetRecipe(recipe);
         
-        ChangeProgressCount(0);
         Activate(true);
+        ChangeProgressCount(0);
         
         OnMinigameOpened();
     }
@@ -92,16 +120,30 @@ public abstract class MinigameInterface : MonoBehaviour
     {
         Debug.Log("Success! "+ corespondingWorkstationType.ToString());
         ChangeProgressCount(-progressCount);
-        CloseMinigame();
+        
         if (connectedWorkstation != null) { 
             connectedWorkstation.SucceedProcessing(recipeData);
         }
+        CloseMinigame();
+    }
+
+    public virtual void Fail()
+    {
+        Debug.Log("Fail! " + corespondingWorkstationType.ToString());
+        ChangeProgressCount(-progressCount);
+        
+        if (connectedWorkstation != null)
+        {
+            connectedWorkstation.FailProcessing();
+        }
+        CloseMinigame();
     }
 
     public void CloseMinigame()
     {
-        Activate(false);
         OnMinigameClosed();
+        connectedWorkstation.UnsubscribeAllUser();
+        Activate(false);
     }
 
     protected virtual void Update()

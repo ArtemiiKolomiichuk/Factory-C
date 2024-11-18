@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.WSA;
@@ -46,8 +47,11 @@ public class Workstation : MonoBehaviour, UniverslaResourceHolderInterface, Usab
         corespondingMinigame = MinigameInterface.GetMinigameByType(workstationType);
         recipes = ResourceController.Instance.recipeDictionary[workstationType];
         //Will remove later
-        DEBUG_TOOL();
+        RunAfterDelay(DEBUG_TOOL, 1);
+        RunAfterDelay(USE_DEBUG, 10);
     }
+
+    
 
     public bool SubscribeUser()
     {
@@ -169,6 +173,16 @@ public class Workstation : MonoBehaviour, UniverslaResourceHolderInterface, Usab
         }
     }
 
+    public void FailProcessing()
+    {
+        //Maybe need something else to sync
+        if (subscribedUsersIDs[0] == AUtils._playerID)
+        {
+            ClearResources();
+            lockedResources = false;
+        }
+    }
+
     public void CancelProcessing()
     {
         //Call cancelling to other players
@@ -176,7 +190,7 @@ public class Workstation : MonoBehaviour, UniverslaResourceHolderInterface, Usab
     }
 
 
-
+    //DEBUG VVV
     public void DEBUG_TOOL()
     {
         PutResourceType(ResourceType.Metal);
@@ -184,7 +198,22 @@ public class Workstation : MonoBehaviour, UniverslaResourceHolderInterface, Usab
         Debug.Log("DBG | INSP | " + storage.ToString());
         Use();
     }
+    public void USE_DEBUG()
+    {
+        Use();
+    }
+    public void RunAfterDelay(System.Action callback, float delay = 1f)
+    {
+        StartCoroutine(ExecuteAfterDelay(callback, delay));
+    }
 
+
+    private IEnumerator ExecuteAfterDelay(System.Action callback, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        callback?.Invoke();
+    }
+    //DEBUG AAA
 
     public void ClearResources()
     {
@@ -304,6 +333,7 @@ public class Workstation : MonoBehaviour, UniverslaResourceHolderInterface, Usab
 
     public bool Use()
     {
+        Debug.Log("INFO | Used workstation");
         return UseWorkstation();
     }
 }

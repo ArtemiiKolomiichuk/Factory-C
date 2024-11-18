@@ -29,4 +29,17 @@ public class AUtils
 
         list.Insert(index, item);
     }
+
+    public static float CalculateProximity(float value, float target, float rangeMin, float rangeMax)
+    {
+        value = Mathf.Clamp(value, rangeMin, rangeMax);
+
+        float range = (rangeMax - rangeMin);
+        float distanceToTarget = Mathf.Abs(value - target);
+        float normalizedProximity = Mathf.Clamp01(1f - (distanceToTarget / range));
+
+        return normalizedProximity;
+    }
+
+
 }

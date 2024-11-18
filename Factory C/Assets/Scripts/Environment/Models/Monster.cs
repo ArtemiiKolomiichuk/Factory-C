@@ -103,7 +103,8 @@ public class Monster : MonoBehaviour
 
             if (adventurer.Health <= 0)
             {
-                yield break;
+                yield return Wander();
+                break;
             }
             yield return new WaitForSeconds(1f);
         }

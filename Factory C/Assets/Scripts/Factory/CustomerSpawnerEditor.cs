@@ -14,9 +14,6 @@ public class CustomerSpawnerEditor : Editor
         if (GUILayout.Button("Spawn")) {
             spawner.SpawnCustomer();
         }
-        if (GUILayout.Button("Go home")) {
-            spawner.GoHomeCustomer();
-        } 
     }
 }
 #endif

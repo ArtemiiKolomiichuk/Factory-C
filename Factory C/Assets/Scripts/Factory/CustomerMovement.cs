@@ -7,55 +7,47 @@ using UnityEngine.AI;
 public class CustomerMovement : NetworkBehaviour
 {
     [SerializeField]
-    private float walkRange;
+    private float walkingRange;
     [SerializeField]
-    private float waitTime;
+    private float waitingTime;
     private float currentWaitTime = 0;
-    private bool isWaitingForOrderCompletion = true;
     private bool isWaiting = false;
     private NavMeshAgent agent;
     private Vector3 destinationPoint;
-    private Outline outline;
+    private CustomerState state = CustomerState.WAITING;
+    private Vector3 spawnPoint;
 
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        outline = GetComponent<Outline>();
-        outline.enabled = false;
+        spawnPoint = gameObject.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!IsHost)
-            return;
-        if(isWaitingForOrderCompletion) {
+        /*if (!IsHost)
+            return;*/
+        currentWaitTime += Time.deltaTime;
+        if(state == CustomerState.WAITING) {
             WaitForOrderCompletion();
         }
-        else if(HasStoped()) {
+        else if(state == CustomerState.GO_HOME && ((HasStoped() && currentWaitTime > 1) || currentWaitTime > 20)) {
+            Debug.Log(currentWaitTime);
             Destroy(gameObject);
         }
-        //Debug.Log(1);
     }
 
-    public void OnTriggerEnter(Collider other) {
-        if(!other.CompareTag("Player")) {
-            return;
+    public void SetState(CustomerState state) {
+        this.state = state;
+        if(this.state == CustomerState.INTERACT_WITH_PLAYER) {
+            agent.SetDestination(gameObject.transform.position);
         }
-        outline.enabled = true;
-    }
-
-    public void OnTriggerExit(Collider other) {
-        if(!other.CompareTag("Player")) {
-            return;
+        else if(this.state == CustomerState.GO_HOME) {
+            currentWaitTime = 0;
+            agent.SetDestination(spawnPoint);
         }
-        outline.enabled = false;
-    }
-
-    public void GoToPointThenDestroy(Vector3 point) {
-        isWaitingForOrderCompletion = false;
-        agent.SetDestination(point);
     }
 
     private void WaitForOrderCompletion() {
@@ -68,10 +60,10 @@ public class CustomerMovement : NetworkBehaviour
     }
 
     private void Waiting() {
-            currentWaitTime += Time.deltaTime;
+            
             //Debug.Log(currentWaitTime);
             //Debug.Log(waitTime);
-            if(currentWaitTime > waitTime) {
+            if(currentWaitTime > waitingTime) {
                 currentWaitTime = 0;
                 isWaiting = false;
             } 
@@ -79,13 +71,14 @@ public class CustomerMovement : NetworkBehaviour
 
     private void Walking() {
         if(destinationPoint == null) {
-            destinationPoint = RandomNavmeshLocation(walkRange);
+            destinationPoint = RandomNavmeshLocation(walkingRange);
         } 
         agent.SetDestination(destinationPoint);
         //Debug.Log(destinationPoint);
         //Debug.Log(transform.localPosition);
-        if(HasStoped()) {
-            destinationPoint = RandomNavmeshLocation(walkRange);
+        if(HasStoped() || currentWaitTime > waitingTime) {
+            destinationPoint = RandomNavmeshLocation(walkingRange);
+            currentWaitTime = 0;
             isWaiting = true;
         }
     }

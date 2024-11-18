@@ -27,8 +27,8 @@ public class PlayerMovement3D : NetworkBehaviour
     {
         _input = GetComponent<InputPlayer>();
         _animator = GetComponent<Animator>();
-        DontDestroyOnLoad(this);
-        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+        //DontDestroyOnLoad(this);
+        //SceneManager.sceneLoaded += SceneManager_sceneLoaded;
     }
 
     public override void OnNetworkSpawn()
@@ -58,7 +58,7 @@ public class PlayerMovement3D : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!IsOwner) return;
+        //if (!IsOwner) return;
 
         var targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
         //characterController.Move(targetVector);

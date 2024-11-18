@@ -16,7 +16,7 @@ public class LobbyController : MonoBehaviour
 
     private const float updateInterval = 3.0f;
 
-    public const string TargetScene = "FactoryTest Network";
+    public const string TargetScene = "MainGame";
     private async void Awake()
     {
         if (Instance == null)

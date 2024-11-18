@@ -41,6 +41,8 @@ public class Resource : ScriptableObject
 
     public float weight;
 
+    public Sprite icon;
+
     public static GameObject ResourcePrefab;
 
     public bool isHolding = false;

@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
 
 [System.Serializable]
-public class InventoryHolder : MonoBehaviour
+public class InventoryHolder : NetworkBehaviour
 {
     [SerializeField]
     private int inventorySize;
@@ -51,10 +52,23 @@ public class InventoryHolder : MonoBehaviour
 
     private void HandleInventoryUpdate(Resource itemInfo)
     {
+        if(NetworkCompanion.networkEnabled && !IsOwner)
+        {
+            return;
+        }
+
         if (currentShowItem == null && itemInfo != null)
         {
             GameObject item = PrefabSystem.FindItem(itemInfo);
             currentShowItem = Instantiate(item, transform.position + offset, transform.rotation);
+            NetworkBehaviour nb = currentShowItem.GetComponent<NetworkBehaviour>();
+            if (nb)
+            {
+                if(!nb.IsSpawned && IsHost)
+                {
+                    nb.GetComponent<NetworkObject>().Spawn();
+                }
+            }
             currentShowItem.transform.SetParent(transform);
             currentShowItem.GetComponent<Rigidbody>().isKinematic = true;
             currentShowItem.GetComponent<SphereCollider>().radius = 0.0001f;

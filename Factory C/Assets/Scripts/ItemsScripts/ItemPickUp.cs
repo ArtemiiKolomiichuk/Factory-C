@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 
 [RequireComponent(typeof(SphereCollider))]
-public class ItemPickUp : MonoBehaviour
+public class ItemPickUp : NetworkBehaviour
 {
     public float PickUpRadius = 0.6f;
     public Resource ItemData;
@@ -15,7 +16,13 @@ public class ItemPickUp : MonoBehaviour
     {
         sphereCollider = GetComponent<SphereCollider>();
         sphereCollider.isTrigger = true;
-        sphereCollider.radius =PickUpRadius;
+        sphereCollider.radius = PickUpRadius;
+    }
+
+    public override void OnDestroy()
+    {
+        Debug.Log($"ItemPickUp OnDestroy {{{name}}}");
+        base.OnDestroy();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -25,7 +32,7 @@ public class ItemPickUp : MonoBehaviour
 
         if (inventory.InventorySystem.AddToInventory(ItemData))
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 

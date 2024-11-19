@@ -80,8 +80,53 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8174203807298902223, guid: b931ec243ae8947479408c5a6c0ec05a,
         type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.32
+      objectReference: {fileID: 0}
+    - target: {fileID: -8174203807298902223, guid: b931ec243ae8947479408c5a6c0ec05a,
+        type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.776892
+      value: 0.97
+      objectReference: {fileID: 0}
+    - target: {fileID: -8174203807298902223, guid: b931ec243ae8947479408c5a6c0ec05a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8174203807298902223, guid: b931ec243ae8947479408c5a6c0ec05a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.62480414
+      objectReference: {fileID: 0}
+    - target: {fileID: -8174203807298902223, guid: b931ec243ae8947479408c5a6c0ec05a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.28843132
+      objectReference: {fileID: 0}
+    - target: {fileID: -8174203807298902223, guid: b931ec243ae8947479408c5a6c0ec05a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.24955991
+      objectReference: {fileID: 0}
+    - target: {fileID: -8174203807298902223, guid: b931ec243ae8947479408c5a6c0ec05a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.6812834
+      objectReference: {fileID: 0}
+    - target: {fileID: -8174203807298902223, guid: b931ec243ae8947479408c5a6c0ec05a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -1.168
+      objectReference: {fileID: 0}
+    - target: {fileID: -8174203807298902223, guid: b931ec243ae8947479408c5a6c0ec05a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -44.83
+      objectReference: {fileID: 0}
+    - target: {fileID: -8174203807298902223, guid: b931ec243ae8947479408c5a6c0ec05a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 95.434
       objectReference: {fileID: 0}
     - target: {fileID: 372035312309494549, guid: b931ec243ae8947479408c5a6c0ec05a,
         type: 3}
@@ -91,7 +136,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b931ec243ae8947479408c5a6c0ec05a,
         type: 3}
       propertyPath: m_Name
-      value: metal
+      value: Broken
       objectReference: {fileID: 0}
     - target: {fileID: 2117455754499400597, guid: b931ec243ae8947479408c5a6c0ec05a,
         type: 3}
@@ -188,7 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 41251010
+  GlobalObjectIdHash: 2866964773
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -210,7 +255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PickUpRadius: 3.2
-  ItemData: {fileID: 11400000, guid: a28e37e854ada9145b26e38039918357, type: 2}
+  ItemData: {fileID: 11400000, guid: 06106fd56fe339f48afc064475996862, type: 2}
 --- !u!54 &5749498202142821165
 Rigidbody:
   m_ObjectHideFlags: 0

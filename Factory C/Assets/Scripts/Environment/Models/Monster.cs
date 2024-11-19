@@ -40,11 +40,11 @@ public class Monster : MonoBehaviour
 
             while (Vector3.Distance(transform.position, destination) > 1f)
             {
-                Adventurer adventurer = FindNearestAdventurer();
-                if (adventurer != null)
+                Component target = FindNearestTarget();
+                if (target != null)
                 {
-                    Attack(adventurer);
-                    yield return new WaitForSeconds(2f);
+                    Attack(target);
+                    yield break;
                 }
                 yield return null;
             }
@@ -108,6 +108,64 @@ public class Monster : MonoBehaviour
             }
             yield return new WaitForSeconds(1f);
         }
+    }
+
+    Component FindNearestTarget()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, 5f);
+        foreach (var hit in hits)
+        {
+            PlayerMovement3D player = hit.GetComponent<PlayerMovement3D>();
+            if (player != null && player.isDisguised)
+            {
+                return player;
+            }
+            Adventurer adventurer = hit.GetComponent<Adventurer>();
+            if (adventurer != null)
+            {
+                return adventurer;
+            }
+
+        }
+        return null;
+    }
+
+    public void Attack(Component target)
+    {
+        Debug.Log($"{name} attacks {target.name}.");
+        agent.SetDestination(target.transform.position);
+        StartCoroutine(AttackCoroutine(target));
+    }
+
+    IEnumerator AttackCoroutine(Component target)
+    {
+        while (target != null)
+        {
+            if (Vector3.Distance(transform.position, target.transform.position) <= 4f)
+            {
+                if (target is Adventurer adventurer)
+                {
+                    float chance = Random.Range(0f, 1f);
+                    if (chance <= 0.2f)
+                        adventurer.TakeDamage(100);
+                    else
+                        adventurer.TakeDamage(20);
+                }
+                else if (target is PlayerMovement3D player)
+                {
+                    
+                    player.DecreaseMovementSpeedTemporarily();
+                }
+                break;
+            }
+            else
+            {
+                agent.SetDestination(target.transform.position);
+            }
+            yield return new WaitForSeconds(1f);
+        }
+        StartCoroutine(Wander());
+
     }
 
     public void TakeDamage(int damage)

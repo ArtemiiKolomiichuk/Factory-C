@@ -9,12 +9,20 @@ public class MonsterSpawner : MonoBehaviour
     public List<GameObject> monsterPrefabs; 
     public int spawnCount = 2;
     public float spawnRadius = 30f;
+    public float spawnInterval = 10f;
 
     void Start()
     {
-        SpawnMonsters();
+        StartCoroutine(SpawnMonstersGroups()); ;
     }
-
+    IEnumerator SpawnMonstersGroups()
+    {
+        while (true)
+        {
+            SpawnMonsters();
+            yield return new WaitForSeconds(spawnInterval);
+        }
+    }
     void SpawnMonsters()
     {
         for (int i = 0; i < spawnCount; i++)

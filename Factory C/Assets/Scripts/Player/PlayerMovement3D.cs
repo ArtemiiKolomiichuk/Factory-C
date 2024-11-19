@@ -14,6 +14,9 @@ public class PlayerMovement3D : NetworkBehaviour
     public bool isDisguised;
     private GameObject currentShowItem;
     public Vector3 offset;
+
+    private float originalMovementSpeed;
+    private bool isMovementSpeedReduced = false;
     //private CharacterController characterController;
 
     [SerializeField]
@@ -31,6 +34,7 @@ public class PlayerMovement3D : NetworkBehaviour
 
     private void Awake()
     {
+        originalMovementSpeed = MovementSpeed;
         _input = GetComponent<InputPlayer>();
         _animator = GetComponent<Animator>();
         _rb = GetComponent<Rigidbody>();
@@ -92,12 +96,29 @@ public class PlayerMovement3D : NetworkBehaviour
     }
     private void FixedUpdate()
     {
+        //print(originalMovementSpeed);
         MoveTowardTarget(targetVector);
 
         if (!RotateTowardMouse)
         {
             RotateTowardMovementVector(targetVector);
         }
+    }
+    public void DecreaseMovementSpeedTemporarily()
+    {
+        if (!isMovementSpeedReduced)
+            StartCoroutine(DecreaseMovementSpeedCoroutine());
+    }
+
+    IEnumerator DecreaseMovementSpeedCoroutine()
+    {
+        isMovementSpeedReduced = true;
+        MovementSpeed *= 0.5f; 
+        yield return new WaitForSeconds(5f); 
+        MovementSpeed = originalMovementSpeed;
+        print(MovementSpeed);
+        isMovementSpeedReduced = false;
+        yield break;
     }
     private void HandleDisguiseUpdate()
     {

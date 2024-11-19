@@ -1282,7 +1282,7 @@ PrefabInstance:
     - target: {fileID: -25032989106679265, guid: d2a5bbf2271489b4c850ce58e7c34d85,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3206398081
+      value: 3834662507
       objectReference: {fileID: 0}
     - target: {fileID: 3840884801538464250, guid: d2a5bbf2271489b4c850ce58e7c34d85,
         type: 3}
@@ -1292,7 +1292,7 @@ PrefabInstance:
     - target: {fileID: 5053725840998724460, guid: d2a5bbf2271489b4c850ce58e7c34d85,
         type: 3}
       propertyPath: m_Drag
-      value: 100
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5053725840998724460, guid: d2a5bbf2271489b4c850ce58e7c34d85,
         type: 3}
@@ -1306,8 +1306,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5053725840998724460, guid: d2a5bbf2271489b4c850ce58e7c34d85,
         type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5053725840998724460, guid: d2a5bbf2271489b4c850ce58e7c34d85,
+        type: 3}
       propertyPath: m_Constraints
       value: 116
+      objectReference: {fileID: 0}
+    - target: {fileID: 5053725840998724460, guid: d2a5bbf2271489b4c850ce58e7c34d85,
+        type: 3}
+      propertyPath: m_Interpolate
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6829822267776731713, guid: d2a5bbf2271489b4c850ce58e7c34d85,
         type: 3}
@@ -1555,6 +1565,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6973228738945644574, guid: 0c1a28a6779a94342b18ca595cbbc9e0,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3868253872
+      objectReference: {fileID: 0}
     - target: {fileID: 2804995202470709167, guid: 0c1a28a6779a94342b18ca595cbbc9e0,
         type: 3}
       propertyPath: m_Name
@@ -1822,7 +1837,7 @@ PrefabInstance:
     - target: {fileID: 2200723608432559105, guid: 293458f12ef7527438c8e4347851e74b,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2770872840
+      value: 2524393384
       objectReference: {fileID: 0}
     - target: {fileID: 2200723608432559105, guid: 293458f12ef7527438c8e4347851e74b,
         type: 3}
@@ -1847,6 +1862,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6321993389270301823, guid: d08df77a411ed2a478a00ef2f64f45e3,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2452286003
+      objectReference: {fileID: 0}
     - target: {fileID: 5159278796368368807, guid: d08df77a411ed2a478a00ef2f64f45e3,
         type: 3}
       propertyPath: m_Name

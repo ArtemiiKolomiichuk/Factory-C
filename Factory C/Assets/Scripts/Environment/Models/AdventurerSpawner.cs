@@ -8,6 +8,7 @@ public class AdventurerSpawner : MonoBehaviour
     public GameObject adventurerPrefab;
     public int minGroupSize = 2;
     public int maxGroupSize = 3;
+    public int maxAdventurers = 10;
     public float spawnRadius = 100f;
     public float spawnInterval = 10f;
 
@@ -20,7 +21,11 @@ public class AdventurerSpawner : MonoBehaviour
     {
         while (true)
         {
-            SpawnGroup();
+            if(Adventurer.AdventurerCount < maxAdventurers)
+            {
+                SpawnGroup();
+                
+            }
             yield return new WaitForSeconds(spawnInterval);
         }
     }

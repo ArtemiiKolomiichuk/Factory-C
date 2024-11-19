@@ -7,6 +7,7 @@ using System.Collections;
 
 public class Adventurer : MonoBehaviour
 {
+    public static int AdventurerCount = 0;
     public float Speed { get; set; } = 2.0f;
     public BehaviorType Behavior { get; set; }
     public List<Interactable> Items { get; set; }
@@ -19,6 +20,7 @@ public class Adventurer : MonoBehaviour
 
     void Awake()
     {
+        AdventurerCount++;
         agent = GetComponent<NavMeshAgent>();
         //agent.speed = Speed;
         //groupMembers = new List<Adventurer>();
@@ -157,7 +159,7 @@ public class Adventurer : MonoBehaviour
     }
     public void Die()
     {
-        
+        AdventurerCount--;
         if (lootPrefab != null )
         {
             GameObject loot = Instantiate(lootPrefab, transform.position, transform.rotation);

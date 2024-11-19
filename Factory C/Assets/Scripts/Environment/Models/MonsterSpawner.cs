@@ -6,26 +6,33 @@ using UnityEngine.AI;
 
 public class MonsterSpawner : MonoBehaviour
 {
-    public List<GameObject> monsterPrefabs; 
-    public int spawnCount = 2;
+    public List<GameObject> monsterPrefabs;
+    public int maxMonsters = 10;
+    public int spawnCount = 1;
     public float spawnRadius = 30f;
+    public float spawnInterval = 2f;
 
     void Start()
     {
-        SpawnMonsters();
+        StartCoroutine(SpawnMonsters());
     }
 
-    void SpawnMonsters()
+    IEnumerator SpawnMonsters()
     {
-        for (int i = 0; i < spawnCount; i++)
-        {
-            Vector3 spawnPosition = RandomNavmeshLocation(spawnRadius);
 
-            int randomIndex = Random.Range(0, monsterPrefabs.Count);
-            GameObject selectedPrefab = monsterPrefabs[randomIndex];
+        while (true) { 
+            if (Monster.MonsterCount < maxMonsters)
+            {
+                Vector3 spawnPosition = RandomNavmeshLocation(spawnRadius);
 
-            Instantiate(selectedPrefab, spawnPosition, Quaternion.identity);
+                int randomIndex = Random.Range(0, monsterPrefabs.Count);
+                GameObject selectedPrefab = monsterPrefabs[randomIndex];
+
+                Instantiate(selectedPrefab, spawnPosition, Quaternion.identity);
+            }
+            yield return new WaitForSeconds(spawnInterval);
         }
+       
     }
 
     Vector3 RandomNavmeshLocation(float radius)

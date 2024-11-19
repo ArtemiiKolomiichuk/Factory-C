@@ -167,6 +167,7 @@ MonoBehaviour:
   workstationType: 3
   inputResources: 
   storage: 
+  subscribedUsersIDs: 
   numberOfMaxUsers: 1
   resourceSpawnPoint: {fileID: 0}
   progressBar: {fileID: 1084220218054171461}

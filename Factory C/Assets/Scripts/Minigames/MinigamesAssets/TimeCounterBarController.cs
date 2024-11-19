@@ -9,6 +9,7 @@ public class TimeCounterBarController : MonoBehaviour
     public Transform toScale;
     public float maxTime = 2f;
     private Coroutine barCoroutine;
+    public bool reverse = false;
 
     private void Start()
     {
@@ -40,13 +41,20 @@ public class TimeCounterBarController : MonoBehaviour
         while (elapsedTime < maxTime)
         {
             elapsedTime += Time.deltaTime;
-            //bar.value = Mathf.Clamp01(elapsedTime / maxTime); // Gradually increase the bar
             initialScale.x = (elapsedTime / maxTime);
+            if (reverse)
+            {
+                initialScale.x = 1 - initialScale.x;
+            }
             toScale.localScale = initialScale;
             yield return null;
         }
 
         initialScale.x = 1;
+        if (reverse) 
+        {
+            initialScale.x = 0;
+        }
         toScale.transform.localScale = initialScale;
         barCoroutine = null;
     }
@@ -62,6 +70,9 @@ public class TimeCounterBarController : MonoBehaviour
 
         Vector3 initialScale = toScale.transform.localScale;
         initialScale.x = 0;
+        if (reverse) { 
+            initialScale.x = 1;
+        }
         toScale.transform.localScale = initialScale;
     }
 }

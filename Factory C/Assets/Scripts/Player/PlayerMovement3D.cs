@@ -10,6 +10,7 @@ public class PlayerMovement3D : NetworkBehaviour
 {
     private InputPlayer _input;
     private Animator _animator;
+    private Rigidbody _rb;
     public bool isDisguised;
     private GameObject currentShowItem;
     public Vector3 offset;
@@ -26,10 +27,13 @@ public class PlayerMovement3D : NetworkBehaviour
     [SerializeField]
     private Camera Camera;
 
+    private Vector3 targetVector;
+
     private void Awake()
     {
         _input = GetComponent<InputPlayer>();
         _animator = GetComponent<Animator>();
+        _rb = GetComponent<Rigidbody>();
         if (!NetworkCompanion.networkEnabled) return;
         DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
@@ -68,24 +72,33 @@ public class PlayerMovement3D : NetworkBehaviour
             HandleDisguiseUpdate();
         }
 
-        var targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
+        targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
         //characterController.Move(targetVector);
         // print(_input.InputVector.y);
-        var movementVector = MoveTowardTarget(targetVector);
-        bool isWalking = (_input.InputVector.x != 0 || _input.InputVector.y != 0);
-        _animator.SetBool("walk", isWalking);
+        //var movementVector = 
+        //MoveTowardTarget(targetVector);
+        //bool isWalking = (_input.InputVector.x != 0 || _input.InputVector.y != 0);
+        //_animator.SetBool("walk", isWalking);
+
+        //if (!RotateTowardMouse)
+        //{
+        //    //RotateTowardMovementVector(movementVector);
+        //}
+        //if (RotateTowardMouse)
+        //{
+        //    RotateFromMouseVector();
+        //}
+
+    }
+    private void FixedUpdate()
+    {
+        MoveTowardTarget(targetVector);
 
         if (!RotateTowardMouse)
         {
-            RotateTowardMovementVector(movementVector);
+            RotateTowardMovementVector(targetVector);
         }
-        if (RotateTowardMouse)
-        {
-            RotateFromMouseVector();
-        }
-
     }
-
     private void HandleDisguiseUpdate()
     {
         if (!isDisguised)
@@ -117,17 +130,19 @@ public class PlayerMovement3D : NetworkBehaviour
         }
     }
 
-    private Vector3 MoveTowardTarget(Vector3 targetVector)
+    private void MoveTowardTarget(Vector3 inputVector)
     {
-        var speed = MovementSpeed * Time.deltaTime;
+        
+        Vector3 movementDirection = Quaternion.Euler(0, Camera.transform.eulerAngles.y, 0) * inputVector.normalized;
+       //print(movementDirection);
+        //Vector3 movement = movementDirection * MovementSpeed * Time.fixedDeltaTime;
 
-        targetVector = Quaternion.Euler(0, Camera.gameObject.transform.rotation.eulerAngles.y, 0) * targetVector;
-        var targetPosition = transform.position + targetVector * speed;
-        //print(targetPosition);
-        //characterController.velocity = speed;
-        //characterController.Move(targetPosition);
-        transform.position = targetPosition;
-        return targetVector;
+        Vector3 desiredVelocity = movementDirection * MovementSpeed;
+        //print(desiredVelocity);
+
+        _rb.velocity = desiredVelocity;
+
+        //_rb.MovePosition(_rb.position + movement);
     }
 
     private void RotateTowardMovementVector(Vector3 movementDirection)

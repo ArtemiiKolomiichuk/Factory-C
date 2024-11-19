@@ -7,6 +7,7 @@ using UnityEngine.AI;
 
 public class Monster : MonoBehaviour
 {
+    public static int MonsterCount = 0;
     public float Speed { get; set; } = 6.5f;
     public BehaviorType Behavior { get; set; }
 
@@ -20,6 +21,7 @@ public class Monster : MonoBehaviour
 
     void Awake()
     {
+        MonsterCount++;
         agent = GetComponent<NavMeshAgent>();
         agent.speed = Speed;
     }
@@ -120,6 +122,7 @@ public class Monster : MonoBehaviour
     }
     public void Die()
     {
+        MonsterCount--;
         if (lootPrefab != null )
         {
             GameObject loot = Instantiate(lootPrefab, transform.position, transform.rotation);

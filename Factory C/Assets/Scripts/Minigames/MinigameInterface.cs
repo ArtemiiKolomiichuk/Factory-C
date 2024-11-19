@@ -151,7 +151,7 @@ public abstract class MinigameInterface : MonoBehaviour
         HandleInput();
     }
 
-    protected abstract void HandleInput();
+    protected virtual void HandleInput() { }
 
     protected virtual void OnMinigameOpened() { }
     protected virtual void OnMinigameClosed() { }

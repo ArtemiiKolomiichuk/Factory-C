@@ -22,7 +22,7 @@ public class Workstation : MonoBehaviour, UniverslaResourceHolderInterface, Usab
 
     private MinigameInterface corespondingMinigame;
 
-    private List<int> subscribedUsersIDs = new List<int>();
+    public List<int> subscribedUsersIDs = new List<int>();
     private int numberOfCurrentUsers = 0;
     public int numberOfMaxUsers = 0;
 
@@ -46,8 +46,8 @@ public class Workstation : MonoBehaviour, UniverslaResourceHolderInterface, Usab
         corespondingMinigame = MinigameInterface.GetMinigameByType(workstationType);
         recipes = ResourceController.Instance.recipeDictionary[workstationType];
         //Will remove later
-        RunAfterDelay(DEBUG_TOOL, 1);
-        RunAfterDelay(USE_DEBUG, 10);
+        //RunAfterDelay(DEBUG_TOOL, 1);
+        //RunAfterDelay(USE_DEBUG, 10);
     }
 
     
@@ -219,68 +219,6 @@ public class Workstation : MonoBehaviour, UniverslaResourceHolderInterface, Usab
         inputResources.Clear();
         storage.Clear();
     }
-
-    //Remove later when iterface is accepted
-    //public void AddResource(ResourceType resource)
-    //{
-    //    if (lockedResources)
-    //    {
-    //        return;
-    //    }
-
-    //    inputResources.Add(resource);
-    //    AUtils.InsertSortedEnum(storage, resource);
-    //    setResourceListChanged(true);
-    //}
-
-    //Can be used for physical objects
-    //public void AddResourceObject(Resource resource)
-    //{
-    //    AddResource(resource.rType);
-    //    //TODO Call from resource it physicall deletion
-    //}
-
-    //Remove later when iterface is accepted
-    //public ResourceType PullResource()
-    //{
-    //    if (lockedResources)
-    //    {
-    //        return ResourceType.None;
-    //    }
-
-    //    if (inputResources.Count > 0)
-    //    {
-    //        ResourceType pulledResource = inputResources[0];
-    //        storage.Remove(pulledResource);
-    //        inputResources.RemoveAt(0);
-    //        setResourceListChanged(true);
-
-    //        if (CheckNeededResources() == null)
-    //        {
-    //            UnsubscribeAllUser();
-    //        }
-
-    //        return pulledResource;
-    //    }
-
-    //    return ResourceType.None;
-    //}
-
-    //public ResourceType PullResourceObject()
-    //{
-    //    ResourceType type = PullResource();
-    //    if (resourceSpawnPoint != null && type != ResourceType.None)
-    //    {
-    //        if (!SpawnResource(type))
-    //        {
-    //            return ResourceType.None;
-    //        }
-    //    }
-
-    //    return type;
-    //}
-
-
 
     public void PutResourceType(ResourceType resource)
     {

@@ -94,7 +94,7 @@ public class OrderController : MonoBehaviour
 
     private void CreateOrder() {
         Order order = GetRandomOrder();
-        if(order == null && currentOrders.Count() > 0) {
+        if(order == null && currentOrders.Count() == 0) {
             DayController.Instance.StopDay();
             return;
         }

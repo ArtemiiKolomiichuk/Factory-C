@@ -114,6 +114,7 @@ MonoBehaviour:
   - {fileID: 6931903523724254199}
   - {fileID: 7606996071454677489}
   currentSkinIndex: 0
+  currentShowItem: {fileID: 0}
 --- !u!95 &2533480310901226925
 Animator:
   serializedVersion: 5
@@ -213,7 +214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UseUnreliableDeltas: 0
   SyncPositionX: 1
-  SyncPositionY: 0
+  SyncPositionY: 1
   SyncPositionZ: 1
   SyncRotAngleX: 0
   SyncRotAngleY: 1

@@ -30,18 +30,21 @@ public class ThrowAnObject : NetworkBehaviour
                     var a = PrefabSystem.FindItem(item);
                     if (a.GetComponent<ItemPickUp>().ItemData.rType == item.rType)
                     {
-                        GameObject thrownObject = Instantiate(a, player.transform.position + player.transform.TransformDirection(throwOffset), player.transform.rotation);
-                        Rigidbody rb = thrownObject.GetComponent<Rigidbody>();
-
-                        if (!rb)
-                        {
-                            rb.AddForce(player.transform.forward * throwForce, ForceMode.Impulse);
-                        }
+                        ThrowObjectRpc(PrefabSystem.GetIndex(item), player.transform.position + player.transform.TransformDirection(throwOffset), player.transform.rotation.eulerAngles, player.transform.forward * throwForce);
                         inventoryHolder.InventorySystem.RemoveFromInventory();
                     }
                 }
             }
         }
-    }   
+    }
+
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void ThrowObjectRpc(int index, Vector3 position, Vector3 rotation, Vector3 rbVec)
+    {
+        var item = PrefabSystem.GetByIndex(index);
+        item = Instantiate(item, position, Quaternion.Euler(rotation));
+        item.GetComponent<NetworkObject>().Spawn();
+        item.GetComponent<Rigidbody>().AddForce(rbVec, ForceMode.Impulse);
+    }
 }
 

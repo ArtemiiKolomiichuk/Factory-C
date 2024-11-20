@@ -22,7 +22,6 @@ public class ItemPickUp : NetworkBehaviour
     public override void OnDestroy()
     {
         Debug.Log($"ItemPickUp OnDestroy {{{name}}}");
-        base.OnDestroy();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -32,7 +31,20 @@ public class ItemPickUp : NetworkBehaviour
 
         if (inventory.InventorySystem.AddToInventory(ItemData))
         {
-            Destroy(gameObject);
+            DestroyOnAddingRpc(gameObject.GetComponent<NetworkBehaviour>());
+        }
+    }
+
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void DestroyOnAddingRpc(NetworkBehaviourReference networkBehaviourReference)
+    {
+        if (networkBehaviourReference.TryGet(out NetworkBehaviour networkBehaviour))
+        {
+            networkBehaviour.NetworkObject.Despawn(true);
+        }
+        else
+        {
+            Debug.LogError("NetworkBehaviour not found!!!! #5");
         }
     }
 

@@ -5,7 +5,6 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(InputPlayer))]
 public class PlayerMovement3D : NetworkBehaviour
 {
     private InputPlayer _input;
@@ -65,7 +64,7 @@ public class PlayerMovement3D : NetworkBehaviour
 
     private IEnumerator MoveCorrectlyCoroutine()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(1f);
         if (NetworkCompanion.networkEnabled && !IsOwner) yield break;
         transform.localPosition = new Vector3(-33.3999977f, 3.47999978f, -8.19999981f);
         Camera = Camera.main;

@@ -91,7 +91,7 @@ MonoBehaviour:
   isDisguised: 0
   offset: {x: 0, y: 0, z: 0}
   RotateTowardMouse: 0
-  MovementSpeed: 5
+  MovementSpeed: 9.48
   RotationSpeed: 500
   Camera: {fileID: 0}
 --- !u!114 &8458221115888571256
@@ -109,7 +109,7 @@ MonoBehaviour:
   inventorySize: 1
   inventorySystem:
     inventorySlots: []
-  offset: {x: 0, y: 1.2, z: 0}
+  offset: {x: 0, y: 1.63, z: 0}
   skins:
   - {fileID: 6931903523724254199}
   - {fileID: 7606996071454677489}

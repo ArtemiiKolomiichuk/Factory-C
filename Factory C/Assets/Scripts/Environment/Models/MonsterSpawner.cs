@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,6 +15,7 @@ public class MonsterSpawner : MonoBehaviour
 
     void Start()
     {
+        if (!NetworkManager.Singleton.IsServer) return;
         StartCoroutine(SpawnMonsters());
     }
 
@@ -28,7 +30,8 @@ public class MonsterSpawner : MonoBehaviour
                 int randomIndex = Random.Range(0, monsterPrefabs.Count);
                 GameObject selectedPrefab = monsterPrefabs[randomIndex];
 
-                Instantiate(selectedPrefab, spawnPosition, Quaternion.identity);
+                var m = Instantiate(selectedPrefab, spawnPosition, Quaternion.identity);
+                m.GetComponent<NetworkObject>().Spawn();
             }
             yield return new WaitForSeconds(spawnInterval);
         }

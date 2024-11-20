@@ -68,6 +68,14 @@ public class PlayerMovement3D : NetworkBehaviour
         {
             smoothCameraFollow.target = transform;
         }
+        if (IsHost)
+        {
+            var inter = FindObjectsByType<Interactable>(FindObjectsSortMode.InstanceID);
+            foreach (var interactable in inter)
+            {
+                interactable.GetComponent<NetworkObject>().Spawn();
+            }
+        }
     }
 
     // Update is called once per frame

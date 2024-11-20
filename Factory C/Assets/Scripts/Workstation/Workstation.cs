@@ -26,8 +26,6 @@ public class Workstation : MonoBehaviour, UniverslaResourceHolderInterface, Usab
     private int numberOfCurrentUsers = 0;
     public int numberOfMaxUsers = 0;
 
-
-    public Transform resourceSpawnPoint;
     public ProgressBarScaler progressBar;
     public MinigameAnimationController animController;
 
@@ -45,9 +43,6 @@ public class Workstation : MonoBehaviour, UniverslaResourceHolderInterface, Usab
     {
         corespondingMinigame = MinigameInterface.GetMinigameByType(workstationType);
         recipes = ResourceController.Instance.recipeDictionary[workstationType];
-        //Will remove later
-        //RunAfterDelay(DEBUG_TOOL, 1);
-        //RunAfterDelay(USE_DEBUG, 10);
     }
 
     
@@ -155,17 +150,13 @@ public class Workstation : MonoBehaviour, UniverslaResourceHolderInterface, Usab
         return false;
     }
 
-    private bool SpawnResource(ResourceType type) {
-        //TODO Spawn physical object on transform
-        return false;
-    }
-
     public void SucceedProcessing(Recipe recipe) {
         //Maybe need something else to sync
         if (subscribedUsersIDs[0] == AUtils._playerID) {
             ClearResources();
             lockedResources = false;
-            foreach (ResourceType resType in recipe.resultResources)
+            var resultResources = recipe.GetResult();
+            foreach (ResourceType resType in resultResources)
             {
                 PutResourceType(resType);
             }
@@ -187,32 +178,6 @@ public class Workstation : MonoBehaviour, UniverslaResourceHolderInterface, Usab
         //Call cancelling to other players
         lockedResources = false;
     }
-
-
-    //DEBUG VVV
-    public void DEBUG_TOOL()
-    {
-        PutResourceType(ResourceType.Metal);
-        PutResourceType(ResourceType.Stone);
-        Debug.Log("DBG | INSP | " + storage.ToString());
-        Use();
-    }
-    public void USE_DEBUG()
-    {
-        Use();
-    }
-    public void RunAfterDelay(System.Action callback, float delay = 1f)
-    {
-        StartCoroutine(ExecuteAfterDelay(callback, delay));
-    }
-
-
-    private IEnumerator ExecuteAfterDelay(System.Action callback, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        callback?.Invoke();
-    }
-    //DEBUG AAA
 
     public void ClearResources()
     {

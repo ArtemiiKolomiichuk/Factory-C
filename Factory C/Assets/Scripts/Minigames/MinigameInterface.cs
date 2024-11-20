@@ -33,14 +33,6 @@ public abstract class MinigameInterface : MonoBehaviour
     }
 
     public void Activate(bool state) {
-        if (!state)
-        {
-            Debug.Log("Deactivated Minigame Interface");
-        }
-        else { 
-            Debug.Log("Activated Minigame Interface");
-        }
-
         enabled = state;
         if (minigameOverlay != null) { 
             minigameOverlay.SetActive(state);
@@ -88,9 +80,7 @@ public abstract class MinigameInterface : MonoBehaviour
 
     protected virtual void Start()
     {
-        Debug.Log("Start Deactivation VVV");
         Activate(false);
-        Debug.Log("Start Deactivation AAA");
 
         if (closeButton != null)
         {

@@ -91,15 +91,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bdf5369580208af4395caeb823050c81,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6932584663216175858}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bdf5369580208af4395caeb823050c81,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 4750754563038592471}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bdf5369580208af4395caeb823050c81,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6667506683993280008}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bdf5369580208af4395caeb823050c81,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -228150673875462693}
   m_SourcePrefab: {fileID: 100100000, guid: bdf5369580208af4395caeb823050c81, type: 3}
 --- !u!1 &4478975848782307419 stripped
 GameObject:
@@ -198,19 +198,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &6932584663216175858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4478975848782307419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8b18b0d0b0644242b1e270488edffbe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offset: {x: 0, y: 1, z: 0.75}
 --- !u!114 &4750754563038592471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,3 +231,17 @@ MonoBehaviour:
   hint: 'E to get item
 
     F to place item'
+--- !u!114 &-228150673875462693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4478975848782307419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 666aaf06ff3f23443b491803d13d2083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showObject: {fileID: 0}
+  offset: {x: 0, y: 1.28, z: 0}

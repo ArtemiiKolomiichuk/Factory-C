@@ -28,6 +28,20 @@ public class PlayerMovement3D : NetworkBehaviour
 
     private Vector3 targetVector;
 
+    public Table? table;
+
+    public void TableSubscribe(Table table)
+    {
+        this.table = table;
+    }
+
+    public void TableUnsubscribe(Table table) {
+        if (this.table == table)
+        {
+            this.table = null;
+        }
+    }
+
     private void Awake()
     {
         _input = GetComponent<InputPlayer>();
@@ -70,7 +84,7 @@ public class PlayerMovement3D : NetworkBehaviour
         }
         if (IsHost)
         {
-            var inter = FindObjectsByType<Interactable>(FindObjectsSortMode.InstanceID);
+            var inter = FindObjectsByType<Table>(FindObjectsSortMode.InstanceID);
             foreach (var interactable in inter)
             {
                 interactable.GetComponent<NetworkObject>().Spawn();
@@ -86,6 +100,14 @@ public class PlayerMovement3D : NetworkBehaviour
         {
             print("qqqqq");
             HandleDisguiseUpdate();
+        }
+        if(Input.GetKeyDown(KeyCode.E) && table != null)
+        {
+            table.TakeItem(this);
+        }
+        if (Input.GetKeyDown(KeyCode.F) && table != null)
+        {
+            table.PutItem(this);
         }
 
         targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);

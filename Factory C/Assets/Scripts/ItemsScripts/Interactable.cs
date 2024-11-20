@@ -17,22 +17,6 @@ public class Interactable : NetworkBehaviour, UniverslaResourceHolderInterface
         boxCollider.isTrigger = true;
     }
 
-    private void Update()
-    {
-        HandleInput();
-    }
-
-    private void HandleInput()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            TryPlaceItemRpc(new(inventoryHolder.GetComponent<NetworkBehaviour>()));
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            TryRetrieveItemRpc(new(inventoryHolder.GetComponent<NetworkBehaviour>()));
-        }
-    }
 
     [Rpc(SendTo.Server)]
     private void TryPlaceItemRpc(NetworkBehaviourReference inv)

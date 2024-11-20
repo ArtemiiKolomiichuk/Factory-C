@@ -119,7 +119,7 @@ public class OrderController : MonoBehaviour
 
     private List<Order> FilterOrders() {
         uint possibleOrderTime = DayController.Instance.GetMaxDayTime() - DayController.Instance.GetCurrentDayTime();
-        Debug.Log(possibleOrderTime);
+        //Debug.Log(possibleOrderTime);
         List<Order> filteredOrders = new ();
         foreach(Order order in possibleOrders) {
             if(order.durationInGameMinutes <= possibleOrderTime) {

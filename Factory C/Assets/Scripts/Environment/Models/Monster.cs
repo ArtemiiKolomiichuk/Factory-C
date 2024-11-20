@@ -110,7 +110,6 @@ public class Monster : NetworkBehaviour
 
     public void Attack(Adventurer adventurer)
     {
-        Debug.Log($"{name} attacks {adventurer.name}.");
         agent.SetDestination(adventurer.transform.position);
         StartCoroutine(AttackCoroutine(adventurer));
     }
@@ -141,10 +140,7 @@ public class Monster : NetworkBehaviour
     }
 
     public void Follow(PlayerMovement3D player)
-    {
-        print("Following");
-        //agent.Se
-        //while(player.isDisguised)
+    { 
         agent.SetDestination(new Vector3 (player.transform.position.x, transform.position.y, player.transform.position.z));
 
     }
@@ -169,7 +165,4 @@ public class Monster : NetworkBehaviour
         StopAllCoroutines();
         GetComponent<NetworkObject>().Despawn(true);
     }
-
-
-    public void Attack() { Debug.Log("Monster attacks adventurer."); }
 }

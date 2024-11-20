@@ -49,6 +49,7 @@ public class InventorySystem
 
     public bool RemoveFromInventory()
     {
+        Debug.Log("Removing item from inventory");
         InventorySlot occupiedSlot = InventorySlots.FirstOrDefault(i => i.ItemData != null);
 
         if (occupiedSlot != null)

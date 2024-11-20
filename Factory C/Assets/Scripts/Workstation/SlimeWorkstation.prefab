@@ -43,6 +43,9 @@ GameObject:
   m_Component:
   - component: {fileID: 9144517526483736538}
   - component: {fileID: 3419902231885103645}
+  - component: {fileID: 6873891477919906413}
+  - component: {fileID: 7265489575762224685}
+  - component: {fileID: 512686090065159769}
   m_Layer: 0
   m_Name: SlimeWorkstation
   m_TagString: Untagged
@@ -82,10 +85,71 @@ MonoBehaviour:
   workstationType: 2
   inputResources: 
   storage: 
+  subscribedUsersIDs: 
   numberOfMaxUsers: 1
   resourceSpawnPoint: {fileID: 0}
   progressBar: {fileID: 1084220218054171461}
   animController: {fileID: 0}
+--- !u!65 &6873891477919906413
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714866882221367797}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7265489575762224685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714866882221367797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f95a8676d3c5448af520aeea34d97f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usableObject: {fileID: 714866882221367797}
+  useKey: 257
+  resourceHolderObject: {fileID: 714866882221367797}
+  getKey: 258
+  putKey: 259
+--- !u!64 &512686090065159769
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714866882221367797}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &2202610946416585999
 GameObject:
   m_ObjectHideFlags: 0

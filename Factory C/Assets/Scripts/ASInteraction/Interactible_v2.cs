@@ -5,11 +5,11 @@ using UnityEngine;
 public interface Interactible_v2
 {
 
-    public abstract bool Interact(KeyCode key);
+    public abstract object Interact(KeyCode key, object data);
 
-    public virtual void BehaveOnTargeted() { }
+    public virtual void BehaveOnTargeted(object targetedData) { }
 
-    public virtual void BehaveOnUnTargeted() { }
+    public virtual void BehaveOnUnTargeted(object targetedData) { }
 
 
 }

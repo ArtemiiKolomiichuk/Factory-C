@@ -21,9 +21,6 @@ public class MeatSpawner : NetworkBehaviour
         {
             if(IsServer)
             {
-                var go =PrefabSystem.GetByIndex(0);
-                go = Instantiate(go, new Vector3(-40.8348579f, 3.69000006f, -5.05999994f), Quaternion.identity);
-                go.GetComponent<NetworkObject>().Spawn();
                 Debug.Log("Binding set ");
                 NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
             }
@@ -41,7 +38,7 @@ public class MeatSpawner : NetworkBehaviour
 
     private IEnumerator SpawnPlayerForClient(ulong clientId)
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
         Debug.Log($"(has: {NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject})Spawning player for client " + clientId);
         if(NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject == null)
         {

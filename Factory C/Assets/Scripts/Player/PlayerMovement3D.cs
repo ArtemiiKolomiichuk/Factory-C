@@ -53,10 +53,6 @@ public class PlayerMovement3D : NetworkBehaviour
 
     private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode _)
     {
-        if (!IsOwner) 
-        {
-            Destroy(_input);
-        }
         if(scene.name != LobbyController.TargetScene) return;
         StartCoroutine(MoveCorrectlyCoroutine());
         

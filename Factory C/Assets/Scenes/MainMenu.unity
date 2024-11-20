@@ -277,6 +277,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9e3fdb388ff984e8d99106d9c55ade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 6829822267776731713, guid: d2a5bbf2271489b4c850ce58e7c34d85,
+    type: 3}
 --- !u!4 &82612895
 Transform:
   m_ObjectHideFlags: 0
@@ -5674,12 +5676,12 @@ MonoBehaviour:
     EnableTimeResync: 0
     TimeResyncInterval: 30
     EnsureNetworkVariableLengthSafety: 1
-    EnableSceneManagement: 0
+    EnableSceneManagement: 1
     ForceSamePrefabs: 0
     RecycleNetworkIds: 1
     NetworkIdRecycleDelay: 120
     RpcHashSize: 0
-    LoadSceneTimeOut: 800
+    LoadSceneTimeOut: 80
     SpawnTimeout: 10
     EnableNetworkLogs: 1
     OldPrefabList: []

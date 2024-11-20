@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 3049048485897345738}
   - component: {fileID: 2309895406514403269}
   - component: {fileID: 6026938905837120232}
-  - component: {fileID: 389041918512629643}
   - component: {fileID: 8638011929346127673}
   - component: {fileID: 3746609795696475050}
   - component: {fileID: 8300451663072217838}
+  - component: {fileID: -5913917711771594106}
   m_Layer: 0
   m_Name: Customer
   m_TagString: Untagged
@@ -73,7 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1486621346
+  GlobalObjectIdHash: 1923373901
   InScenePlacedSourceGlobalObjectIdHash: 1923373901
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -96,23 +96,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkingRange: 50
   waitingTime: 10
---- !u!114 &389041918512629643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3036884084727054891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae77f4c548f90be4bb16dbb62a0bcf60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnableProximity: 0
-  ProximityRange: 50
-  CorrectionDelay: 3
-  DriftCorrectionPercentage: 0.1
-  WarpOnDestinationChange: 0
 --- !u!136 &8638011929346127673
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4428,6 +4411,37 @@ MonoBehaviour:
     - {x: 0.21110089, y: -0.97154635, z: -0.10739686}
     - {x: 0.20914891, y: -0.9641664, z: -0.16321734}
     - {x: 0.4976457, y: -0.8417494, z: -0.20930052}
+--- !u!114 &-5913917711771594106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3036884084727054891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1001 &1746935790446791708
 PrefabInstance:
   m_ObjectHideFlags: 0

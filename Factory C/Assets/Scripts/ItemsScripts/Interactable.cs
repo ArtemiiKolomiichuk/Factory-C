@@ -1,6 +1,7 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
 
+
 [RequireComponent(typeof(BoxCollider))]
 public class Interactable : NetworkBehaviour, UniverslaResourceHolderInterface
 {
@@ -8,13 +9,32 @@ public class Interactable : NetworkBehaviour, UniverslaResourceHolderInterface
     public InventoryHolder inventoryHolder;
     public Resource currentItem;
     private GameObject showObject;
-    public NetworkVariable<bool> ItemPlaced = new NetworkVariable<bool>(false);
+    public NetworkVariable<bool> ItemPlaced = new NetworkVariable<bool>(false,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Owner);
     public Vector3 offset = new Vector3(0, 1, 1);
 
+
+    [ServerRpc]
+    private void ToggleItemPlacementServerRpc()
+    {
+        ItemPlaced.Value = !ItemPlaced.Value; 
+    }
     private void Awake()
     {
+        ItemPlaced.OnValueChanged += OnItemPlacedChanged;
         boxCollider = GetComponent<BoxCollider>();
         boxCollider.isTrigger = true;
+    }
+
+    private void OnDestroy()
+    {
+        ItemPlaced.OnValueChanged -= OnItemPlacedChanged;
+    }
+
+    private void OnItemPlacedChanged(bool oldValue, bool newValue)
+    {
+        Debug.Log($"Item placed status changed: {newValue}");
     }
 
     private void Update()
@@ -48,7 +68,7 @@ public class Interactable : NetworkBehaviour, UniverslaResourceHolderInterface
                 PutResource(itemData);
                 inventoryHolder.InventorySystem.RemoveFromInventory();
                 DisplayItem();
-                ItemPlaced.Value = true;
+                ToggleItemPlacementServerRpc();
             }
         }
         else
@@ -71,7 +91,7 @@ public class Interactable : NetworkBehaviour, UniverslaResourceHolderInterface
             {
                 inventoryHolder.InventorySystem.AddToInventory(PullResource());
                 RemoveDisplayedItem();
-                ItemPlaced.Value = false;
+                ToggleItemPlacementServerRpc();
             }
         }
     }

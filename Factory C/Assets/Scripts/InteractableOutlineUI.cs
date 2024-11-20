@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class InteractableOutlineUI : MonoBehaviour
@@ -27,6 +28,7 @@ public class InteractableOutlineUI : MonoBehaviour
         if(!other.CompareTag("Player")) {
             return;
         }
+        if(!other.gameObject.GetComponent<NetworkBehaviour>().IsLocalPlayer) return;
         if(outline != null) outline.enabled = true;
         InteractableCanvas.Instance.ShowHint(hint);
     }

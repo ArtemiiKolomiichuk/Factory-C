@@ -32,7 +32,8 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
     public TimeCounterBarController cooldownTimer = null;
     public TimeCounterBarController buttonTimeTimer = null;
 
-    private float passiveTemperatureDecay = 0.1f;
+    private float passiveTemperatureDecay = 2f;
+    private float passiveTemperatureTime = 1f;
 
     public float fullBaseSize = 1000;
     public RectTransform fullTemperatureBar = null;
@@ -40,7 +41,7 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
     private float pointScaler = 1;
 
     private float baseTemperature = 0f;
-    private float currentTemperature = 0f;
+    public float currentTemperature = 0f;
 
     private float minTemperature = -500f;
     private float maxTemperature = 500f;
@@ -67,6 +68,7 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
     private int numberOfFails = 0;
     private int maxNumberOfFails = 3;
     
+    public bool onePlayer = true;
 
     protected override void Awake()
     {
@@ -76,6 +78,7 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
 
     protected override void Start()
     {
+        
         buttonTimeTimer.maxTime = buttonTime;
         cooldownTimer.maxTime = buttonCooldown;
 
@@ -102,24 +105,36 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
         ChoseAllowedZone();
 
         base.Start();
+        ResetButtonStates();
+        StartCoroutine(UpdatePassiveTemperatureCoroutine());
     }
 
     protected override void Update()
     {
         base.Update();
-        UpdatePassiveTemperature();
+        
     }
 
-    //maybe not needed
+
+    private IEnumerator UpdatePassiveTemperatureCoroutine()
+    {
+        while (true)
+        {
+            UpdatePassiveTemperature();
+            yield return new WaitForSeconds(passiveTemperatureTime);
+        }
+    }
+
+
     private void UpdatePassiveTemperature()
     {
         if (currentTemperature > baseTemperature) 
         {
-            ChangeTemperature(-passiveTemperatureDecay * Time.deltaTime);
+            ChangeTemperature(-passiveTemperatureDecay);
         }
         else
         {
-            ChangeTemperature(passiveTemperatureDecay * Time.deltaTime);
+            ChangeTemperature(passiveTemperatureDecay);
         }
     }
 
@@ -152,7 +167,10 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
             return;
         }
 
-        temperatureBar.ChangeProgressBar(currentTemperature, maxTemperature);
+        Debug.Log("SCALING TEMPERATURE | "+currentTemperature +" | "+maxTemperature);
+        if (enabled) {
+            temperatureBar.ChangeProgressBar(currentTemperature, maxTemperature);
+        }
 
     }
 
@@ -229,7 +247,9 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
             cooldownCoroutine = null;
         }
         cooldownTimer.StopTimer();
+        cooldownTimer.ResetBar();
         buttonTimeTimer.StopTimer();
+        buttonTimeTimer.ResetBar();
     }
 
     private void OnPlayerHeatButtonPress()
@@ -309,12 +329,12 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
 
     private bool CheckSyncStatus(ForgeMButtonT type)
     {
-        if (timeOfPress == -1)
+        if (!onePlayer && timeOfPress == -1)
         {
             timeOfPress = GetTime();
             return false;
         }
-        else if (timeOfPress + buttonTime >= GetTime())
+        else if (onePlayer || timeOfPress + buttonTime >= GetTime())
         {
             if (CheckSync(type))
             {
@@ -350,7 +370,14 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
         {
             for (int j = 0; j < playerPressedButton.GetLength(1); j++)
             {
-                playerPressedButton[i, j] = false;
+                if (onePlayer && j == 1) //always second player pressed
+                {
+                    playerPressedButton[i, j] = true;
+                }
+                else {
+                    playerPressedButton[i, j] = false;
+                }
+                
             }
         }
         

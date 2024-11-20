@@ -8,7 +8,7 @@ public class Interactable : NetworkBehaviour, UniverslaResourceHolderInterface
     public InventoryHolder inventoryHolder;
     public Resource currentItem;
     private GameObject showObject;
-    private bool itemPlaced = false;
+    public NetworkVariable<bool> ItemPlaced = new NetworkVariable<bool>(false);
     public Vector3 offset = new Vector3(0, 1, 1);
 
     private void Awake()
@@ -40,7 +40,7 @@ public class Interactable : NetworkBehaviour, UniverslaResourceHolderInterface
         if(inv.TryGet(out NetworkBehaviour nb)){
             inventoryHolder = nb.GetComponent<InventoryHolder>();
         }
-        if (inventoryHolder != null && !itemPlaced)
+        if (inventoryHolder != null && !ItemPlaced.Value)
         {
             var itemData = inventoryHolder.InventorySystem.GetInfo();
             if (itemData != null)
@@ -48,12 +48,12 @@ public class Interactable : NetworkBehaviour, UniverslaResourceHolderInterface
                 PutResource(itemData);
                 inventoryHolder.InventorySystem.RemoveFromInventory();
                 DisplayItem();
-                itemPlaced = true;
+                ItemPlaced.Value = true;
             }
         }
         else
         {
-            Debug.Log($"itemPlaced: {itemPlaced}");
+            Debug.Log($"itemPlaced: {ItemPlaced.Value}");
         }
     }
 
@@ -64,14 +64,14 @@ public class Interactable : NetworkBehaviour, UniverslaResourceHolderInterface
         {
             inventoryHolder = nb.GetComponent<InventoryHolder>();
         }
-        if (inventoryHolder != null && itemPlaced)
+        if (inventoryHolder != null && ItemPlaced.Value)
         {
             var itemData = inventoryHolder.InventorySystem.GetInfo();
             if (itemData == null && HaveResource())
             {
                 inventoryHolder.InventorySystem.AddToInventory(PullResource());
                 RemoveDisplayedItem();
-                itemPlaced = false;
+                ItemPlaced.Value = false;
             }
         }
     }

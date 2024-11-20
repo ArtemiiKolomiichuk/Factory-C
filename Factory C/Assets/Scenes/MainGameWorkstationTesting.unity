@@ -16979,15 +16979,11 @@ PrefabInstance:
         type: 3}
       propertyPath: tmpPlayerInventory
       value: 
-      objectReference: {fileID: 890999674}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 135950097479819112, guid: c1c175eb56e9eab4496c83ba125b00d1,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 890999674}
     - targetCorrespondingSourceObject: {fileID: 135950097479819112, guid: c1c175eb56e9eab4496c83ba125b00d1,
         type: 3}
       insertIndex: -1
@@ -17003,20 +16999,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 890999672}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &890999674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 389914187}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08fdff42ff30a414ab8a79c66d5430e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  displayer: {fileID: 0}
-  storedItem: 0
 --- !u!114 &890999675 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9104401138342824776, guid: c1c175eb56e9eab4496c83ba125b00d1,
@@ -17041,7 +17023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f6c0ca6408a294788cdf645d167a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInventory: {fileID: 890999674}
+  playerInventoryObject: {fileID: 389914187}
   interactor: {fileID: 890999675}
   useKey: 257
   getItemKey: 258

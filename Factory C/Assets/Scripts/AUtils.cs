@@ -41,5 +41,11 @@ public class AUtils
         return normalizedProximity;
     }
 
+    public static bool IsRandomSuccess(float probability)
+    {
+        probability = Mathf.Clamp01(probability);
+        float randomValue = UnityEngine.Random.Range(0f, 1f);
+        return randomValue <= probability;
+    }
 
 }

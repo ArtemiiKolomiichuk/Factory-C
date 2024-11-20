@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffb45f89371fa6649ae4fa8f0cf42a0d, type: 3}
-  m_Name: RecipeOne
+  m_Name: DecomposeAdventurerCorpse
   m_EditorClassIdentifier: 
   inputResources: 020000000b000000
   resultResources: 04000000

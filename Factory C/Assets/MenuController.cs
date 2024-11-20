@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class MenuController : MonoBehaviour
 {
     public GameObject menuObject;
-    public GameObject gameOverScreen;
+
     public GameObject recipeBook;
 
     void Update()
@@ -15,13 +15,10 @@ public class MenuController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             menuObject.SetActive(!menuObject.activeInHierarchy);
-            Time.timeScale = menuObject.activeInHierarchy ? 0f : 1f;
+            //Time.timeScale = menuObject.activeInHierarchy ? 0f : 1f;
         }
 
-        if (Input.GetKeyDown(KeyCode.RightAlt))
-        {
-            GameOver();
-        }
+
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -37,7 +34,7 @@ public class MenuController : MonoBehaviour
     public void ResumeGame()
     {
         menuObject.SetActive(false);
-        Time.timeScale = 1f;
+        //Time.timeScale = 1f;
     }
 
     public void ExitGame()
@@ -45,10 +42,7 @@ public class MenuController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
-    public void GameOver()
-    {
-        gameOverScreen.SetActive(true);
-    }
+
 
     public void GoToMainMenu()
     {

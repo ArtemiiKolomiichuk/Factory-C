@@ -2,81 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public struct InteractionResult
+{
+    public bool Success { get; }
+    public object Data { get; }
+
+    public InteractionResult(bool success, object data)
+    {
+        Success = success;
+        Data = data;
+    }
+}
+
 public class UserInteraction : MonoBehaviour
 {
     void Start()
     {
         
-    }
-
-    public SingleItemInventory tmpPlayerInventory = null;
-
-    void Update()
-    {
-        HandleInput();
-    }
-
-    //This should be in another class and will be VVV VVV VVV
-    private void HandleInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            InteractWithHead(KeyCode.Keypad1, true);
-        }
-        else if (Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            InteractWithHead(KeyCode.Keypad2, true);
-        }
-        else if(Input.GetKeyDown(KeyCode.Keypad3))
-        {
-            InteractWithHead(KeyCode.Keypad3, ResourceType.Sword);
-        }
-        else if (Input.GetKeyDown(KeyCode.P))
-        {
-            InteractWithHead(KeyCode.P, tmpPlayerInventory);
-        }
-        else if (Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            Debug.Log("USER_INTERACTION | "+ targets.Count);
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            if (tmpPlayerInventory.HaveResource()) 
-            {
-                var getType = tmpPlayerInventory.PullResourceType();
-                bool get = (bool) InteractWithHead(KeyCode.UpArrow, getType);
-                if (!get) 
-                { 
-                    tmpPlayerInventory.PutResourceType(getType);
-                }
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (tmpPlayerInventory.HaveFreeSpace())
-            {
-                ResourceType get = (ResourceType) InteractWithHead(KeyCode.DownArrow, true);
-                tmpPlayerInventory.PutResourceType(get);
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            if (tmpPlayerInventory.HaveFreeSpace())
-            {
-                InteractWithHead(KeyCode.RightArrow, true);
-            }
-        }
-    }
-    //This should be in another class and will be AAA AAA AAA
+    }  
 
     public List<Interactible_v2> targets = new List<Interactible_v2>();
 
-    public object InteractWithHead(KeyCode key, object data) {
+    public InteractionResult InteractWithHead(KeyCode key, object data) {
         if (targets.Count > 0) 
         {
-            return targets[0].Interact(key, data);
+            return new InteractionResult(true, targets[0].Interact(key, data));
         }
-        return false;
+        return new InteractionResult(false, null);
     }
     
     public void AddToTargets(Interactible_v2 inter) 
@@ -110,7 +63,7 @@ public class UserInteraction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
+        Debug.Log("ENTERED TRIGGER: "+ other.name);
         Interactible_v2 interactable = other.GetComponent<Interactible_v2>();
         if (interactable != null)
         {

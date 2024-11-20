@@ -215,6 +215,11 @@ GameObject:
   - component: {fileID: 7274518842651567320}
   - component: {fileID: 189650316181585751}
   - component: {fileID: 7636702500381997749}
+  - component: {fileID: 8346085423939745023}
+  - component: {fileID: 6034845647007013178}
+  - component: {fileID: 73845154772392674}
+  - component: {fileID: 3591428188486560945}
+  - component: {fileID: 1573991019870345982}
   m_Layer: 0
   m_Name: Forge
   m_TagString: Untagged
@@ -289,6 +294,101 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8346085423939745023
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2565150113255896475}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -972389053705707870, guid: b82c8866bb4871a4abb7789161ff7de2, type: 3}
+--- !u!114 &6034845647007013178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2565150113255896475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f95a8676d3c5448af520aeea34d97f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usableObject: {fileID: 714866882221367797}
+  useKey: 257
+  resourceHolderObject: {fileID: 714866882221367797}
+  getKey: 258
+  putKey: 259
+--- !u!114 &73845154772392674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2565150113255896475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 0, a: 1}
+  outlineWidth: 4
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &3591428188486560945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2565150113255896475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ba7a1df6597ef44f963f5a848cfa45e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hint: 'Numpad 1 to Use
+
+    Numpad 2 to Get
+
+    Numpad 3 to Put'
+--- !u!65 &1573991019870345982
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2565150113255896475}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.031239584, y: 0.03416565, z: 0.052470252}
+  m_Center: {x: -0.00065535697, y: -0.002207011, z: 0.016235134}
 --- !u!1 &2648759966838859384
 GameObject:
   m_ObjectHideFlags: 0

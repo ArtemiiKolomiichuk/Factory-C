@@ -168,8 +168,7 @@ MonoBehaviour:
   inputResources: 
   storage: 
   subscribedUsersIDs: 
-  numberOfMaxUsers: 2
-  resourceSpawnPoint: {fileID: 0}
+  numberOfMaxUsers: 1
   progressBar: {fileID: 1084220218054171461}
   animController: {fileID: 0}
 --- !u!1 &2202610946416585999

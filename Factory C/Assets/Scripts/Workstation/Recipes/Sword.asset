@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputResources: 090000000b000000
   resultResources: 0a000000
+  randomResources: []
   workstationType: 1
-  difficultyMod: 10
+  difficultyMod: 1400
   additionalVariables: []

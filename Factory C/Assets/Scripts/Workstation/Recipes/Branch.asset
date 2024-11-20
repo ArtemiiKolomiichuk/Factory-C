@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Branch
   m_EditorClassIdentifier: 
   inputResources: 08000000
-  resultResources: 09000000
+  resultResources: 01000000
   randomResources: []
   workstationType: 1
   difficultyMod: 440

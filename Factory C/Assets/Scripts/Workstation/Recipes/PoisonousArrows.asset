@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffb45f89371fa6649ae4fa8f0cf42a0d, type: 3}
   m_Name: PoisonousArrows
   m_EditorClassIdentifier: 
-  inputResources: 0600000009000000
+  inputResources: 0100000006000000
   resultResources: 07000000
   randomResources: []
   workstationType: 1

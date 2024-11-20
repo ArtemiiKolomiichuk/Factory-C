@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffb45f89371fa6649ae4fa8f0cf42a0d, type: 3}
   m_Name: HealingPotion
   m_EditorClassIdentifier: 
-  inputResources: 1300000016000000
+  inputResources: 1200000016000000
   resultResources: 17000000
   randomResources: []
   workstationType: 2

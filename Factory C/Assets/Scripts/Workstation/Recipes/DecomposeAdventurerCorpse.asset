@@ -17,11 +17,11 @@ MonoBehaviour:
   randomResources:
   - rType: 13
     probability: 0.25
-  - rType: 15
+  - rType: 14
     probability: 0.25
   - rType: 17
     probability: 0.25
-  - rType: 19
+  - rType: 18
     probability: 0.25
   workstationType: 2
   difficultyMod: 10

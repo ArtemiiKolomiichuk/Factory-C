@@ -5,8 +5,8 @@ using UnityEngine;
 public class Interactable : NetworkBehaviour, UniverslaResourceHolderInterface
 {
     private BoxCollider boxCollider;
-    private InventoryHolder inventoryHolder;
-    private Resource currentItem;
+    public InventoryHolder inventoryHolder;
+    public Resource currentItem;
     private GameObject showObject;
     private bool itemPlaced = false;
     public Vector3 offset = new Vector3(0, 1, 1);

@@ -34,6 +34,7 @@ public class CustomerSpawner : MonoBehaviour
     }
 
     public void SpawnCustomer(Order order = null) {
+        if (!NetworkManager.Singleton.IsHost) return;
         GameObject instantiatedCustomer = Instantiate(customerGameObject, root);
         instantiatedCustomer.transform.SetLocalPositionAndRotation(spawnPoint.localPosition, spawnPoint.localRotation);
         instantiatedCustomer.GetComponent<NetworkObject>().Spawn();

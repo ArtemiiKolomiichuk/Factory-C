@@ -43,6 +43,7 @@ public class GameOverUIController : MonoBehaviour
     }
 
     private void GoToMainMenu() {
+        LobbyController.Instance.LeaveLobby();
         SceneManager.LoadScene(TargetScene);
     }
 

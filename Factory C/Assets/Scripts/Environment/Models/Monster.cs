@@ -48,7 +48,7 @@ public class Monster : MonoBehaviour
  
                     Follow(player);
                     
-                    yield return new WaitForSeconds(2f);
+                    //yield return new WaitForSeconds(2f);
                     break;
                 }
                 Adventurer adventurer = FindNearestAdventurer();
@@ -161,7 +161,8 @@ public class Monster : MonoBehaviour
         MonsterCount--;
         if (lootPrefab != null )
         {
-            GameObject loot = Instantiate(lootPrefab, transform.position, transform.rotation);
+            Vector3 positionPrefab = new Vector3(transform.position.x, transform.position.y+5, transform.position.z);
+            GameObject loot = Instantiate(lootPrefab, positionPrefab, transform.rotation);
            
         }
         StopAllCoroutines();

@@ -74,7 +74,7 @@ public class Adventurer : MonoBehaviour
 
                     Follow(player);
 
-                    yield return new WaitForSeconds(2f);
+                    //yield return new WaitForSeconds(1f);
                     break;
                 }
                 Monster monster = FindNearestMonster();
@@ -164,7 +164,7 @@ public class Adventurer : MonoBehaviour
                 else
                 {
                     //print("attack2");
-                    monster.TakeDamage(10); 
+                    monster.TakeDamage(20); 
                 }
             }
 
@@ -196,7 +196,8 @@ public class Adventurer : MonoBehaviour
         AdventurerCount--;
         if (lootPrefab != null )
         {
-            GameObject loot = Instantiate(lootPrefab, transform.position, transform.rotation);
+            Vector3 positionPrefab = new Vector3(transform.position.x, transform.position.y + 5, transform.position.z);
+            GameObject loot = Instantiate(lootPrefab, positionPrefab, transform.rotation);
 
         }
  

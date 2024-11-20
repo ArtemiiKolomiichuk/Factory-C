@@ -8889,6 +8889,16 @@ MonoBehaviour:
   - {fileID: 6183313692820495620, guid: ccaf98d2f778ad74fbe3de5bd46c7595, type: 3}
   - {fileID: 7601839575852517164, guid: 29e6a505ff2ba644cbcbb7c9f01f620e, type: 3}
   - {fileID: 690427392125676047, guid: 9a2fcc2554657044683b47e43cf00ac4, type: 3}
+  - {fileID: 7119618416581552110, guid: 200499ee65effc54c8a6e9ec66e10886, type: 3}
+  - {fileID: 880788764435887086, guid: 293458f12ef7527438c8e4347851e74b, type: 3}
+  - {fileID: 2212614713187300311, guid: d96bc3df53ec150448ef699d80f3e9be, type: 3}
+  - {fileID: 2804995202470709167, guid: 517be1395d9196f4692b6dd536f2dd75, type: 3}
+  - {fileID: 9049526018616921503, guid: d439e7ac919d4ad498976851450c4351, type: 3}
+  - {fileID: 4529570379811649173, guid: 68e320b3bfc73ee4ca3298120a6cfdac, type: 3}
+  - {fileID: 1483375594085693411, guid: 8ee40480d55b013449f3c5152d1b6ee3, type: 3}
+  - {fileID: 2804995202470709167, guid: 9b8ba9c953883ab44aa1d34794602623, type: 3}
+  - {fileID: 3281203312833427384, guid: 3441df3b3fc906e4bbd1810cd5ec3552, type: 3}
+  - {fileID: 5620423714458813009, guid: 65520675d618ad44cb9f0ccb35272df8, type: 3}
 --- !u!114 &519898770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8901,9 +8911,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84f9322cb781cbc45bcf243d53d64b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 652209948}
   throwForce: 2
-  throwOffset: {x: 0, y: 1, z: 1.2}
+  throwOffset: {x: 0, y: 1, z: 6}
 --- !u!1001 &521211517
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12295,6 +12305,12 @@ Transform:
   - {fileID: 774105440}
   m_Father: {fileID: 1270436384}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &652209948 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6829822267776731713, guid: d2a5bbf2271489b4c850ce58e7c34d85,
+    type: 3}
+  m_PrefabInstance: {fileID: 1698739799}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &657503354
 Mesh:
   m_ObjectHideFlags: 0
@@ -17090,7 +17106,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.34666666
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 4d569090403148648860c573b8de5f1e, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: a28c5b75b70d01145b0425502cc99ddd, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &902585975
 Transform:
@@ -21510,7 +21526,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1159167347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21528,10 +21544,10 @@ MonoBehaviour:
   - {fileID: 2955476852744342390, guid: c9cf6e9c1459bf64e8feecaad48e437a, type: 3}
   - {fileID: 3328992931575549059, guid: d7264ca5baefa5844b75fd30c920c4f7, type: 3}
   - {fileID: 2888775979712768101, guid: 0126433bce6110948ba9a22d0000bc04, type: 3}
-  maxMonsters: 10
-  spawnCount: 2
+  maxMonsters: 5
+  spawnCount: 1
   spawnRadius: 50
-  spawnInterval: 2
+  spawnInterval: 8
 --- !u!114 &1159167348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21548,8 +21564,8 @@ MonoBehaviour:
     type: 3}
   minGroupSize: 2
   maxGroupSize: 2
-  maxAdventurers: 10
-  spawnRadius: 100
+  maxAdventurers: 3
+  spawnRadius: 60
   spawnInterval: 10
 --- !u!4 &1159167349
 Transform:
@@ -32831,6 +32847,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8458221115888571256, guid: d2a5bbf2271489b4c850ce58e7c34d85,
+        type: 3}
+      propertyPath: offset.y
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8618334223552739743, guid: d2a5bbf2271489b4c850ce58e7c34d85,
         type: 3}
       propertyPath: Camera
@@ -32838,10 +32859,16 @@ PrefabInstance:
       objectReference: {fileID: 1695406278}
     - target: {fileID: 8618334223552739743, guid: d2a5bbf2271489b4c850ce58e7c34d85,
         type: 3}
+      propertyPath: offset.y
+      value: -15.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 8618334223552739743, guid: d2a5bbf2271489b4c850ce58e7c34d85,
+        type: 3}
       propertyPath: MovementSpeed
       value: 20
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -8676161474831664128, guid: d2a5bbf2271489b4c850ce58e7c34d85, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

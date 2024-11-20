@@ -1,11 +1,11 @@
 using Assets.Scripts.ItemsScripts;
 using System.Collections.Generic;
-using Assets.Scripts.ItemsScripts;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using Unity.Netcode;
 
-public class Adventurer : MonoBehaviour
+public class Adventurer : NetworkBehaviour
 {
     public static int AdventurerCount = 0;
     public float Speed { get; set; } = 2.0f;
@@ -28,6 +28,7 @@ public class Adventurer : MonoBehaviour
 
     void Start()
     {
+        if (!NetworkManager.Singleton.IsServer) return;
         Behavior = BehaviorType.Roaming;
         if (isLeader)
         {
@@ -114,6 +115,7 @@ public class Adventurer : MonoBehaviour
         }
         return null;
     }
+
     PlayerMovement3D FindNearestPlayer()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, 15f);
@@ -221,7 +223,16 @@ public class Adventurer : MonoBehaviour
             
         }
         StopAllCoroutines();
-        Destroy(gameObject);
+        DestroyRpc(new(GetComponent<NetworkObject>()));
+    }
+
+    [Rpc(SendTo.Server)]
+    private void DestroyRpc(NetworkObjectReference networkObjectReference)
+    {
+        if(networkObjectReference.TryGet(out NetworkObject gameObject))
+        {
+            Destroy(gameObject.gameObject);
+        }
     }
 
   

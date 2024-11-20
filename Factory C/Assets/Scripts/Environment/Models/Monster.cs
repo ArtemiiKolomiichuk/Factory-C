@@ -1,11 +1,11 @@
 using Assets.Scripts.ItemsScripts;
 using System.Collections.Generic;
-using Assets.Scripts.ItemsScripts;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using Unity.Netcode;
 
-public class Monster : MonoBehaviour
+public class Monster : NetworkBehaviour
 {
     public static int MonsterCount = 0;
     public float Speed { get; set; } = 6.5f;
@@ -29,6 +29,7 @@ public class Monster : MonoBehaviour
     void Start()
     {
         Behavior = BehaviorType.Roaming;
+        if (!NetworkManager.Singleton.IsServer) return;
         StartCoroutine(Wander());
     }
 

@@ -60,7 +60,6 @@ public class PrefabSystem : MonoBehaviour
                 print(itemData.rType);
                 return a;
             }
-            
         }
 
         return null;

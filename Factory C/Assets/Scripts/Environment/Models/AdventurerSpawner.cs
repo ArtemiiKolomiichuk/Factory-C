@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,7 +15,8 @@ public class AdventurerSpawner : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(SpawnAdventurerGroups());
+        if(NetworkManager.Singleton.IsServer)
+            StartCoroutine(SpawnAdventurerGroups());
     }
 
     IEnumerator SpawnAdventurerGroups()
@@ -24,7 +26,6 @@ public class AdventurerSpawner : MonoBehaviour
             if(Adventurer.AdventurerCount < maxAdventurers)
             {
                 SpawnGroup();
-                
             }
             yield return new WaitForSeconds(spawnInterval);
         }

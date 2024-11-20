@@ -88,6 +88,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6932584663216175858}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bdf5369580208af4395caeb823050c81,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4750754563038592471}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bdf5369580208af4395caeb823050c81,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6667506683993280008}
   m_SourcePrefab: {fileID: 100100000, guid: bdf5369580208af4395caeb823050c81, type: 3}
 --- !u!1 &4478975848782307419 stripped
 GameObject:
@@ -177,5 +185,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8b18b0d0b0644242b1e270488edffbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryHolder: {fileID: 0}
   offset: {x: 0, y: 1, z: 0.75}
+--- !u!114 &4750754563038592471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4478975848782307419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 0, a: 1}
+  outlineWidth: 4
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &6667506683993280008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4478975848782307419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ba7a1df6597ef44f963f5a848cfa45e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hint: 'E to get item
+
+    F to place item'

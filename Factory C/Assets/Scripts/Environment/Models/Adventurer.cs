@@ -67,6 +67,16 @@ public class Adventurer : MonoBehaviour
 
             while (Vector3.Distance(transform.position, destination) > 1f)
             {
+
+                PlayerMovement3D player = FindNearestPlayer();
+                if (player != null)
+                {
+
+                    Follow(player);
+
+                    yield return new WaitForSeconds(2f);
+                    break;
+                }
                 Monster monster = FindNearestMonster();
                 if (monster != null)
                 {
@@ -93,7 +103,7 @@ public class Adventurer : MonoBehaviour
 
     Monster FindNearestMonster()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, 5f);
+        Collider[] hits = Physics.OverlapSphere(transform.position, 7f);
         foreach (var hit in hits)
         {
             Monster monster = hit.GetComponent<Monster>();
@@ -104,8 +114,32 @@ public class Adventurer : MonoBehaviour
         }
         return null;
     }
+    PlayerMovement3D FindNearestPlayer()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, 15f);
 
-   
+        foreach (var hit in hits)
+        {
+            PlayerMovement3D player = hit.GetComponent<PlayerMovement3D>();
+            // print(player);
+
+            if (player != null && player.isDisguised)
+            {
+
+                return player;
+            }
+        }
+        return null;
+    }
+    public void Follow(PlayerMovement3D player)
+    {
+        print("Following A");
+        //agent.Se
+        //while(player.isDisguised)
+        agent.SetDestination(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
+
+    }
+
     public void Attack(Monster monster)
     {
         Debug.Log($"{name} {Health} attacks {monster.name} {monster.Health}.");

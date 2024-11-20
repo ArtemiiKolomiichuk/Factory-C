@@ -37,11 +37,20 @@ public class Monster : MonoBehaviour
     {
         while (true)
         {
-            Vector3 destination = RandomNavmeshLocation(10f);
+            Vector3 destination = RandomNavmeshLocation(12f);
             agent.SetDestination(destination);
 
             while (Vector3.Distance(transform.position, destination) > 1f)
             {
+                PlayerMovement3D player = FindNearestPlayer();
+                if (player != null)
+                {
+ 
+                    Follow(player);
+                    
+                    yield return new WaitForSeconds(2f);
+                    break;
+                }
                 Adventurer adventurer = FindNearestAdventurer();
                 if (adventurer != null)
                 {
@@ -65,7 +74,7 @@ public class Monster : MonoBehaviour
  
     Adventurer FindNearestAdventurer()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, 5f);
+        Collider[] hits = Physics.OverlapSphere(transform.position, 7f);
         
         foreach (var hit in hits)
         {
@@ -75,6 +84,24 @@ public class Monster : MonoBehaviour
             {
                 
                 return adventurer;
+            }
+        }
+        return null;
+    }
+
+    PlayerMovement3D FindNearestPlayer()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, 15f);
+
+        foreach (var hit in hits)
+        {
+            PlayerMovement3D player = hit.GetComponent<PlayerMovement3D>();
+           // print(player);
+
+            if (player != null&&!player.isDisguised)
+            {
+
+                return player;
             }
         }
         return null;
@@ -110,6 +137,15 @@ public class Monster : MonoBehaviour
             }
             yield return new WaitForSeconds(1f);
         }
+    }
+
+    public void Follow(PlayerMovement3D player)
+    {
+        print("Following");
+        //agent.Se
+        //while(player.isDisguised)
+        agent.SetDestination(new Vector3 (player.transform.position.x, transform.position.y, player.transform.position.z));
+
     }
 
     public void TakeDamage(int damage)

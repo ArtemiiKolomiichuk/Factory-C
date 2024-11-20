@@ -21,6 +21,7 @@ public class AdventurerSpawner : MonoBehaviour
 
     IEnumerator SpawnAdventurerGroups()
     {
+        yield return new WaitForSeconds(6);
         while (true)
         {
             if(Adventurer.AdventurerCount < maxAdventurers)

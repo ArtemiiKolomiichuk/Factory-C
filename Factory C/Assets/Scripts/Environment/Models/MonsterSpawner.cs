@@ -21,7 +21,7 @@ public class MonsterSpawner : MonoBehaviour
 
     IEnumerator SpawnMonsters()
     {
-
+        yield return new WaitForSeconds(6);
         while (true) { 
             if (Monster.MonsterCount < maxMonsters)
             {

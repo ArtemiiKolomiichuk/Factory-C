@@ -1,14 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Burst.CompilerServices;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Table : NetworkBehaviour
 {
-    public int? itemIndex;
+    public int? itemIndex = null;
     public GameObject showObject;
     public Vector3 offset;
     public int tableIndex;
@@ -39,26 +39,26 @@ public class Table : NetworkBehaviour
     [Rpc(SendTo.Server, RequireOwnership = false)]
     void TakeItemServerRpc(NetworkBehaviourReference player, int table)
     {
-            if(player.TryGet(out NetworkBehaviour pl))
-            {
-                var tables = FindObjectsOfType<Table>();
-                var tb = tables.Where(t => t.tableIndex == table).FirstOrDefault();
+        if(player.TryGet(out NetworkBehaviour pl))
+        {
+            var tables = FindObjectsOfType<Table>();
+            var tb = tables.Where(t => t.tableIndex == table).FirstOrDefault();
             if (tb.GetComponent<Table>().itemIndex is int index)
+            {
+                if(pl.GetComponent<InventoryHolder>().currentShowItem == null)
                 {
-                    if(pl.GetComponent<InventoryHolder>().currentShowItem == null)
-                    {
-                        pl.GetComponent<InventoryHolder>().InventorySystem.AddToInventory(PrefabSystem.GetByIndex(index).GetComponent<ItemPickUp>().ItemData);
-                        showObject.GetComponent<NetworkObject>().Despawn(true);
-                        itemIndex = null;
-                    }
+                    pl.GetComponent<InventoryHolder>().InventorySystem.AddToInventory(PrefabSystem.GetByIndex(index).GetComponent<ItemPickUp>().ItemData);
+                    showObject.GetComponent<NetworkObject>().Despawn(true);
+                    itemIndex = null;
                 }
             }
-        
+        }
     }
 
     public void PutItem(PlayerMovement3D player)
     {
         var nbr1 = new NetworkBehaviourReference(player.GetComponent<NetworkBehaviour>());
+        Debug.Log($"!-put");
         PutItemServerRpc(nbr1, tableIndex);
     }
 
@@ -69,15 +69,18 @@ public class Table : NetworkBehaviour
         {
             var tables = FindObjectsOfType<Table>();
             var tb = tables.Where(t => t.tableIndex == table).FirstOrDefault();
+            Debug.Log($"!-{tb}");
             if (tb.GetComponent<Table>().itemIndex is null)
             {
+                Debug.Log($"!-{pl.GetComponent<InventoryHolder>().currentShowItem}");
                 if (pl.GetComponent<InventoryHolder>().currentShowItem != null)
                 {
                     int index = PrefabSystem.GetIndex(pl.GetComponent<InventoryHolder>().currentShowItem.GetComponent<ItemPickUp>().ItemData);
+                    Debug.Log($"!-0Item removed from inventory {index}");
                     if (pl.GetComponent<InventoryHolder>().InventorySystem.RemoveFromInventory())
                     {
                         itemIndex = index;
-                        Debug.Log($"Item removed from inventory {index}");
+                        Debug.Log($"!-Item removed from inventory {index}");
                         GameObject itemPrefab = PrefabSystem.GetByIndex(index);
                         showObject = Instantiate(itemPrefab, transform.position + offset, transform.rotation);
                         showObject.GetComponent<NetworkObject>().Spawn();

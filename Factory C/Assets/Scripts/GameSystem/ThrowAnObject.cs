@@ -3,32 +3,23 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class ThrowAnObject : MonoBehaviour
+public class ThrowAnObject : NetworkBehaviour
 {
-    
     public GameObject player;
     public float throwForce = 3f;
     public Vector3 throwOffset = new Vector3(0, 1, 1);
 
     private void Start()
     {
-        if(NetworkCompanion.networkEnabled)
+        if(player == null)
         {
-            var players = GameObject.FindGameObjectsWithTag("Player");
-            foreach (var p in players)
-            {
-                if (p.GetComponent<NetworkObject>().IsLocalPlayer)
-                {
-                    player = p;
-                    break;
-                }
-            }
+            Destroy(this);
         }
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.G) && IsOwner)
         {
             InventoryHolder inventoryHolder = player.GetComponent<InventoryHolder>();
             if (inventoryHolder)
@@ -39,18 +30,21 @@ public class ThrowAnObject : MonoBehaviour
                     var a = PrefabSystem.FindItem(item);
                     if (a.GetComponent<ItemPickUp>().ItemData.rType == item.rType)
                     {
-                        GameObject thrownObject = Instantiate(a, player.transform.position + player.transform.TransformDirection(throwOffset), player.transform.rotation);
-                        Rigidbody rb = thrownObject.GetComponent<Rigidbody>();
-
-                        if (!rb)
-                        {
-                            rb.AddForce(player.transform.forward * throwForce, ForceMode.Impulse);
-                        }
+                        ThrowObjectRpc(PrefabSystem.GetIndex(item), player.transform.position + player.transform.TransformDirection(throwOffset), player.transform.rotation.eulerAngles, player.transform.forward * throwForce);
                         inventoryHolder.InventorySystem.RemoveFromInventory();
                     }
                 }
             }
         }
-    }   
+    }
+
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void ThrowObjectRpc(int index, Vector3 position, Vector3 rotation, Vector3 rbVec)
+    {
+        var item = PrefabSystem.GetByIndex(index);
+        item = Instantiate(item, position, Quaternion.Euler(rotation));
+        item.GetComponent<NetworkObject>().Spawn();
+        item.GetComponent<Rigidbody>().AddForce(rbVec, ForceMode.Impulse);
+    }
 }
 

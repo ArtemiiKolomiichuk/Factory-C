@@ -60,6 +60,7 @@ public class InventorySystem
         }
         else
         {
+            Debug.Log("No item to remove");
             return false;
         }
     }

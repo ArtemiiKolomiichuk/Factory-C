@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using Unity.VisualScripting;
 
 public class CustomerSpawner : MonoBehaviour
 {
@@ -15,6 +14,8 @@ public class CustomerSpawner : MonoBehaviour
     [SerializeField]
     private Transform spawnPoint;
     private List<(GameObject customer, Order order)> customersWithOrders;
+
+    public Transform root;
 
     void Awake() {
         if (Instance == null)
@@ -28,26 +29,15 @@ public class CustomerSpawner : MonoBehaviour
         customersWithOrders = new ();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public Transform GetSpawnPoint() {
         return spawnPoint;
     }
 
     public void SpawnCustomer(Order order = null) {
-        GameObject instantiatedCustomer = Instantiate(customerGameObject, gameObject.transform);
+        if (!NetworkManager.Singleton.IsHost) return;
+        GameObject instantiatedCustomer = Instantiate(customerGameObject, root);
         instantiatedCustomer.transform.SetLocalPositionAndRotation(spawnPoint.localPosition, spawnPoint.localRotation);
-        //instantiatedCustomer.GetComponent<NetworkObject>().Spawn();
+        instantiatedCustomer.GetComponent<NetworkObject>().Spawn();
         instantiatedCustomer.GetComponent<Customer>().SetResource(order.resource);
         customersWithOrders.Add((instantiatedCustomer, order));
     }

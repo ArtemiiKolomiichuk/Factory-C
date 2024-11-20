@@ -14,7 +14,7 @@ public class LobbyController : MonoBehaviour
     public static LobbyController Instance;
     public Lobby lobby;
 
-    private const float updateInterval = 3.0f;
+    private const float updateInterval = 1.1f;
 
     public const string TargetScene = "MainGame";
     private async void Awake()
@@ -181,13 +181,26 @@ public class LobbyController : MonoBehaviour
                 bool starting = await RelayController.Instance.StartClientWithRelay(relayId);
                 if(starting)
                 {
-                    SceneManager.LoadScene(TargetScene);
                     StopAllCoroutines();
+                    onLobbyUpdated = null;
+                    if (lobby.HostId == AuthenticationService.Instance.PlayerId)
+                    {
+                        StartCoroutine(UpdateLobby());
+                        SceneManager.LoadScene(TargetScene);
+                        return;
+                    }
+                    StartCoroutine(LoadWithDelay());
                     return;
                 }
             }
         }
         lobby = _lobby;
         onLobbyUpdated?.Invoke();
+    }
+
+    private IEnumerator LoadWithDelay()
+    {
+       yield return new WaitForSeconds(3);
+        SceneManager.LoadScene(TargetScene);
     }
 }

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 5053725840998724460}
   - component: {fileID: 8339669675831071893}
   - component: {fileID: 5001350314724761947}
-  - component: {fileID: -8676161474831664128}
+  - component: {fileID: 7066630367199191760}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1775524226
+  GlobalObjectIdHash: 526395139
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -109,11 +109,12 @@ MonoBehaviour:
   inventorySize: 1
   inventorySystem:
     inventorySlots: []
-  offset: {x: 0, y: 1, z: 0}
+  offset: {x: 0, y: 1.2, z: 0}
   skins:
   - {fileID: 6931903523724254199}
   - {fileID: 7606996071454677489}
   currentSkinIndex: 0
+  currentShowItem: {fileID: 0}
 --- !u!95 &2533480310901226925
 Animator:
   serializedVersion: 5
@@ -215,9 +216,9 @@ MonoBehaviour:
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 1
+  SyncRotAngleX: 0
   SyncRotAngleY: 1
-  SyncRotAngleZ: 1
+  SyncRotAngleZ: 0
   SyncScaleX: 0
   SyncScaleY: 0
   SyncScaleZ: 0
@@ -230,7 +231,7 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &-8676161474831664128
+--- !u!114 &7066630367199191760
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -239,9 +240,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6829822267776731713}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Script: {fileID: 11500000, guid: 84f9322cb781cbc45bcf243d53d64b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 6829822267776731713}
+  throwForce: 2
+  throwOffset: {x: 0, y: 1.3, z: 4.5}
 --- !u!1001 &7300356223622456480
 PrefabInstance:
   m_ObjectHideFlags: 0

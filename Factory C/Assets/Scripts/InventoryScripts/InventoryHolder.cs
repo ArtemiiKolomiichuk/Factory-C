@@ -17,7 +17,7 @@ public class InventoryHolder : NetworkBehaviour
     public List<GameObject> skins;
     public int currentSkinIndex = 0;
 
-    private GameObject currentShowItem;
+    public GameObject currentShowItem;
 
     public InventorySystem InventorySystem => inventorySystem;
 
@@ -52,56 +52,65 @@ public class InventoryHolder : NetworkBehaviour
 
     private void HandleInventoryUpdate(Resource itemInfo)
     {
+        Debug.Log($"Inventory updated: {IsOwner}, {currentShowItem}, {itemInfo}");
         if(NetworkCompanion.networkEnabled && !IsOwner)
         {
             return;
         }
-
-        if (currentShowItem == null && itemInfo != null)
+        if (itemInfo != null)
         {
-            GameObject item = PrefabSystem.FindItem(itemInfo);
-            currentShowItem = Instantiate(item, transform.position + offset, transform.rotation);
-            NetworkBehaviour nb = currentShowItem.GetComponent<NetworkBehaviour>();
-            if (nb)
-            {
-                if(!nb.IsSpawned && IsHost)
-                {
-                    nb.GetComponent<NetworkObject>().Spawn();
-                }
-            }
-            currentShowItem.transform.SetParent(transform);
-            currentShowItem.GetComponent<Rigidbody>().isKinematic = true;
-            currentShowItem.GetComponent<SphereCollider>().radius = 0.0001f;
-            currentShowItem.GetComponent<SphereCollider>().isTrigger = false;
-            currentShowItem.GetComponent<Rigidbody>().useGravity = false;
+            int index = PrefabSystem.GetIndex(itemInfo);
+            UpdateInventoryOnServerRpc(index, new (this), new(this), transform.rotation.eulerAngles, OwnerClientId);
         }
-        else if (currentShowItem != null && itemInfo == null)
+        else if (itemInfo == null)
         {
-            Destroy(currentShowItem);
+            TryDestroyMyCurrentItemRpc(new(this));
             currentShowItem = null;
         }
     }
-    //public void ChangeSkin(int skinIndex)
-    //{
-    //    if (skinIndex >= 0 && skinIndex < skins.Count)
-    //    {
-    //        ApplySkin(skinIndex);
-    //    }
-    //}
 
-    //private void ApplySkin(int index)
-    //{
-    //    if (skins[index] != null)
-    //    {
-    //        skins[currentSkinIndex].SetActive(false);
-    //        skins[index].SetActive(true);
-    //        currentSkinIndex = index;
-    //    }
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void TryDestroyMyCurrentItemRpc(NetworkBehaviourReference player)
+    {
+        if(player.TryGet(out NetworkBehaviour nb))
+        {
+            if(nb.GetComponent<InventoryHolder>().currentShowItem != null)
+            {
+                nb.GetComponent<InventoryHolder>().currentShowItem.GetComponent<NetworkObject>().Despawn();
+                nb.GetComponent<InventoryHolder>().currentShowItem = null;
+            }
+        }
+        else
+        {
+            Debug.LogError("NetworkBehaviour not found!!!! #4");
+        }
+    }
+
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void UpdateInventoryOnServerRpc(int itemIndex, NetworkBehaviourReference player, NetworkBehaviourReference playerInv, Vector3 rotation, ulong playerId)
+    {
+        if (playerInv.TryGet(out NetworkBehaviour networkBehaviour))
+        {
+            if(networkBehaviour.GetComponent<InventoryHolder>().currentShowItem != null)
+            {
+                return;
+            }
+            var item = PrefabSystem.GetByIndex(itemIndex);
+            item = Instantiate(item, offset, Quaternion.Euler(rotation));
+            item.GetComponent<NetworkObject>().Spawn();
+            if (player.TryGet(out NetworkBehaviour playerObject))
+            {
+                item.transform.SetParent(playerObject.transform);
+            }
+            item.transform.localPosition = offset;
+            item.GetComponent<Rigidbody>().isKinematic = true;
+            item.GetComponent<SphereCollider>().radius = 0.0001f;
+            item.GetComponent<SphereCollider>().isTrigger = false;
+            item.GetComponent<Rigidbody>().useGravity = false;
+            item.GetComponent<NetworkObject>().ChangeOwnership(playerId);
+            networkBehaviour.GetComponent<InventoryHolder>().currentShowItem = item;
+        }
         
-    //}
-
-
-
-
+    }
 
 }

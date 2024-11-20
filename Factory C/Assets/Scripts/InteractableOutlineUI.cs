@@ -22,6 +22,8 @@ public class InteractableOutlineUI : MonoBehaviour
     }
 
     public void OnTriggerEnter(Collider other) {
+        //Debug.Log($"{IsLocalPlayer} {IsHost}");
+        //if(!IsOwner) return;
         if(!other.CompareTag("Player")) {
             return;
         }
@@ -30,6 +32,7 @@ public class InteractableOutlineUI : MonoBehaviour
     }
 
     public void OnTriggerExit(Collider other) {
+        //if(!IsOwner) return;
         if(!other.CompareTag("Player")) {
             return;
         }

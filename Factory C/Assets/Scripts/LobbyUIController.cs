@@ -8,6 +8,7 @@ public class LobbyUIController : MonoBehaviour
 {
     [SerializeField] private Button joinButton;
     [SerializeField] private Button hostButton;
+    [SerializeField] private Button leaveButton;
 
     [SerializeField] private TMP_InputField joinCodeInputField;
 
@@ -23,6 +24,7 @@ public class LobbyUIController : MonoBehaviour
     {
         joinButton.onClick.AddListener(JoinButtonClicked);
         hostButton.onClick.AddListener(HostButtonClicked);
+        leaveButton.onClick.AddListener(() => { LobbyController.Instance.LeaveLobby(); lobbyUI.SetActive(false); });
         if(AuthenticationService.Instance.PlayerName is string name && name.Length > 6)
         {
             GameObject.Find("PlayerName").GetComponent<TMP_InputField>().text = name[..^5];

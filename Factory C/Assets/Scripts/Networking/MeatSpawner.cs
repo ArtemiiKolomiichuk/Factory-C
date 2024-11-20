@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MeatSpawner : NetworkBehaviour
 {
+
+    public GameObject playerPrefab;
+
     void Start()
     {
         DontDestroyOnLoad(this);
@@ -19,9 +23,31 @@ public class MeatSpawner : NetworkBehaviour
             if(IsServer)
             {
                 var go =PrefabSystem.GetByIndex(0);
-                go = Instantiate(go, new Vector3(-30.8348579f, 3.69000006f, -5.05999994f), Quaternion.identity);
+                go = Instantiate(go, new Vector3(-40.8348579f, 3.69000006f, -5.05999994f), Quaternion.identity);
                 go.GetComponent<NetworkObject>().Spawn();
+                Debug.Log("Binding set ");
+                NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
             }
+        }
+    }
+
+    private void OnClientConnected(ulong clientId)
+    {
+        Debug.Log("Client connected: " + clientId);
+        if (IsServer)
+        {
+            StartCoroutine(SpawnPlayerForClient(clientId));
+        }
+    }
+
+    private IEnumerator SpawnPlayerForClient(ulong clientId)
+    {
+        yield return new WaitForSeconds(5);
+        Debug.Log($"(has: {NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject})Spawning player for client " + clientId);
+        if(NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject == null)
+        {
+            var playerPrefab = Instantiate(this.playerPrefab, new Vector3(-40.8348579f, 3.69000006f, -5.05999994f), Quaternion.identity);
+            playerPrefab.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
         }
     }
 }

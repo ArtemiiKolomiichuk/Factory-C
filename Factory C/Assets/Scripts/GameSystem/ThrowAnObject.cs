@@ -19,7 +19,7 @@ public class ThrowAnObject : NetworkBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.G) && IsOwner)
         {
             InventoryHolder inventoryHolder = player.GetComponent<InventoryHolder>();
             if (inventoryHolder)

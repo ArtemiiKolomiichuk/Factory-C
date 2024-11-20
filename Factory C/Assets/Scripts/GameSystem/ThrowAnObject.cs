@@ -3,26 +3,17 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class ThrowAnObject : MonoBehaviour
+public class ThrowAnObject : NetworkBehaviour
 {
-    
     public GameObject player;
     public float throwForce = 3f;
     public Vector3 throwOffset = new Vector3(0, 1, 1);
 
     private void Start()
     {
-        if(NetworkCompanion.networkEnabled)
+        if(player == null)
         {
-            var players = GameObject.FindGameObjectsWithTag("Player");
-            foreach (var p in players)
-            {
-                if (p.GetComponent<NetworkObject>().IsLocalPlayer)
-                {
-                    player = p;
-                    break;
-                }
-            }
+            Destroy(this);
         }
     }
 

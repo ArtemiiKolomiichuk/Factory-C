@@ -47,6 +47,11 @@ public class PlayerMovement3D : NetworkBehaviour
         }
     }
 
+    private void Start()
+    {
+        SceneManager_sceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+    }
+
     private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode _)
     {
         if (!IsOwner) 
@@ -54,7 +59,15 @@ public class PlayerMovement3D : NetworkBehaviour
             Destroy(_input);
         }
         if(scene.name != LobbyController.TargetScene) return;
-        transform.position = new Vector3(-3.16695094f, 4.55999994f, -35.5f);
+        StartCoroutine(MoveCorrectlyCoroutine());
+        
+    }
+
+    private IEnumerator MoveCorrectlyCoroutine()
+    {
+        yield return new WaitForSeconds(0.2f);
+        if (NetworkCompanion.networkEnabled && !IsOwner) yield break;
+        transform.localPosition = new Vector3(-33.3999977f, 3.47999978f, -8.19999981f);
         Camera = Camera.main;
         if (Camera.GetComponent<SmoothCameraFollow>() is SmoothCameraFollow smoothCameraFollow)
         {
@@ -92,6 +105,7 @@ public class PlayerMovement3D : NetworkBehaviour
     }
     private void FixedUpdate()
     {
+        if (NetworkCompanion.networkEnabled && !IsOwner || Camera == null) return;
         MoveTowardTarget(targetVector);
 
         if (!RotateTowardMouse)

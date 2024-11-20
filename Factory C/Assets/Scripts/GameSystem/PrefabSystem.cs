@@ -20,6 +20,29 @@ public class PrefabSystem : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    public static GameObject GetByIndex(int index)
+    {
+        return Instance.itemPrefabs[index];
+    }
+
+    public static int GetIndex(Resource itemData)
+    {
+        if (Instance == null)
+        {
+            Debug.LogError("PrefabSystem instance is not set!");
+            return -1;
+        }
+
+        for (int i = 0; i < Instance.itemPrefabs.Length; i++)
+        {
+            if (Instance.itemPrefabs[i].GetComponent<ItemPickUp>().ItemData.rType == itemData.rType)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 
     public static GameObject FindItem(Resource itemData)
     {

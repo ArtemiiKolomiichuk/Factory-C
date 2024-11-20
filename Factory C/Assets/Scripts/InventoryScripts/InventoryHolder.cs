@@ -70,6 +70,7 @@ public class InventoryHolder : NetworkBehaviour
                 }
             }
             currentShowItem.transform.SetParent(transform);
+            currentShowItem.transform.localPosition = offset;
             currentShowItem.GetComponent<Rigidbody>().isKinematic = true;
             currentShowItem.GetComponent<SphereCollider>().radius = 0.0001f;
             currentShowItem.GetComponent<SphereCollider>().isTrigger = false;

@@ -7,19 +7,7 @@ public class SingleItemInventory : MonoBehaviour, UniverslaResourceHolderInterfa
 
     public void Update()
     {
-        //DEBUG VVV
-        if (Input.GetKeyDown(KeyCode.Keypad5))
-        {
-            PullResourceType();
-        }
-        if (Input.GetKeyDown(KeyCode.Keypad6))
-        {
-            PutResourceType(ResourceType.Water);
-        }
-        if (Input.GetKeyDown(KeyCode.Keypad7))
-        {
-            PutResourceType(ResourceType.Metal);
-        }
+        
     }
 
     public ItemDisplayer displayer = null;

@@ -1608,11 +1608,13 @@ MonoBehaviour:
   buttonTimeTimer: {fileID: 1017438550686904745}
   fullBaseSize: 1000
   fullTemperatureBar: {fileID: 4695707691708108372}
+  currentTemperature: 0
   temperatureChangeDelta: 5
   buttonTime: 1
   buttonCooldown: 2
   allowedZoneSize: 100
   allowedZoneImage: {fileID: 8164085804854795798}
+  onePlayer: 1
 --- !u!1 &2917451024217284857
 GameObject:
   m_ObjectHideFlags: 0
@@ -2607,7 +2609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toScale: {fileID: 6909119103279289007}
-  duration: 0.1
+  duration: 1
 --- !u!1 &4558967217743112586
 GameObject:
   m_ObjectHideFlags: 0
@@ -2917,7 +2919,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6450900552645029006
 RectTransform:
   m_ObjectHideFlags: 0

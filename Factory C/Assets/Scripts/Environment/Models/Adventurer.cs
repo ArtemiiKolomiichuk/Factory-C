@@ -144,7 +144,7 @@ public class Adventurer : NetworkBehaviour
 
     public void Attack(Monster monster)
     {
-        Debug.Log($"{name} {Health} attacks {monster.name} {monster.Health}.");
+        //Debug.Log($"{name} {Health} attacks {monster.name} {monster.Health}.");
         agent.SetDestination(monster.transform.position);
         StartCoroutine(AttackCoroutine(monster));
 

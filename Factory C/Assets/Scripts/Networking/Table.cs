@@ -31,7 +31,7 @@ public class Table : NetworkBehaviour
 
     public void TakeItem(PlayerMovement3D player)
     {
-        TakeItemServerRpc(new(player.GetComponent<NetworkBehaviour>()), new(this.GetComponent<NetworkBehaviour>()));
+        TakeItemServerRpc(new(player.GetComponent<NetworkBehaviour>()), new(this));
     }
 
     [Rpc(SendTo.Server, RequireOwnership = false)]
@@ -56,13 +56,15 @@ public class Table : NetworkBehaviour
 
     public void PutItem(PlayerMovement3D player)
     {
-        PutItemServerRpc(new(player.GetComponent<NetworkBehaviour>()), new(this.GetComponent<NetworkBehaviour>()));
+        var nbr1 = new NetworkBehaviourReference(player.GetComponent<NetworkBehaviour>());
+        var nbr2 = new NetworkObjectReference(GetComponent<NetworkObject>());
+        PutItemServerRpc(nbr1, nbr2);
     }
 
     [Rpc(SendTo.Server, RequireOwnership = false)]
-    void PutItemServerRpc(NetworkBehaviourReference player, NetworkBehaviourReference table)
+    void PutItemServerRpc(NetworkBehaviourReference player, NetworkObjectReference table)
     {
-        if (table.TryGet(out NetworkBehaviour tb))
+        if (table.TryGet(out NetworkObject tb))
         {
             if (player.TryGet(out NetworkBehaviour pl))
             {

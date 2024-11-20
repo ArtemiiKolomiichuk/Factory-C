@@ -1,12 +1,30 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+
+[System.Serializable]
+public class RandomRecipeOutput
+{
+    public ResourceType rType;
+    public float probability;
+
+    public RandomRecipeOutput(ResourceType rType, float probability)
+    {
+        this.rType = rType;
+        this.probability = probability;
+    }
+}
+
+
 
 [CreateAssetMenu(fileName = "New Recipe", menuName = "Recipe Data", order = 51)]
 public class Recipe : ScriptableObject
 {
     [Header("Receipt Configuration")]
-    public List<ResourceType> inputResources;
-    public List<ResourceType> resultResources;
+    public List<ResourceType> inputResources = new List<ResourceType>();
+    public List<ResourceType> resultResources = new List<ResourceType>();
+    public List <RandomRecipeOutput> randomResources = new List<RandomRecipeOutput>();
+
     public WorkstationType workstationType = WorkstationType.None;
     public float difficultyMod;
     public float[] additionalVariables;
@@ -16,6 +34,19 @@ public class Recipe : ScriptableObject
     {
         inputResources.Sort();
         resultResources.Sort();
+    }
+
+    public List<ResourceType> GetResult() 
+    {
+        List<ResourceType> result = new List<ResourceType>(resultResources);
+        foreach (var rr in randomResources)
+        {
+            if (AUtils.IsRandomSuccess(rr.probability)) 
+            {
+                result.Add(rr.rType);
+            }
+        }
+        return result;
     }
 
     public bool ThereOnlyNeededResources(List<ResourceType> storage)

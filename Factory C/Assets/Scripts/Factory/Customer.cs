@@ -39,7 +39,7 @@ public class Customer : NetworkBehaviour
         instantiatedResource = Instantiate(item, transform.position + offset, transform.rotation);
         instantiatedResource.GetComponent<NetworkObject>().Spawn();
         instantiatedResource.transform.SetParent(transform);
-        instantiatedResource.transform.localScale *= 4;
+        //instantiatedResource.transform.localScale *= 4;
         instantiatedResource.GetComponent<Rigidbody>().isKinematic = true;
         instantiatedResource.GetComponent<SphereCollider>().radius = 0.0001f;
         instantiatedResource.GetComponent<SphereCollider>().isTrigger = false;

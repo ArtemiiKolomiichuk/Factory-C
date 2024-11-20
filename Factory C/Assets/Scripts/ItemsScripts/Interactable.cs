@@ -26,17 +26,20 @@ public class Interactable : NetworkBehaviour, UniverslaResourceHolderInterface
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            TryPlaceItemRpc();
+            TryPlaceItemRpc(new(inventoryHolder.GetComponent<NetworkBehaviour>()));
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
-            TryRetrieveItemRpc();
+            TryRetrieveItemRpc(new(inventoryHolder.GetComponent<NetworkBehaviour>()));
         }
     }
 
     [Rpc(SendTo.Server)]
-    private void TryPlaceItemRpc()
+    private void TryPlaceItemRpc(NetworkBehaviourReference inv)
     {
+        if(inv.TryGet(out NetworkBehaviour nb)){
+            inventoryHolder = nb.GetComponent<InventoryHolder>();
+        }
         if (inventoryHolder != null && !itemPlaced)
         {
             var itemData = inventoryHolder.InventorySystem.GetInfo();
@@ -48,11 +51,19 @@ public class Interactable : NetworkBehaviour, UniverslaResourceHolderInterface
                 itemPlaced = true;
             }
         }
+        else
+        {
+            Debug.Log($"itemPlaced: {itemPlaced}");
+        }
     }
 
     [Rpc(SendTo.Server)]
-    private void TryRetrieveItemRpc()
+    private void TryRetrieveItemRpc(NetworkBehaviourReference inv)
     {
+        if (inv.TryGet(out NetworkBehaviour nb))
+        {
+            inventoryHolder = nb.GetComponent<InventoryHolder>();
+        }
         if (inventoryHolder != null && itemPlaced)
         {
             var itemData = inventoryHolder.InventorySystem.GetInfo();

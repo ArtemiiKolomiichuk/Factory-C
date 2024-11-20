@@ -27,8 +27,8 @@ public class CustomerMovement : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (!IsHost)
-            return;*/
+        if (!IsHost) return;
+
         currentWaitTime += Time.deltaTime;
         if(state == CustomerState.WAITING) {
             WaitForOrderCompletion();

@@ -37,6 +37,7 @@ public class Customer : NetworkBehaviour
         GameObject item = PrefabSystem.FindItem(resource);
         Debug.Log(item == null);
         instantiatedResource = Instantiate(item, transform.position + offset, transform.rotation);
+        instantiatedResource.GetComponent<NetworkObject>().Spawn();
         instantiatedResource.transform.SetParent(transform);
         instantiatedResource.transform.localScale *= 4;
         instantiatedResource.GetComponent<Rigidbody>().isKinematic = true;

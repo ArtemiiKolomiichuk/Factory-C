@@ -163,10 +163,10 @@ public class Monster : NetworkBehaviour
         if (lootPrefab != null )
         {
             GameObject loot = Instantiate(lootPrefab, transform.position, transform.rotation);
-           
+            loot.GetComponent<NetworkObject>().Spawn();
         }
         StopAllCoroutines();
-        Destroy(gameObject);
+        GetComponent<NetworkObject>().Despawn(true);
     }
 
 

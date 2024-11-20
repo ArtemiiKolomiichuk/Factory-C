@@ -199,7 +199,7 @@ public class Adventurer : NetworkBehaviour
         if (lootPrefab != null )
         {
             GameObject loot = Instantiate(lootPrefab, transform.position, transform.rotation);
-
+            loot.GetComponent<NetworkObject>().Spawn();
         }
  
         if (groupMembers != null)
@@ -231,7 +231,7 @@ public class Adventurer : NetworkBehaviour
     {
         if(networkObjectReference.TryGet(out NetworkObject gameObject))
         {
-            Destroy(gameObject.gameObject);
+            gameObject.Despawn(true);
         }
     }
 

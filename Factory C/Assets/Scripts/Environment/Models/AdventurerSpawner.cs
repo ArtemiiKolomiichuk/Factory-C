@@ -41,6 +41,7 @@ public class AdventurerSpawner : MonoBehaviour
         {
             Vector3 spawnPosition = groupPosition + Random.insideUnitSphere * 2f;
             GameObject adventurerGO = Instantiate(adventurerPrefab, spawnPosition, Quaternion.identity);
+            adventurerGO.GetComponent<NetworkObject>().Spawn();
             Adventurer adventurer = adventurerGO.GetComponent<Adventurer>();
             groupMembers.Add(adventurer);
         }

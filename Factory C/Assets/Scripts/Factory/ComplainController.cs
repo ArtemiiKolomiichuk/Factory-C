@@ -41,6 +41,10 @@ public class ComplainController : MonoBehaviour
         
     }
 
+    public uint GetComplaints(){
+        return currentComplaintCount;
+    }
+
     public void Complain() {
         currentComplaintCount++;
         UpdateUI();
@@ -51,7 +55,7 @@ public class ComplainController : MonoBehaviour
     }
 
     public void OnNextDay() {
-        currentComplaintCount -= deltaComplainCount;
+        if(currentComplaintCount > 0) currentComplaintCount -= deltaComplainCount;
         UpdateUI();
     }
 

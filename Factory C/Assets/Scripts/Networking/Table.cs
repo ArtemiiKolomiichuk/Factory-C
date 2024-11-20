@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Burst.CompilerServices;
 using Unity.Netcode;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class Table : NetworkBehaviour
     public int? itemIndex;
     public GameObject showObject;
     public Vector3 offset;
+    public int tableIndex;
 
     public void OnTriggerEnter(Collider other)
     {
@@ -31,17 +33,17 @@ public class Table : NetworkBehaviour
 
     public void TakeItem(PlayerMovement3D player)
     {
-        TakeItemServerRpc(new(player.GetComponent<NetworkBehaviour>()), new(this));
+        TakeItemServerRpc(new(player.GetComponent<NetworkBehaviour>()), tableIndex);
     }
 
     [Rpc(SendTo.Server, RequireOwnership = false)]
-    void TakeItemServerRpc(NetworkBehaviourReference player, NetworkBehaviourReference table)
+    void TakeItemServerRpc(NetworkBehaviourReference player, int table)
     {
-        if(table.TryGet(out NetworkBehaviour tb))
-        {
             if(player.TryGet(out NetworkBehaviour pl))
             {
-                if(tb.GetComponent<Table>().itemIndex is int index)
+                var tables = FindObjectsOfType<Table>();
+                var tb = tables.Where(t => t.tableIndex == table).FirstOrDefault();
+            if (tb.GetComponent<Table>().itemIndex is int index)
                 {
                     if(pl.GetComponent<InventoryHolder>().currentShowItem == null)
                     {
@@ -51,50 +53,49 @@ public class Table : NetworkBehaviour
                     }
                 }
             }
-        }
+        
     }
 
     public void PutItem(PlayerMovement3D player)
     {
         var nbr1 = new NetworkBehaviourReference(player.GetComponent<NetworkBehaviour>());
-        var nbr2 = new NetworkObjectReference(GetComponent<NetworkObject>());
-        PutItemServerRpc(nbr1, nbr2);
+        PutItemServerRpc(nbr1, tableIndex);
     }
 
     [Rpc(SendTo.Server, RequireOwnership = false)]
-    void PutItemServerRpc(NetworkBehaviourReference player, NetworkObjectReference table)
+    void PutItemServerRpc(NetworkBehaviourReference player, int table)
     {
-        if (table.TryGet(out NetworkObject tb))
+        if (player.TryGet(out NetworkBehaviour pl))
         {
-            if (player.TryGet(out NetworkBehaviour pl))
+            var tables = FindObjectsOfType<Table>();
+            var tb = tables.Where(t => t.tableIndex == table).FirstOrDefault();
+            if (tb.GetComponent<Table>().itemIndex is null)
             {
-                if (tb.GetComponent<Table>().itemIndex is null)
+                if (pl.GetComponent<InventoryHolder>().currentShowItem != null)
                 {
-                    if (pl.GetComponent<InventoryHolder>().currentShowItem != null)
+                    int index = PrefabSystem.GetIndex(pl.GetComponent<InventoryHolder>().currentShowItem.GetComponent<ItemPickUp>().ItemData);
+                    if (pl.GetComponent<InventoryHolder>().InventorySystem.RemoveFromInventory())
                     {
-                        int index = PrefabSystem.GetIndex(pl.GetComponent<InventoryHolder>().currentShowItem.GetComponent<ItemPickUp>().ItemData);
-                        if (pl.GetComponent<InventoryHolder>().InventorySystem.RemoveFromInventory())
+                        itemIndex = index;
+                        Debug.Log($"Item removed from inventory {index}");
+                        GameObject itemPrefab = PrefabSystem.GetByIndex(index);
+                        showObject = Instantiate(itemPrefab, transform.position + offset, transform.rotation);
+                        showObject.GetComponent<NetworkObject>().Spawn();
+                        var rb = showObject.GetComponent<Rigidbody>();
+                        if (rb != null)
                         {
-                            itemIndex = index;
-                            Debug.Log($"Item removed from inventory {index}");
-                            GameObject itemPrefab = PrefabSystem.GetByIndex(index);
-                            showObject = Instantiate(itemPrefab, transform.position + offset, transform.rotation);
-                            showObject.GetComponent<NetworkObject>().Spawn();
-                            var rb = showObject.GetComponent<Rigidbody>();
-                            if (rb != null)
-                            {
-                                rb.isKinematic = true;
-                                rb.useGravity = false;
-                            }
-                            var collider = showObject.GetComponent<Collider>();
-                            if (collider != null)
-                            {
-                                collider.isTrigger = false;
-                            }
+                            rb.isKinematic = true;
+                            rb.useGravity = false;
+                        }
+                        var collider = showObject.GetComponent<Collider>();
+                        if (collider != null)
+                        {
+                            collider.isTrigger = false;
                         }
                     }
                 }
             }
         }
+        
     }
 }

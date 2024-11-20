@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class MenuController : MonoBehaviour
 {
     public GameObject menuObject;
     public GameObject gameOverScreen;
+    public GameObject recipeBook;
 
     void Update()
     {
@@ -20,6 +22,16 @@ public class MenuController : MonoBehaviour
         {
             GameOver();
         }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            OpenRecipes();
+        }
+    }
+
+    public void OpenRecipes()
+    {
+        recipeBook.SetActive(!recipeBook.activeInHierarchy);
     }
 
     public void ResumeGame()

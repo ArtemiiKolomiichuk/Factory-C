@@ -12,9 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffb45f89371fa6649ae4fa8f0cf42a0d, type: 3}
   m_Name: DecomposeAdventurerCorpse
   m_EditorClassIdentifier: 
-  inputResources: 020000000b000000
-  resultResources: 04000000
-  randomResources: []
+  inputResources: 1a000000
+  resultResources: 14000000
+  randomResources:
+  - rType: 13
+    probability: 0.25
+  - rType: 15
+    probability: 0.25
+  - rType: 17
+    probability: 0.25
+  - rType: 19
+    probability: 0.25
   workstationType: 2
   difficultyMod: 10
   additionalVariables: []

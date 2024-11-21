@@ -37,13 +37,13 @@ public class Customer : NetworkBehaviour
         GameObject item = PrefabSystem.FindItem(resource);
         Debug.Log(item == null);
         instantiatedResource = Instantiate(item, transform.position + offset, transform.rotation);
-        instantiatedResource.GetComponent<NetworkObject>().Spawn();
-        instantiatedResource.transform.SetParent(transform);
-        //instantiatedResource.transform.localScale *= 4;
         instantiatedResource.GetComponent<Rigidbody>().isKinematic = true;
         instantiatedResource.GetComponent<SphereCollider>().radius = 0.0001f;
         instantiatedResource.GetComponent<SphereCollider>().isTrigger = false;
         instantiatedResource.GetComponent<Rigidbody>().useGravity = false;
+        instantiatedResource.GetComponent<NetworkObject>().Spawn();
+        instantiatedResource.transform.SetParent(transform);
+        //instantiatedResource.transform.localScale *= 4;
     }
 
     public void GoHome() {
@@ -51,8 +51,13 @@ public class Customer : NetworkBehaviour
     }
 
     private void CompleteOrder() {
-        CustomerSpawner.Instance.RemoveCustomer(this.gameObject);
         SetState(CustomerState.GO_HOME);
+        CompleteOrderServerRpc();
+    }
+
+    [ServerRpc]
+    private void CompleteOrderServerRpc() {
+        CustomerSpawner.Instance.RemoveCustomer(this.gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -63,11 +68,12 @@ public class Customer : NetworkBehaviour
         if(!other.CompareTag("Player")) {
             return;
         }
+        if(!other.gameObject.GetComponent<NetworkBehaviour>().IsLocalPlayer) return;
         playerInventoryHolder = other.GetComponent<InventoryHolder>();
-        /*if(resource != inventoryHolder.InventorySystem.GetInfo()) {
-            inventoryHolder = null;
+        if(resource != playerInventoryHolder.InventorySystem.GetInfo()) {
+            playerInventoryHolder = null;
             return;
-        }*/
+        }
         outline.enabled = true;
         InteractableCanvas.Instance.ShowHint(interactionHint);
         SetState(CustomerState.INTERACT_WITH_PLAYER);
@@ -81,10 +87,27 @@ public class Customer : NetworkBehaviour
             outline.enabled = false;
             InteractableCanvas.Instance.HideHint();
             if(instantiatedResource != null) {
-                Destroy(instantiatedResource);
+                instantiatedResource.GetComponent<NetworkObject>().Despawn();
             }
         }
     }
+
+    // [Rpc(SendTo.Server, RequireOwnership = false)]
+    // public void TryToDestroyItem(NetworkBehaviourReference player)
+    // {
+    //     if(player.TryGet(out NetworkBehaviour nb))
+    //     {
+    //         if(nb.GetComponent<InventoryHolder>().currentShowItem != null)
+    //         {
+    //             nb.GetComponent<InventoryHolder>().currentShowItem.GetComponent<NetworkObject>().Despawn();
+    //             nb.GetComponent<InventoryHolder>().currentShowItem = null;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         Debug.LogError("NetworkBehaviour not found!!!! #4");
+    //     }
+    // }
 
     private void OnTriggerExit(Collider other)
     {
@@ -94,11 +117,14 @@ public class Customer : NetworkBehaviour
         if(!other.CompareTag("Player")) {
             return;
         }
+        if(!other.gameObject.GetComponent<NetworkBehaviour>().IsLocalPlayer) return;
         playerInventoryHolder = null;
         outline.enabled = false;
         InteractableCanvas.Instance.HideHint();
         SetState(CustomerState.WAITING);
     }
+
+    
 }
 
 public enum CustomerState {

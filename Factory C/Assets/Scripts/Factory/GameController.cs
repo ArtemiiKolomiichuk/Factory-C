@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameController : NetworkBehaviour
 {
     public static GameController Instance { get; private set; }
 
@@ -18,6 +19,11 @@ public class GameController : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+        if (!IsServer) return; // Ensure it's executed on the server
+        if (!NetworkObject.IsSpawned)
+        {
+            NetworkObject.Spawn();
         }
     }
 
@@ -40,5 +46,11 @@ public class GameController : MonoBehaviour
     public void GameOver() {
         isGameOver = true;
         GameOverAction?.Invoke();
+        GameOverClientRpc();
+    }
+
+    [ClientRpc]
+    public void GameOverClientRpc() {
+        GameOverUIController.Instance.OnGameOver();
     }
 }

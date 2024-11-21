@@ -183,6 +183,10 @@ public class TwoPlayerTemperatureControlMinigame : MinigameInterface
         else {
             AddFail();
         }
+        if (progressCount >= targetProgressCount)
+        {
+            Success();
+        }
         ChoseAllowedZone();
     }
 

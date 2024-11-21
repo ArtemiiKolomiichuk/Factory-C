@@ -4731,7 +4731,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuObject: {fileID: 1753460733}
-  gameOverScreen: {fileID: 2045006825}
   recipeBook: {fileID: 2073400367}
 --- !u!4 &1681989600
 Transform:
@@ -4906,7 +4905,7 @@ GameObject:
   - component: {fileID: 1753460735}
   - component: {fileID: 1753460734}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

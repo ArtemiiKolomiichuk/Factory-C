@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 145fe4ab788a1354facce744e5968eb1, type: 3}
   m_Name: BrokenSword
   m_EditorClassIdentifier: 
-  resource: {fileID: 11400000, guid: 306fd4a74ee21b24e8da0f72f9faa53b, type: 2}
+  resource: {fileID: 11400000, guid: 06106fd56fe339f48afc064475996862, type: 2}
   durationInGameMinutes: 300

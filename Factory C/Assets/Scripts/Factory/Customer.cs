@@ -70,10 +70,10 @@ public class Customer : NetworkBehaviour
         }
         if(!other.gameObject.GetComponent<NetworkBehaviour>().IsLocalPlayer) return;
         playerInventoryHolder = other.GetComponent<InventoryHolder>();
-        /*if(resource != inventoryHolder.InventorySystem.GetInfo()) {
-            inventoryHolder = null;
+        if(resource != playerInventoryHolder.InventorySystem.GetInfo()) {
+            playerInventoryHolder = null;
             return;
-        }*/
+        }
         outline.enabled = true;
         InteractableCanvas.Instance.ShowHint(interactionHint);
         SetState(CustomerState.INTERACT_WITH_PLAYER);

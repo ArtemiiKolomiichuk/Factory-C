@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class TeleportEntry : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class TeleportEntry : MonoBehaviour
         if(!other.CompareTag("Player")) {
             return;
         }
+        if(!other.gameObject.GetComponent<NetworkBehaviour>().IsLocalPlayer) return;
         currentPlayer = other.gameObject;
     }
 
@@ -38,6 +40,7 @@ public class TeleportEntry : MonoBehaviour
         if(!other.CompareTag("Player")) {
             return;
         }
+        if(!other.gameObject.GetComponent<NetworkBehaviour>().IsLocalPlayer) return;
         currentPlayer = null;
     }
 }

@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
 using TMPro;
+using Unity.Netcode;
 
-public class OrderController : MonoBehaviour
+public class OrderController : NetworkBehaviour
 {
     public static OrderController Instance { get; private set; }
     
@@ -43,6 +44,7 @@ public class OrderController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(!NetworkManager.Singleton.IsHost) return;
         DayController.Instance.DayStoppedAction += OnDayStopped;
         DayController.Instance.NextDayAction += OnNextDay;
         GameController.Instance.GameOverAction += OnGameOver;
@@ -51,6 +53,8 @@ public class OrderController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log($"{NetworkManager.Singleton.IsHost}");
+        if(!NetworkManager.Singleton.IsHost) return;
         if(DayController.Instance.IsDayStopped() || GameController.Instance.IsGameOver()) return;
         CheckOrdersOverdue();
         if(currentOrders.Count() < currentMaxOrderCount) {
@@ -77,6 +81,7 @@ public class OrderController : MonoBehaviour
     }
 
     public void CompleteOrder(Order order) {
+        if(DayController.Instance.IsDayStopped() || GameController.Instance.IsGameOver()) return;
         int index = 0;
         for(; index < currentOrders.Count(); index++) {
             if(currentOrders[index].order == order) {
@@ -87,6 +92,7 @@ public class OrderController : MonoBehaviour
             currentOrders.RemoveAt(index);
             allCompletedOrders++;
             completedOrdersInDay++;
+            UpdateCompletedOrdersInDayClientRpc(completedOrdersInDay);
             NotifyPlayersAboutCompleteOrder();
             UpdateUI();
         }
@@ -105,8 +111,11 @@ public class OrderController : MonoBehaviour
         currentOrders.Add((order, orderEndTime));
         NotifyPlayersAboutNewOrder();
         UpdateUI();
+        Debug.Log($"Yessss!");
         CustomerSpawner.Instance.SpawnCustomer(order);
     }
+
+    
 
     private Order GetRandomOrder() {
         List<Order> filteredOrders = FilterOrders();
@@ -130,6 +139,7 @@ public class OrderController : MonoBehaviour
     }
 
     private void OnDayStopped() {
+        if(!NetworkManager.Singleton.IsHost) return;
         for(int i = 0; i < currentOrders.Count(); i++) {
             (Order order, uint _) = currentOrders[i];
             CustomerSpawner.Instance.GoHomeCustomer(order);
@@ -149,6 +159,8 @@ public class OrderController : MonoBehaviour
 
     private void OnNextDay() {
         completedOrdersInDay = 0;
+        currentMaxOrderCount += orderCountDelta;
+        UpdateCompletedOrdersInDayClientRpc(0);
     }
 
     public uint GetAllCompletedOrders() {
@@ -160,15 +172,40 @@ public class OrderController : MonoBehaviour
     }
 
     private void NotifyPlayersAboutNewOrder() {
+        //NotificationController.Instance.AddNotification("New order!", Color.white);
+        NotifyPlayersAboutNewOrderClientRpc();
+    }
+    
+    [Rpc(SendTo.Everyone, RequireOwnership = false)]
+    private void NotifyPlayersAboutNewOrderClientRpc() {
         NotificationController.Instance.AddNotification("New order!", Color.white);
     }
 
     private void NotifyPlayersAboutCompleteOrder() {
+        //NotificationController.Instance.AddNotification("Order completed!", Color.white);
+        NotifyPlayersAboutCompleteOrderClientRpc();
+    }
+
+    [ClientRpc]
+    private void NotifyPlayersAboutCompleteOrderClientRpc() {
         NotificationController.Instance.AddNotification("Order completed!", Color.white);
     }
 
     private void UpdateUI() {
         orderInfoUI.text = $"Orders: {currentOrders.Count()}";
+        UpdateCurrentOrderCountClientRpc(currentOrders.Count());
+    }
+
+    [ClientRpc]
+    private void UpdateCurrentOrderCountClientRpc(int currentOrdersCount)
+    {
+        orderInfoUI.text = $"Orders: {currentOrdersCount}";
+    }
+
+    [ClientRpc]
+    private void UpdateCompletedOrdersInDayClientRpc(uint completedOrdersInDay)
+    {
+        this.completedOrdersInDay = completedOrdersInDay;
     }
 
     

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.Netcode;
 
 public class NextDayUIController : MonoBehaviour
 {
@@ -55,5 +56,11 @@ public class NextDayUIController : MonoBehaviour
         orderInfoUI.text = $"Orders completed: {OrderController.Instance.GetCompletedOrdersInDay()}";
         complaintsInfoUI.text = $"Complaints got: {ComplainController.Instance.GetComplaints()}";
         dayStoppedCanvas.enabled = true;
+        if(NetworkManager.Singleton.IsServer) {
+            nextDayButton.enabled = true;
+        }
+        else {
+            nextDayButton.enabled = false;
+        }
     }
 }

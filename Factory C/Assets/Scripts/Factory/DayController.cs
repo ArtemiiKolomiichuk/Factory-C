@@ -1,8 +1,9 @@
 using System;
 using UnityEngine;
 using TMPro;
+using Unity.Netcode;
 
-public class DayController : MonoBehaviour
+public class DayController : NetworkBehaviour
 {
 
     public static DayController Instance { get; private set; }
@@ -87,6 +88,16 @@ public class DayController : MonoBehaviour
     }
 
     public void StopDay() {
+        StopDayClientRpc();
+        /*if(!isDayStopped) {
+            DayStoppedAction?.Invoke();
+        }
+        currentAccumulatedSeconds = 0;
+        isDayStopped = true;*/
+    }
+
+    [ClientRpc]
+    private void StopDayClientRpc() {
         if(!isDayStopped) {
             DayStoppedAction?.Invoke();
         }
@@ -95,6 +106,11 @@ public class DayController : MonoBehaviour
     }
 
     public void NextDay() {
+        NextDayClientRpc();
+    }
+
+    [ClientRpc]
+    public void NextDayClientRpc() {
         currentDay++;
         currentDayTimeInGameMinutes = 0;
         UpdateUI();

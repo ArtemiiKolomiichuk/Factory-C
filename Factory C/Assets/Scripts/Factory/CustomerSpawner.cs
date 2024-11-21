@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class CustomerSpawner : MonoBehaviour
+public class CustomerSpawner : NetworkBehaviour
 {
     public static CustomerSpawner Instance { get; private set; }
     

@@ -75,6 +75,7 @@ public class PlayerMovement3D : NetworkBehaviour
             {
                 interactable.GetComponent<NetworkObject>().Spawn();
             }
+            FindAnyObjectByType<GameController>().GetComponent<NetworkObject>().Spawn();
         }
     }
 

@@ -38,6 +38,7 @@ public class InteractableOutlineUI : MonoBehaviour
         if(!other.CompareTag("Player")) {
             return;
         }
+        if(!other.gameObject.GetComponent<NetworkBehaviour>().IsLocalPlayer) return;
         if(outline != null) outline.enabled = false;
         InteractableCanvas.Instance.HideHint();
     }

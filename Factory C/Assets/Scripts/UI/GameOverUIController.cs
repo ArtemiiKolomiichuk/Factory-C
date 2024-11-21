@@ -32,7 +32,7 @@ public class GameOverUIController : MonoBehaviour
     void Start()
     {
         gameOverCanvas.enabled = false;
-        GameController.Instance.GameOverAction += OnGameOver;
+        //GameController.Instance.GameOverAction += OnGameOver;
         mainMenuButton.onClick.AddListener(GoToMainMenu);
     }
 
@@ -47,7 +47,11 @@ public class GameOverUIController : MonoBehaviour
         SceneManager.LoadScene(TargetScene);
     }
 
-    private void OnGameOver() {
+    public void OnGameOver() {
         gameOverCanvas.enabled = true;
     }
+
+    // private void OnGameOver() {
+    //     gameOverCanvas.enabled = true;
+    // }
 }

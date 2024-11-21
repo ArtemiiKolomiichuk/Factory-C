@@ -7,6 +7,7 @@ public class Customer : NetworkBehaviour
     private string interactionHint;
     [SerializeField]
     private Vector3 offset = new Vector3(0, 20, 0);
+    [SerializeField]
     private Resource resource;
     private CustomerState state = CustomerState.WAITING;
     private Outline outline;
@@ -33,6 +34,7 @@ public class Customer : NetworkBehaviour
     }
 
     public void SetResource(Resource resource) {
+        //print(resource);
         this.resource = resource;
         GameObject item = PrefabSystem.FindItem(resource);
         Debug.Log(item == null);

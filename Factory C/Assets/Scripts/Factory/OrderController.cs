@@ -176,7 +176,7 @@ public class OrderController : NetworkBehaviour
         NotifyPlayersAboutNewOrderClientRpc();
     }
     
-    [Rpc(SendTo.Everyone, RequireOwnership = false)]
+    [ClientRpc]
     private void NotifyPlayersAboutNewOrderClientRpc() {
         NotificationController.Instance.AddNotification("New order!", Color.white);
     }

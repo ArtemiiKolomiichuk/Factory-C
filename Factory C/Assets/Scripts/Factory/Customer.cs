@@ -42,7 +42,7 @@ public class Customer : NetworkBehaviour
         instantiatedResource.GetComponent<SphereCollider>().isTrigger = false;
         instantiatedResource.GetComponent<Rigidbody>().useGravity = false;
         instantiatedResource.GetComponent<NetworkObject>().Spawn();
-        instantiatedResource.transform.SetParent(gameObject.transform);
+        instantiatedResource.transform.SetParent(transform);
         //instantiatedResource.transform.localScale *= 4;
     }
 

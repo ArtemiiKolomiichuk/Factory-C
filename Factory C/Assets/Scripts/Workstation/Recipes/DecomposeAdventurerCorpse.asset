@@ -15,7 +15,7 @@ MonoBehaviour:
   inputResources: 1a000000
   resultResources: 14000000
   randomResources:
-  - rType: 13
+  - rType: 12
     probability: 0.25
   - rType: 14
     probability: 0.25
